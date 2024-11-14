@@ -27,8 +27,6 @@ export default function LoginForm() {
         dispatch(login(userAccount));
         navigate("/");
       }
-    } else {
-      toast.error("Failed to login. Try again!");
     }
   };
 

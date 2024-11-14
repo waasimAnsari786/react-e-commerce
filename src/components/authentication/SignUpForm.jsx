@@ -20,16 +20,12 @@ export default function SignUpForm() {
   const handleSignUp = async (data) => {
     const userAccount = await auth.createAccount({ ...data });
     if (userAccount) {
-      console.log("useraccount geted");
       const getUser = auth.getCurrentUser();
       if (getUser) {
-        console.log("user geted");
         dispatch(login(userAccount));
         toast.success("Signup Successfully!");
         navigate("/");
       }
-    } else {
-      toast.error("Failed to Signup. Try again!");
     }
   };
 

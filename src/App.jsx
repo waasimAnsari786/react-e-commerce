@@ -4,6 +4,7 @@ import {
   SignUpPage,
   AuthProtectedLayout,
   MyWebLayout,
+  HomePage,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -17,10 +18,10 @@ function App() {
       path: "/",
       element: <MyWebLayout />,
       children: [
-        // {
-        //   path: "",
-        //   element: <HomePage />,
-        // },
+        {
+          path: "",
+          element: <HomePage />,
+        },
         {
           path: "/login",
           element: (
