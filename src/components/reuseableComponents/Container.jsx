@@ -8,7 +8,7 @@ export default function Container({
 }) {
   return (
     <div className={parentElemClass}>
-      <div className={`${childElemClass} container mx-auto ${pad}`}>
+      <div className={`${childElemClass} container mx-auto ${pad} px-3`}>
         {children}
       </div>
     </div>

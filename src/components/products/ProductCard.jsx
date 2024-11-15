@@ -14,6 +14,13 @@ export default function ProductCard({ myClass = "", product }) {
     dispatch(getAllImagesThunk());
   }, []);
 
+  const calculateDiscount = (price, salePrice) => {
+    if (price > 0 && salePrice > 0) {
+      return Math.round(((price - salePrice) / price) * 100);
+    }
+    return 0;
+  };
+
   return (
     <div
       className={`${myClass} shadow-lg shadow-gray-500 rounded-xl relative h-[25rem] flex flex-col justify-between`}
@@ -39,9 +46,14 @@ export default function ProductCard({ myClass = "", product }) {
         </MyTypoGraphy>
         <MyTypoGraphy myClass="text-gray-600">Price :{pPrice}</MyTypoGraphy>
         {pSalePrice > 0 && (
-          <MyTypoGraphy myClass="text-gray-600">
-            Sale Price : {pSalePrice}
-          </MyTypoGraphy>
+          <>
+            <MyTypoGraphy myClass="text-gray-600">
+              Sale Price: {pSalePrice}
+            </MyTypoGraphy>
+            <div className="absolute top-2 right-2 bg-red-500 text-white rounded-md px-2 py-1 text-[0.8rem]">
+              -{calculateDiscount(pPrice, pSalePrice)}% OFF
+            </div>
+          </>
         )}
       </div>
     </div>

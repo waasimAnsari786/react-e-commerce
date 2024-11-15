@@ -7,6 +7,7 @@ import {
   HomePage,
   AddProduct,
   SingleProduct,
+  AllProducts,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -52,7 +53,7 @@ function App() {
           path: "/products",
           element: (
             <AuthProtectedLayout authentication>
-              {/* <HomePage /> */}
+              <AllProducts />
             </AuthProtectedLayout>
           ),
         },

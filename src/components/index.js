@@ -19,6 +19,7 @@ import AddProduct from "./pages/AddProduct";
 import TextArea from "./reuseableComponents/TextArea";
 import ProductCard from "./products/ProductCard";
 import SingleProduct from "./products/SingleProduct";
+import AllProducts from "./pages/AllProducts";
 
 export {
   Button,
@@ -42,4 +43,5 @@ export {
   TextArea,
   ProductCard,
   SingleProduct,
+  AllProducts,
 };
