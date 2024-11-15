@@ -1,20 +1,20 @@
 import { Client, ID, Storage } from "appwrite";
-import envImport from "../envImport/envImport";
+import envImport from "../environment variables import file/envImport";
 
 class File {
   client = new Client();
   storage;
 
   constructor() {
-    this.client.setEndpoint(envImport.appwriteURL);
-    this.client.setProject(envImport.appwriteProjectId);
+    this.client.setEndpoint(envImport.projectURL);
+    this.client.setProject(envImport.projectID);
     this.storage = new Storage(this.client);
   }
 
   async uploadFile(file) {
     try {
       const uploadedFile = await this.storage.createFile(
-        envImport.appwriteBucketId,
+        envImport.productImagesID,
         ID.unique(),
         file
       );
@@ -28,7 +28,7 @@ class File {
   getPreviewFile(fileId) {
     try {
       const getPreviewedFile = this.storage.getFilePreview(
-        envImport.appwriteBucketId,
+        envImport.productImagesID,
         fileId
       );
       return getPreviewedFile;
@@ -42,7 +42,7 @@ class File {
   async deleteImage(fileId) {
     try {
       const deletedFile = await this.storage.deleteFile(
-        envImport.appwriteBucketId,
+        envImport.productImagesID,
         fileId
       );
       return deletedFile;
@@ -54,7 +54,7 @@ class File {
 
   async getAllFiles() {
     try {
-      const filesArr = await this.storage.listFiles(envImport.appwriteBucketId);
+      const filesArr = await this.storage.listFiles(envImport.productImagesID);
       return filesArr;
     } catch (error) {
       console.log("appwrite error :: get files error :: " + error.message);

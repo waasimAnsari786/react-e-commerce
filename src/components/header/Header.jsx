@@ -1,10 +1,23 @@
-import React, { useId } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useId } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { LogoutBtn } from "../index";
+import auth from "../../appwrite/authService";
+import { login } from "../../features/authSlice";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.status);
+  const dispatch = useDispatch();
+  const getUser = async () => {
+    const getedUser = await auth.getCurrentUser();
+    if (getedUser) {
+      dispatch(login(getedUser));
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const navItems = [
     { name: "Home", slug: "/", active: true, id: useId() },

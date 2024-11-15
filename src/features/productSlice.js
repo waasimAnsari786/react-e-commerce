@@ -10,11 +10,12 @@ const initialState = {
 
 export const createProductThunk = createAsyncThunk(
   "product/createProduct",
-  async (productData, { rejectWithValue }) => {
+  async (productData, { rejectWithValue, dispatch }) => {
     try {
       const createdProduct = await productService.createProduct(productData);
       if (createdProduct) {
         const fetchedProducts = await dispatch(getProductsThunk()).unwrap();
+        return createdProduct;
         // if (fetchedProducts) {
         //   return [createdProduct, fetchedProducts];
         // }
@@ -74,7 +75,7 @@ const productSlice = createSlice({
   reducers: {
     productFilter: (state, action) => {
       let fetchedProduct = state.productsArr.find(
-        (product) => product.slug === action.payload
+        (product) => product.pSlug === action.payload
       );
       state.filteredProduct = fetchedProduct;
     },

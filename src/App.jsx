@@ -5,6 +5,8 @@ import {
   AuthProtectedLayout,
   MyWebLayout,
   HomePage,
+  AddProduct,
+  SingleProduct,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -38,39 +40,39 @@ function App() {
             </AuthProtectedLayout>
           ),
         },
-        // {
-        //   path: "/add-post",
-        //   element: (
-        //     <AuthProtectedLayout authentication>
-        //       <PostForm />
-        //     </AuthProtectedLayout>
-        //   ),
-        // },
-        // {
-        //   path: "/all-posts",
-        //   element: (
-        //     <AuthProtectedLayout authentication>
-        //       <HomePage />
-        //     </AuthProtectedLayout>
-        //   ),
-        // },
-        // {
-        //   path: "/post/:slug",
-        //   element: (
-        //     <AuthProtectedLayout authentication>
-        //       <SinglePost />
-        //     </AuthProtectedLayout>
-        //   ),
-        // },
+        {
+          path: "/add-product",
+          element: (
+            <AuthProtectedLayout authentication>
+              <AddProduct />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/products",
+          element: (
+            <AuthProtectedLayout authentication>
+              {/* <HomePage /> */}
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/product/:slug",
+          element: (
+            <AuthProtectedLayout authentication>
+              <SingleProduct />
+            </AuthProtectedLayout>
+          ),
+        },
 
-        // {
-        //   path: "/edit-post/:slug",
-        //   element: (
-        //     <AuthProtectedLayout authentication>
-        //       <EditPostPage />
-        //     </AuthProtectedLayout>
-        //   ),
-        // },
+        {
+          path: "/edit-product/:slug",
+          element: (
+            <AuthProtectedLayout authentication>
+              {/* <EditPostPage /> */}
+            </AuthProtectedLayout>
+          ),
+        },
       ],
     },
   ]);

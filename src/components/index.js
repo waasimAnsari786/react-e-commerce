@@ -14,6 +14,11 @@ import SignUpPage from "./pages/SignUpPage";
 import Loader from "./reuseableComponents/Loader";
 import HomePage from "./pages/HomePage";
 import LogoutBtn from "./header/LogoutBtn";
+import ProductForm from "./products/ProductForm";
+import AddProduct from "./pages/AddProduct";
+import TextArea from "./reuseableComponents/TextArea";
+import ProductCard from "./products/ProductCard";
+import SingleProduct from "./products/SingleProduct";
 
 export {
   Button,
@@ -32,4 +37,9 @@ export {
   Loader,
   HomePage,
   LogoutBtn,
+  ProductForm,
+  AddProduct,
+  TextArea,
+  ProductCard,
+  SingleProduct,
 };
