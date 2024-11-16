@@ -21,14 +21,20 @@ export default function LoginForm() {
 
   const handleLogin = async (data) => {
     const userAccount = await auth.logInAccount({ ...data });
-    const getedUserRole = await userRole.getUserRole();
-
-    if (userAccount && getedUserRole) {
+    if (userAccount) {
       const getUser = await auth.getCurrentUser();
       if (getUser) {
         toast.success("Login Successfully!");
         dispatch(login(userAccount));
-        navigate("/");
+        const getedUserRole = await userRole.getUserRole(data.email);
+        if (getedUserRole && getedUserRole.documents[0].role === "Admin") {
+          navigate("/admin");
+        } else if (
+          getedUserRole &&
+          getedUserRole.documents[0].role === "Buyer"
+        ) {
+          navigate("/");
+        }
       }
     }
   };

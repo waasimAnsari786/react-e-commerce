@@ -1,23 +1,35 @@
 import React, { useEffect, useId } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { LogoutBtn } from "../index";
 import auth from "../../appwrite/authService";
 import { login } from "../../features/authSlice";
+import { getProductsThunk } from "../../features/productSlice";
+import userRole from "../../appwrite/userRoleService";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.status);
+  const userData = useSelector((state) => state.auth.userData);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const getUser = async () => {
     const getedUser = await auth.getCurrentUser();
     if (getedUser) {
       dispatch(login(getedUser));
+      dispatch(getProductsThunk());
+      const getedUserRole = await userRole.getUserRole(userData.email);
+      if (getedUserRole && getedUserRole.documents[0].role === "Admin") {
+        navigate("/admin");
+      } else if (getedUserRole && getedUserRole.documents[0].role === "Buyer") {
+        navigate("/");
+      }
     }
   };
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [authStatus]);
 
   const navItems = [
     { name: "Home", slug: "/", active: true, id: useId() },

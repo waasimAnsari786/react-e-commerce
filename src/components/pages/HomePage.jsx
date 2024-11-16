@@ -2,16 +2,10 @@ import React, { useEffect } from "react";
 import { Container, ProductCard } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getProductsThunk } from "../../features/productSlice";
 
 export default function HomePage() {
   const { productsArr } = useSelector((state) => state.product);
   const authstatus = useSelector((state) => state.auth.status);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getProductsThunk());
-  }, []);
 
   if (authstatus) {
     if (productsArr && productsArr.length === 0) {

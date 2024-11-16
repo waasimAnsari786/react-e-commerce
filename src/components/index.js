@@ -20,6 +20,7 @@ import TextArea from "./reuseableComponents/TextArea";
 import ProductCard from "./products/ProductCard";
 import SingleProduct from "./products/SingleProduct";
 import AllProducts from "./pages/AllProducts";
+import Admin from "./admin/Admin";
 
 export {
   Button,
@@ -44,4 +45,5 @@ export {
   ProductCard,
   SingleProduct,
   AllProducts,
+  Admin,
 };

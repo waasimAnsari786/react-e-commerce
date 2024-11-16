@@ -8,6 +8,7 @@ import {
   AddProduct,
   SingleProduct,
   AllProducts,
+  Admin,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -71,6 +72,14 @@ function App() {
           element: (
             <AuthProtectedLayout authentication>
               {/* <EditPostPage /> */}
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/admin",
+          element: (
+            <AuthProtectedLayout authentication>
+              <Admin />
             </AuthProtectedLayout>
           ),
         },

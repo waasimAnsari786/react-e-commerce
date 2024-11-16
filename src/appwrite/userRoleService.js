@@ -26,11 +26,12 @@ class UserRole {
     }
   }
 
-  async getUserRole() {
+  async getUserRole(query) {
     try {
       const userRole = await this.database.listDocuments(
         envImport.databaseID,
-        envImport.userRoleCollectionID
+        envImport.userRoleCollectionID,
+        [Query.equal("email", [query])]
       );
       return userRole;
     } catch (error) {
