@@ -7,6 +7,7 @@ import { login } from "../../features/authSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AiOutlineUser, AiOutlineMail, AiOutlineLock } from "react-icons/ai";
+import userRole from "../../appwrite/userRoleService";
 
 export default function SignUpForm() {
   const {
@@ -20,10 +21,19 @@ export default function SignUpForm() {
   const handleSignUp = async (data) => {
     const userAccount = await auth.createAccount({ ...data });
     if (userAccount) {
+      console.log("user account geted");
+
       const getUser = auth.getCurrentUser();
       if (getUser) {
         dispatch(login(userAccount));
-        toast.success("Signup Successfully!");
+        // const createdUserRole = await userRole.createUserRole({
+        //   role: data.role,
+        //   email: data.email,
+        // });
+        // if (createdUserRole) {
+        //   console.log(createdUserRole);
+        //   console.log(userAccount);
+        // }
         navigate("/");
       }
     }
@@ -81,6 +91,32 @@ export default function SignUpForm() {
             type="password"
             error={errors.password && errors.password.message}
           />
+
+          <div className="flex space-x-3">
+            <Input
+              label="Admin :"
+              {...register("role", {
+                required: "User role is required!",
+              })}
+              type="radio"
+              value="Admin"
+              error={errors.role && errors.role.message}
+              parentDiv=""
+              inpClass="w-3 h-3 ms-3"
+            />
+
+            <Input
+              label="Buyer :"
+              {...register("role", {
+                required: "User role is required!",
+              })}
+              type="radio"
+              value="Buyer"
+              error={errors.role && errors.role.message}
+              parentDiv=""
+              inpClass="w-3 h-3 ms-3"
+            />
+          </div>
 
           <Button myClass="w-full text-white bg-blue-500 hover:bg-blue-600">
             Sign Up

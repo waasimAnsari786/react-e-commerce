@@ -3,7 +3,15 @@ import { toast } from "react-toastify";
 
 const Input = forwardRef(
   (
-    { type = "text", inpClass = "", label, icon = "", error, ...props },
+    {
+      type = "text",
+      inpClass = "",
+      label,
+      icon = "",
+      error,
+      parentDiv = "bg-white p-4 rounded-lg my-3 shadow-md shadow-gray-500",
+      ...props
+    },
     ref
   ) => {
     const id = useId();
@@ -12,9 +20,9 @@ const Input = forwardRef(
     }, [error]);
 
     return (
-      <div className="w-full">
+      <div className={type === "radio" ? "flex justify-between" : "w-full"}>
         <label htmlFor={id}>{label}</label>
-        <div className="flex items-center justify-between bg-white p-4 rounded-lg my-3 shadow-md shadow-gray-500">
+        <div className={`flex items-center justify-between ${parentDiv}`}>
           <input
             type={type}
             className={`w-2/3 text-black ${inpClass} bg-transparent outline-none focus:outline-none`}

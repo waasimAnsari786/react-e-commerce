@@ -8,6 +8,7 @@ import { login } from "../../features/authSlice";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { CiLock } from "react-icons/ci";
 import { toast } from "react-toastify";
+import userRole from "../../appwrite/userRoleService";
 
 export default function LoginForm() {
   const {
@@ -20,7 +21,9 @@ export default function LoginForm() {
 
   const handleLogin = async (data) => {
     const userAccount = await auth.logInAccount({ ...data });
-    if (userAccount) {
+    const getedUserRole = await userRole.getUserRole();
+
+    if (userAccount && getedUserRole) {
       const getUser = await auth.getCurrentUser();
       if (getUser) {
         toast.success("Login Successfully!");

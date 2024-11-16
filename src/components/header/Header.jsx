@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import { LogoutBtn } from "../index";
 import auth from "../../appwrite/authService";
 import { login } from "../../features/authSlice";
-import { getProductsThunk } from "../../features/productSlice";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.status);
@@ -18,7 +17,6 @@ export default function Header() {
 
   useEffect(() => {
     getUser();
-    dispatch(getProductsThunk());
   }, []);
 
   const navItems = [
