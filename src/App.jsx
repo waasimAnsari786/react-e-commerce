@@ -9,6 +9,7 @@ import {
   SingleProduct,
   AllProducts,
   Admin,
+  AdminStats,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -43,15 +44,7 @@ function App() {
           ),
         },
         {
-          path: "/add-product",
-          element: (
-            <AuthProtectedLayout authentication>
-              <AddProduct />
-            </AuthProtectedLayout>
-          ),
-        },
-        {
-          path: "/products",
+          path: "/shop",
           element: (
             <AuthProtectedLayout authentication>
               <AllProducts />
@@ -75,11 +68,29 @@ function App() {
             </AuthProtectedLayout>
           ),
         },
+      ],
+    },
+    {
+      path: "/admin",
+      element: (
+        <AuthProtectedLayout authentication>
+          <Admin />
+        </AuthProtectedLayout>
+      ),
+      children: [
         {
-          path: "/admin",
+          path: "stats",
           element: (
             <AuthProtectedLayout authentication>
-              <Admin />
+              <AdminStats />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "add-product",
+          element: (
+            <AuthProtectedLayout authentication>
+              <AddProduct />
             </AuthProtectedLayout>
           ),
         },

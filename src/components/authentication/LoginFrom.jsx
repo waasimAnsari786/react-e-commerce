@@ -28,7 +28,7 @@ export default function LoginForm() {
         dispatch(login(userAccount));
         const getedUserRole = await userRole.getUserRole(data.email);
         if (getedUserRole && getedUserRole.documents[0].role === "Admin") {
-          navigate("/admin");
+          navigate("/admin/stats");
         } else if (
           getedUserRole &&
           getedUserRole.documents[0].role === "Buyer"

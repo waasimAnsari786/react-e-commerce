@@ -33,7 +33,7 @@ export default function HomePage() {
       <div className="text-center">
         <p>Login to view products!</p>
         <p>
-          Don't have an account? <Link to="/login">Login</Link>
+          Don't have an account? <Link to="/login">Signup</Link>
         </p>
       </div>
     );

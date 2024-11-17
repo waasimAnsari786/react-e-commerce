@@ -41,10 +41,12 @@ export default function ProductCard({ myClass = "", product }) {
           {pName}
         </MyTypoGraphy>
         <MyTypoGraphy myClass="text-gray-600">{pShortDes}</MyTypoGraphy>
-        <MyTypoGraphy myClass="capitalize absolute bg-customPurple top-2 left-2 text-white rounded-md text-[0.7rem] px-2 py-1">
+        <MyTypoGraphy myClass="capitalize absolute bg-black top-2 left-2 text-white rounded-md text-[0.7rem] px-2 py-1">
           {pStockStatus}
         </MyTypoGraphy>
-        <MyTypoGraphy myClass="text-gray-600">Price :{pPrice}</MyTypoGraphy>
+        <MyTypoGraphy myClass={`text-gray-600 ${pSalePrice && "line-through"}`}>
+          Price :{pPrice}
+        </MyTypoGraphy>
         {pSalePrice > 0 && (
           <>
             <MyTypoGraphy myClass="text-gray-600">

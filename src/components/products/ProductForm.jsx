@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect } from "react";
-import { Button, Container, Input, Select, TextArea } from "../index";
+import {
+  Button,
+  Container,
+  Input,
+  MyTypoGraphy,
+  Select,
+  TextArea,
+} from "../index";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -106,6 +113,9 @@ export default function ProductForm({ product }) {
   return (
     <Container childElemClass="pt-20">
       <form onSubmit={handleSubmit(productSubmit)}>
+        <MyTypoGraphy myClass="text-3xl mb-5">
+          {product ? "Update Product" : "Add Product"}
+        </MyTypoGraphy>
         <div className="flex justify-between gap-5">
           <Input
             {...register("pName", {

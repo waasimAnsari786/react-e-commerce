@@ -21,6 +21,7 @@ import ProductCard from "./products/ProductCard";
 import SingleProduct from "./products/SingleProduct";
 import AllProducts from "./pages/AllProducts";
 import Admin from "./admin/Admin";
+import AdminStats from "./admin/AdminStats";
 
 export {
   Button,
@@ -46,4 +47,5 @@ export {
   SingleProduct,
   AllProducts,
   Admin,
+  AdminStats,
 };

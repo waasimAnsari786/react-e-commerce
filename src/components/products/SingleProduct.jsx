@@ -12,6 +12,13 @@ export default function SingleProduct() {
     dispatch(productFilter(slug));
   }, [slug, dispatch]);
 
+  const calculateDiscount = (price, salePrice) => {
+    if (price > 0 && salePrice > 0) {
+      return Math.round(((price - salePrice) / price) * 100);
+    }
+    return 0;
+  };
+
   const { filteredProduct } = useSelector((state) => state.product);
   const { preview_URL_Arr } = useSelector((state) => state.file);
 
@@ -38,16 +45,25 @@ export default function SingleProduct() {
             <MyTypoGraphy myClass="text-2xl font-bold capitalize">
               {pName}
             </MyTypoGraphy>
-            <MyTypoGraphy myClass="capitalize absolute bg-customPurple top-2 right-2 text-white rounded-md text-[0.7rem] px-2 py-1">
+            <MyTypoGraphy myClass="capitalize absolute bg-black top-2 right-2 text-white rounded-md text-[0.7rem] px-2 py-1">
               {pStockStatus}
             </MyTypoGraphy>
             <MyTypoGraphy myClass="text-gray-600">{pLongDes}</MyTypoGraphy>
 
-            <MyTypoGraphy myClass="text-gray-600">Price :{pPrice}</MyTypoGraphy>
+            <MyTypoGraphy
+              myClass={`text-gray-600 ${pSalePrice && "line-through"}`}
+            >
+              Price :{pPrice}
+            </MyTypoGraphy>
             {pSalePrice > 0 && (
-              <MyTypoGraphy myClass="text-gray-600">
-                Sale Price :{pSalePrice}
-              </MyTypoGraphy>
+              <>
+                <MyTypoGraphy myClass="text-gray-600">
+                  Sale Price: {pSalePrice}
+                </MyTypoGraphy>
+                <div className="absolute top-2 right-2 bg-red-500 text-white rounded-md px-2 py-1 text-[0.8rem]">
+                  -{calculateDiscount(pPrice, pSalePrice)}% OFF
+                </div>
+              </>
             )}
           </div>
         </>

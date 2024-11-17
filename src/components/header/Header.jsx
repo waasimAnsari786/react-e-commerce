@@ -20,7 +20,7 @@ export default function Header() {
       dispatch(getProductsThunk());
       const getedUserRole = await userRole.getUserRole(userData.email);
       if (getedUserRole && getedUserRole.documents[0].role === "Admin") {
-        navigate("/admin");
+        navigate("/admin/stats");
       } else if (getedUserRole && getedUserRole.documents[0].role === "Buyer") {
         navigate("/");
       }
@@ -35,13 +35,8 @@ export default function Header() {
     { name: "Home", slug: "/", active: true, id: useId() },
     { name: "Login", slug: "/login", active: !authStatus, id: useId() },
     { name: "Signup", slug: "/signup", active: !authStatus, id: useId() },
-    {
-      name: "Add Product",
-      slug: "/add-product",
-      active: authStatus,
-      id: useId(),
-    },
-    { name: "Products", slug: "/products", active: authStatus, id: useId() },
+
+    { name: "Shop", slug: "/shop", active: authStatus, id: useId() },
   ];
 
   return (
@@ -85,8 +80,6 @@ export default function Header() {
             </ul>
           </div>
         </div>
-        {/* Page content here */}
-        Content
       </div>
       <div className="drawer-side">
         <label

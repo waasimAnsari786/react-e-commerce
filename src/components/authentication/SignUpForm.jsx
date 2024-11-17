@@ -29,8 +29,10 @@ export default function SignUpForm() {
           email: data.email,
         });
         if (createdUserRole && data.role === "Admin") {
-          navigate("/admin");
+          toast.success("Signup Successfully");
+          navigate("/admin/stats");
         } else if (createdUserRole && data.role === "Buyer") {
+          toast.success("Signup Successfully");
           navigate("/");
         }
       }

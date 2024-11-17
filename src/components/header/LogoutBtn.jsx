@@ -10,7 +10,7 @@ export default function LogoutBtn() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    const logedOut = auth.logOut();
+    const logedOut = await auth.logOut();
     if (logedOut) {
       dispatch(logout());
       navigate("/login");
