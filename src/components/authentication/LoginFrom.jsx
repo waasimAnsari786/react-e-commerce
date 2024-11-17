@@ -43,7 +43,7 @@ export default function LoginForm() {
     <Container childElemClass="flex items-center justify-center h-screen">
       <form
         onSubmit={handleSubmit(handleLogin)}
-        className="w-full max-w-md rounded-lg shadow-lg p-6 sm:p-8 bg-white bg-opacity-20 backdrop-blur-lg"
+        className="w-full max-w-md rounded-lg shadow-lg p-6 sm:p-8 bg-white"
       >
         <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
           Login
