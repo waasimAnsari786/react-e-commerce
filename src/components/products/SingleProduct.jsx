@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Container, MyTypoGraphy } from "../index";
+import React, { useEffect, useState } from "react";
+import { Container, MyTypoGraphy, Button, Input } from "../index";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { productFilter } from "../../features/productSlice";
@@ -7,6 +7,7 @@ import { productFilter } from "../../features/productSlice";
 export default function SingleProduct() {
   const dispatch = useDispatch();
   const { slug } = useParams();
+  const [value, setValue] = useState(1);
 
   useEffect(() => {
     dispatch(productFilter(slug));
@@ -65,6 +66,31 @@ export default function SingleProduct() {
                 </div>
               </>
             )}
+
+            <div>
+              <Button onClick={() => setValue((prev) => prev + 1)}>+</Button>
+              <Input value={value} type="number" />
+              <Button
+                onClick={() => setValue((prev) => (prev > 1 ? prev - 1 : 1))}
+              >
+                -
+              </Button>
+            </div>
+
+            <Button
+              onClick={() =>
+                dispatch(
+                  addToCartThunk({
+                    pName,
+                    pPrice,
+                    pImage,
+                    userId: userData.$id,
+                  })
+                )
+              }
+            >
+              Add to cart
+            </Button>
           </div>
         </>
       )}

@@ -23,6 +23,8 @@ import AllProducts from "./pages/AllProducts";
 import Admin from "./admin/Admin";
 import AdminStats from "./admin/AdminStats";
 import AdminStatsCard from "./admin/AdminStatsCard";
+import AddToCart from "./products/AddToCart";
+import CartRow from "./products/CartRow";
 
 export {
   Button,
@@ -50,4 +52,6 @@ export {
   Admin,
   AdminStats,
   AdminStatsCard,
+  AddToCart,
+  CartRow,
 };
