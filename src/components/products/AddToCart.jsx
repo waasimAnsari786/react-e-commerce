@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import { CartRow } from "../index";
 import { useSelector } from "react-redux";
 
 const AddToCart = () => {
   const { cartItems } = useSelector((state) => state.cart);
+  const { userData } = useSelector((state) => state.auth);
 
-  // Calculate total price
-  // const totalPrice = cartItems.reduce(
-  //   (total, item) => total + item.price * item.quantity,
-  //   0
-  // );
+  const filteredCartItems = useMemo(() => {
+    return cartItems.filter((cart) => cart.userId === userData.$id);
+  }, [cartItems]);
+
+  const calculateTotalPrice = useMemo(() => {
+    return filteredCartItems
+      .map((obj) => obj.pPrice * obj.pQty)
+      .reduce((currVal, accum) => currVal + accum);
+  }, [filteredCartItems]);
 
   return (
     <div className="p-6">
@@ -25,8 +30,8 @@ const AddToCart = () => {
           </tr>
         </thead>
         <tbody>
-          {cartItems &&
-            cartItems.map((product) => (
+          {filteredCartItems &&
+            filteredCartItems.map((product) => (
               <CartRow key={product.$id} product={product} />
             ))}
         </tbody>
@@ -39,19 +44,19 @@ const AddToCart = () => {
             <tr>
               <td className="border border-gray-300 p-2">Subtotal</td>
               <td className="border border-gray-300 p-2">
-                {/* ${totalPrice.toFixed(2)} */}
+                Rs: {calculateTotalPrice.toFixed(2)}
               </td>
             </tr>
             <tr>
               <td className="border border-gray-300 p-2">Tax (10%)</td>
               <td className="border border-gray-300 p-2">
-                {/* ${(totalPrice * 0.1).toFixed(2)} */}
+                Rs: {(calculateTotalPrice * 0.1).toFixed(2)}
               </td>
             </tr>
             <tr>
               <td className="border border-gray-300 p-2 font-bold">Total</td>
               <td className="border border-gray-300 p-2 font-bold">
-                {/* ${(totalPrice * 1.1).toFixed(2)} */}
+                Rs: {(calculateTotalPrice * 1.1).toFixed(2)}
               </td>
             </tr>
           </tbody>

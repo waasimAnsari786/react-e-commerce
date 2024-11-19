@@ -30,8 +30,6 @@ class AddToCArts {
   }
 
   async updateAddToCart(product) {
-    console.log(product);
-
     try {
       const updatedAddtoCart = await this.database.updateDocument(
         envImport.databaseID,

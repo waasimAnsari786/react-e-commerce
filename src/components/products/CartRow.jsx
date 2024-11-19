@@ -7,13 +7,12 @@ import {
   removeFromCartThunk,
   updateCartItemThunk,
 } from "../../features/userAddToCartSlice";
-import { toast } from "react-toastify";
 
 const CartRow = ({ product }) => {
   const { pImage, pName, pPrice, pQty, $id } = product;
   const dispatch = useDispatch();
 
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(pQty);
 
   const updateCart = (product) => {
     let { pQty, $id, pName, pPrice, pImage } = product;
@@ -25,7 +24,7 @@ const CartRow = ({ product }) => {
   };
 
   return (
-    <tr className="border border-gray-300 p-2">
+    <tr className="border border-gray-300 p-2 ">
       <td>
         <img
           src={pImage}
@@ -44,7 +43,7 @@ const CartRow = ({ product }) => {
           >
             +
           </Button>
-          <MyTypoGraphy>{value > 1 ? value : pQty}</MyTypoGraphy>
+          <MyTypoGraphy>{value !== pQty ? value : pQty}</MyTypoGraphy>
           <Button
             onClick={() => {
               setValue((prev) => (prev > 1 ? prev - 1 : prev));
