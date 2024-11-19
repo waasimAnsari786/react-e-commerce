@@ -16,8 +16,7 @@ export const addToCartThunk = createAsyncThunk(
       const addedItem = await addToCartService.createAddtoCart(itemData);
       if (addedItem) {
         toast.success("Product added to cart successfully!");
-        const fetchedCartItems = await dispatch(getCartItemsThunk()).unwrap();
-        return fetchedCartItems;
+        await dispatch(getCartItemsThunk());
       }
     } catch (error) {
       return rejectWithValue(error.message);
@@ -47,7 +46,7 @@ export const removeFromCartThunk = createAsyncThunk(
       if (removedItem) {
         dispatch(getCartItemsThunk());
       }
-      return removedItem;
+      return true;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -59,10 +58,10 @@ export const updateCartItemThunk = createAsyncThunk(
   "cart/updateCartItem",
   async (itemData, { rejectWithValue, dispatch }) => {
     try {
-      const updatedItem = await addToCartService.updateCartItem(itemData);
+      const updatedItem = await addToCartService.updateAddToCart(itemData);
       if (updatedItem) {
-        const updatedCart = await dispatch(getCartItemsThunk()).unwrap();
-        return updatedCart;
+        toast.success("Product has updated!");
+        await dispatch(getCartItemsThunk());
       }
     } catch (error) {
       return rejectWithValue(error.message);

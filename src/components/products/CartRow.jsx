@@ -3,7 +3,11 @@ import { AiOutlineClose } from "react-icons/ai";
 import { Button, MyTypoGraphy } from "../index";
 import { CiEdit } from "react-icons/ci";
 import { useDispatch } from "react-redux";
-import { removeFromCartThunk } from "../../features/userAddToCartSlice";
+import {
+  removeFromCartThunk,
+  updateCartItemThunk,
+} from "../../features/userAddToCartSlice";
+import { toast } from "react-toastify";
 
 const CartRow = ({ product }) => {
   const { pImage, pName, pPrice, pQty, $id } = product;
@@ -11,8 +15,17 @@ const CartRow = ({ product }) => {
 
   const [value, setValue] = useState(1);
 
+  const updateCart = (product) => {
+    let { pQty, $id, pName, pPrice, pImage } = product;
+    if (value !== pQty) {
+      dispatch(
+        updateCartItemThunk({ pQty: value, pName, pPrice, pImage, $id })
+      );
+    }
+  };
+
   return (
-    <tr>
+    <tr className="border border-gray-300 p-2">
       <td>
         <img
           src={pImage}
@@ -24,9 +37,21 @@ const CartRow = ({ product }) => {
       <td>Rs : {pPrice}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Button>+</Button>
-          <MyTypoGraphy>{pQty}</MyTypoGraphy>
-          <Button>-</Button>
+          <Button
+            onClick={() => {
+              setValue((prev) => (prev < 5 ? prev + 1 : prev));
+            }}
+          >
+            +
+          </Button>
+          <MyTypoGraphy>{value > 1 ? value : pQty}</MyTypoGraphy>
+          <Button
+            onClick={() => {
+              setValue((prev) => (prev > 1 ? prev - 1 : prev));
+            }}
+          >
+            -
+          </Button>
         </div>
       </td>
       <td>
@@ -36,7 +61,7 @@ const CartRow = ({ product }) => {
             className="text-red-500 hover:text-red-700"
           />
         </Button>
-        <Button onClick={() => removeItem(id)}>
+        <Button onClick={() => updateCart(product)}>
           <CiEdit size={20} className="text-green-500 hover:text-green-700" />
         </Button>
       </td>

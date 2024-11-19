@@ -30,12 +30,14 @@ class AddToCArts {
   }
 
   async updateAddToCart(product) {
+    console.log(product);
+
     try {
       const updatedAddtoCart = await this.database.updateDocument(
         envImport.databaseID,
         envImport.userAddToCartsID,
-        product.docID,
-        { ...product.updatedObj }
+        product.$id,
+        { ...product }
       );
       return updatedAddtoCart;
     } catch (error) {

@@ -25,9 +25,10 @@ const AddToCart = () => {
           </tr>
         </thead>
         <tbody>
-          {cartItems.map((product) => (
-            <CartRow key={product.$id} product={product} />
-          ))}
+          {cartItems &&
+            cartItems.map((product) => (
+              <CartRow key={product.$id} product={product} />
+            ))}
         </tbody>
       </table>
 
