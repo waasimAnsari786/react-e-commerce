@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { CartRow } from "../index";
+import { useSelector } from "react-redux";
 
 const AddToCart = () => {
+  const { cartItems } = useSelector((state) => state.cart);
+
   // Calculate total price
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  // const totalPrice = cartItems.reduce(
+  //   (total, item) => total + item.price * item.quantity,
+  //   0
+  // );
 
   return (
     <div className="p-6">
@@ -22,14 +25,9 @@ const AddToCart = () => {
           </tr>
         </thead>
         <tbody>
-          {/* {cartItems.map((product) => (
-            <CartItemRow
-              key={product.id}
-              product={product}
-              updateQuantity={updateQuantity}
-              removeItem={removeItem}
-            />
-          ))} */}
+          {cartItems.map((product) => (
+            <CartRow key={product.$id} product={product} />
+          ))}
         </tbody>
       </table>
 
@@ -40,19 +38,19 @@ const AddToCart = () => {
             <tr>
               <td className="border border-gray-300 p-2">Subtotal</td>
               <td className="border border-gray-300 p-2">
-                ${totalPrice.toFixed(2)}
+                {/* ${totalPrice.toFixed(2)} */}
               </td>
             </tr>
             <tr>
               <td className="border border-gray-300 p-2">Tax (10%)</td>
               <td className="border border-gray-300 p-2">
-                ${(totalPrice * 0.1).toFixed(2)}
+                {/* ${(totalPrice * 0.1).toFixed(2)} */}
               </td>
             </tr>
             <tr>
               <td className="border border-gray-300 p-2 font-bold">Total</td>
               <td className="border border-gray-300 p-2 font-bold">
-                ${(totalPrice * 1.1).toFixed(2)}
+                {/* ${(totalPrice * 1.1).toFixed(2)} */}
               </td>
             </tr>
           </tbody>

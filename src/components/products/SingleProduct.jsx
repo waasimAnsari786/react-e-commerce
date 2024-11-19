@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Container, MyTypoGraphy, Button, Input } from "../index";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { productFilter } from "../../features/productSlice";
+import { addToCartThunk } from "../../features/userAddToCartSlice";
 
 export default function SingleProduct() {
   const dispatch = useDispatch();
   const { slug } = useParams();
   const [value, setValue] = useState(1);
+  const [imgPreview, setImgPreview] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(productFilter(slug));
@@ -22,9 +25,17 @@ export default function SingleProduct() {
 
   const { filteredProduct } = useSelector((state) => state.product);
   const { preview_URL_Arr } = useSelector((state) => state.file);
+  const { userData } = useSelector((state) => state.auth);
 
   const { pName, pSlug, pImage, pPrice, pSalePrice, pStockStatus, pLongDes } =
     filteredProduct;
+
+  useEffect(() => {
+    const img = preview_URL_Arr.find(
+      (preview) => preview.fileId === pImage
+    )?.URL;
+    setImgPreview(img);
+  }, [preview_URL_Arr, pImage]);
 
   return (
     <Container childElemClass="grid grid-cols-2 w-2/3 gap-5 mt-20 border-[0.1rem] border-gray-300 rounded-xl p-2">
@@ -69,7 +80,11 @@ export default function SingleProduct() {
 
             <div>
               <Button onClick={() => setValue((prev) => prev + 1)}>+</Button>
-              <Input value={value} type="number" />
+              <Input
+                value={value}
+                type="number"
+                onChange={(e) => setValue(e.target.value)}
+              />
               <Button
                 onClick={() => setValue((prev) => (prev > 1 ? prev - 1 : 1))}
               >
@@ -78,16 +93,18 @@ export default function SingleProduct() {
             </div>
 
             <Button
-              onClick={() =>
-                dispatch(
+              onClick={() => {
+                const productAdded = dispatch(
                   addToCartThunk({
                     pName,
                     pPrice,
-                    pImage,
+                    pImage: imgPreview,
                     userId: userData.$id,
+                    pQty: value,
                   })
-                )
-              }
+                ).unwrap();
+                productAdded ? navigate("/cart") : null;
+              }}
             >
               Add to cart
             </Button>

@@ -1,44 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { Button, MyTypoGraphy } from "../index";
+import { CiEdit } from "react-icons/ci";
+import { useDispatch } from "react-redux";
+import { removeFromCartThunk } from "../../features/userAddToCartSlice";
 
-const CartRow = ({ product, updateQuantity, removeItem }) => {
-  const { image, name, price, quantity, id } = product;
+const CartRow = ({ product }) => {
+  const { pImage, pName, pPrice, pQty, $id } = product;
+  const dispatch = useDispatch();
+
+  const [value, setValue] = useState(1);
 
   return (
     <tr>
       <td>
         <img
-          src={image}
-          alt={name}
+          src={pImage}
+          alt={pName}
           className="w-16 h-16 object-cover rounded"
         />
       </td>
-      <td>{name}</td>
-      <td>${price.toFixed(2)}</td>
+      <td>{pName}</td>
+      <td>Rs : {pPrice}</td>
       <td>
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => updateQuantity(id, quantity - 1)}
-            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-          >
-            -
-          </button>
-          <span>{quantity}</span>
-          <button
-            onClick={() => updateQuantity(id, quantity + 1)}
-            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-          >
-            +
-          </button>
+          <Button>+</Button>
+          <MyTypoGraphy>{pQty}</MyTypoGraphy>
+          <Button>-</Button>
         </div>
       </td>
       <td>
-        <button
-          onClick={() => removeItem(id)}
-          className="text-red-500 hover:text-red-700"
-        >
-          <AiOutlineClose size={20} />
-        </button>
+        <Button onClick={() => dispatch(removeFromCartThunk($id))}>
+          <AiOutlineClose
+            size={20}
+            className="text-red-500 hover:text-red-700"
+          />
+        </Button>
+        <Button onClick={() => removeItem(id)}>
+          <CiEdit size={20} className="text-green-500 hover:text-green-700" />
+        </Button>
       </td>
     </tr>
   );

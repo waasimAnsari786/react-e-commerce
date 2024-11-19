@@ -10,6 +10,7 @@ import {
   AllProducts,
   Admin,
   AdminStats,
+  AddToCart,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -59,12 +60,11 @@ function App() {
             </AuthProtectedLayout>
           ),
         },
-
         {
-          path: "/edit-product/:slug",
+          path: "/cart",
           element: (
             <AuthProtectedLayout authentication>
-              {/* <EditPostPage /> */}
+              <AddToCart />
             </AuthProtectedLayout>
           ),
         },

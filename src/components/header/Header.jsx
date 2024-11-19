@@ -6,6 +6,7 @@ import auth from "../../appwrite/authService";
 import { login } from "../../features/authSlice";
 import { getProductsThunk } from "../../features/productSlice";
 import userRole from "../../appwrite/userRoleService";
+import { getCartItemsThunk } from "../../features/userAddToCartSlice";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.status);
@@ -27,8 +28,13 @@ export default function Header() {
     }
   };
 
+  const getCartItems = () => {
+    dispatch(getCartItemsThunk());
+  };
+
   useEffect(() => {
     getUser();
+    getCartItems();
   }, [authStatus]);
 
   const navItems = [
@@ -37,6 +43,7 @@ export default function Header() {
     { name: "Signup", slug: "/signup", active: !authStatus, id: useId() },
 
     { name: "Shop", slug: "/shop", active: authStatus, id: useId() },
+    { name: "Cart", slug: "/cart", active: authStatus, id: useId() },
   ];
 
   return (

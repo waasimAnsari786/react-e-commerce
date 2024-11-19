@@ -41,9 +41,12 @@ export const getCartItemsThunk = createAsyncThunk(
 // Thunk to remove an item from the cart
 export const removeFromCartThunk = createAsyncThunk(
   "cart/removeFromCart",
-  async (itemId, { rejectWithValue }) => {
+  async (itemId, { rejectWithValue, dispatch }) => {
     try {
-      const removedItem = await addToCartService.removeFromCart(itemId);
+      const removedItem = await addToCartService.deleteAddToCart(itemId);
+      if (removedItem) {
+        dispatch(getCartItemsThunk());
+      }
       return removedItem;
     } catch (error) {
       return rejectWithValue(error.message);

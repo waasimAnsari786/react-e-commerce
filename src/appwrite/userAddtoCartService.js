@@ -53,7 +53,8 @@ class AddToCArts {
         envImport.userAddToCartsID,
         docID
       );
-      return deletedAddToCart;
+      toast.success("Product has deleted form cart!");
+      return true;
     } catch (error) {
       toast.error("Error deleting add to cart: " + error.message, {
         position: "top-right",
