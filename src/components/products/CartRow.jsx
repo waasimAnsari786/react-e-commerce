@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { Button, MyTypoGraphy } from "../index";
 import { CiEdit } from "react-icons/ci";
@@ -7,10 +7,10 @@ import {
   removeFromCartThunk,
   updateCartItemThunk,
 } from "../../features/userAddToCartSlice";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const CartRow = ({ product }) => {
-  const { pImage, pName, pPrice, pQty, $id, pSlug } = product;
+  let { pImage, pName, pPrice, pQty, $id, pSlug } = product;
   const dispatch = useDispatch();
 
   const [value, setValue] = useState(pQty);
@@ -27,13 +27,13 @@ const CartRow = ({ product }) => {
   return (
     <tr className="border border-gray-300 p-2 ">
       <td>
-        <NavLink to={`/product/${pSlug}`}>
+        <Link to={`/product/${pSlug}`}>
           <img
             src={pImage}
             alt={pName}
             className="w-16 h-16 object-cover rounded"
           />
-        </NavLink>
+        </Link>
       </td>
       <td>{pName}</td>
       <td>Rs : {pPrice}</td>
@@ -46,7 +46,7 @@ const CartRow = ({ product }) => {
           >
             +
           </Button>
-          <MyTypoGraphy>{value !== pQty ? value : pQty}</MyTypoGraphy>
+          <MyTypoGraphy>{value}</MyTypoGraphy>
           <Button
             onClick={() => {
               setValue((prev) => (prev > 1 ? prev - 1 : prev));

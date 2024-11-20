@@ -31,9 +31,17 @@ export default function HomePage() {
   } else {
     return (
       <div className="text-center">
-        <p>Login to view products!</p>
         <p>
-          Don't have an account? <Link to="/login">Signup</Link>
+          Login to view products!{" "}
+          <Link className="underline" to="/login">
+            Login
+          </Link>
+        </p>
+        <p>
+          Don't have an account?{" "}
+          <Link className="underline" to="/signup">
+            Signup
+          </Link>
         </p>
       </div>
     );

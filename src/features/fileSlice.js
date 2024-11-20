@@ -10,13 +10,13 @@ const initialState = {
 
 const fileUploadThunk = createAsyncThunk(
   "file/fileUpload",
-  async (file, { rejectWithValue, dispatch }) => {
+  async (file, { rejectWithValue }) => {
     try {
       const uploadedFile = await fileService.uploadFile(file);
       if (uploadedFile) {
-        const previewArr = await dispatch(getAllImagesThunk()).unwrap();
-        return [previewArr, uploadedFile];
+        await dispatch(getAllImagesThunk());
       }
+      return uploadedFile;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -67,22 +67,9 @@ const fileSlice = createSlice({
       })
       .addCase(fileUploadThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.fileObj = action.payload[1];
-        state.preview_URL_Arr = action.payload[0];
+        state.fileObj = action.payload;
       })
       .addCase(fileUploadThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(deleteUploadThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(deleteUploadThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.preview_URL = action.payload;
-      })
-      .addCase(deleteUploadThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

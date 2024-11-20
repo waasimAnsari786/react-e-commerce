@@ -68,7 +68,7 @@ export default function SingleProduct() {
       {filteredProduct && (
         <>
           <div>
-            {preview_URL_Arr.some((preview) => preview.fileId === pImage) && (
+            {/* {preview_URL_Arr.some((preview) => preview.fileId === pImage) && (
               <img
                 src={
                   preview_URL_Arr.find((preview) => preview.fileId === pImage)
@@ -77,7 +77,13 @@ export default function SingleProduct() {
                 alt={`${pName}'s image`}
                 className="w-full h-96 rounded-xl"
               />
-            )}
+            )} */}
+
+            <img
+              src={imgPreview}
+              alt={`${pName}'s image`}
+              className="w-full h-96 rounded-xl"
+            />
           </div>
           <div className="relative">
             <MyTypoGraphy myClass="text-2xl font-bold capitalize">

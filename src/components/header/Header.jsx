@@ -7,6 +7,7 @@ import { login } from "../../features/authSlice";
 import { getProductsThunk } from "../../features/productSlice";
 import userRole from "../../appwrite/userRoleService";
 import { getCartItemsThunk } from "../../features/userAddToCartSlice";
+import { getAllImagesThunk } from "../../features/fileSlice";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.status);
@@ -28,13 +29,14 @@ export default function Header() {
     }
   };
 
-  const getCartItems = () => {
+  const getData = () => {
     dispatch(getCartItemsThunk());
+    dispatch(getAllImagesThunk());
   };
 
   useEffect(() => {
     getUser();
-    getCartItems();
+    getData();
   }, [authStatus]);
 
   const navItems = [

@@ -75,11 +75,11 @@ export default function ProductForm({ product }) {
 
     if (product) {
       if (typeof data.pImage === "object") {
-        const fileArr = await dispatch(
+        const fileObj = await dispatch(
           fileUploadThunk(data.pImage[0])
         ).unwrap();
-        if (fileArr) {
-          data.pImage = fileArr[1].$id;
+        if (fileObj) {
+          data.pImage = fileObj.$id;
           dispatch(deleteUploadThunk(product.pImage));
         }
       }
@@ -91,20 +91,15 @@ export default function ProductForm({ product }) {
         navigate(`/product/${updatedProduct[0].pSlug}`);
       }
     } else {
-      const fileArr = await dispatch(fileUploadThunk(data.pImage[0])).unwrap();
-      if (fileArr) {
-        data.pImage = fileArr[1].$id;
+      const fileObj = await dispatch(fileUploadThunk(data.pImage[0])).unwrap();
+      if (fileObj) {
+        data.pImage = fileObj.$id;
         const createdProduct = await dispatch(
           createProductThunk({ ...data, userId: userData.$id })
         ).unwrap();
         if (createdProduct) {
           toast.success("Product added successfully!");
-          navigate(
-            `/product/${
-              createdProduct.pSlug
-              // createdProduct.documents[createdProduct.documents.length - 1].slug
-            }`
-          );
+          navigate(`/product/${createdProduct.pSlug}`);
         }
       }
     }

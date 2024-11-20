@@ -126,7 +126,7 @@ const cartSlice = createSlice({
         const index = cartItems.findIndex(
           (item) => item.$id === action.payload.$id
         );
-        cartItems.splice(index, 1, action.payload);
+        cartItems = cartItems.splice(index, 1, action.payload);
       })
       .addCase(updateCartItemThunk.rejected, (state, action) => {
         state.loading = false;
