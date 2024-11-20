@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 const initialState = {
   cartItems: [],
+  userCartItems: [],
   loading: true,
   error: null,
 };
@@ -11,13 +12,13 @@ const initialState = {
 // Thunk to add an item to the cart
 export const addToCartThunk = createAsyncThunk(
   "cart/addToCart",
-  async (itemData, { rejectWithValue, dispatch }) => {
+  async (itemData, { rejectWithValue }) => {
     try {
       const addedItem = await addToCartService.createAddtoCart(itemData);
       if (addedItem) {
         toast.success("Product added to cart successfully!");
-        await dispatch(getCartItemsThunk());
       }
+      return addedItem;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -43,9 +44,9 @@ export const removeFromCartThunk = createAsyncThunk(
   async (itemId, { rejectWithValue, dispatch }) => {
     try {
       const removedItem = await addToCartService.deleteAddToCart(itemId);
-      if (removedItem) {
-        dispatch(getCartItemsThunk());
-      }
+      // if (removedItem) {
+      //   dispatch(getCartItemsThunk());
+      // }
       return true;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -74,11 +75,8 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     // Reducer for filtering cart items (optional, if needed)
-    filterCartItem: (state, action) => {
-      const filteredItem = state.cartItems.find(
-        (item) => item.itemId === action.payload
-      );
-      return { ...state, filteredItem };
+    updateUserCartItemsArr: (state, action) => {
+      state.userCartItems = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -90,7 +88,7 @@ const cartSlice = createSlice({
       })
       .addCase(addToCartThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.documents;
+        state.cartItems.unshift(action.payload);
       })
       .addCase(addToCartThunk.rejected, (state, action) => {
         state.loading = false;
@@ -134,7 +132,6 @@ const cartSlice = createSlice({
       })
       .addCase(updateCartItemThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.documents;
       })
       .addCase(updateCartItemThunk.rejected, (state, action) => {
         state.loading = false;
@@ -144,4 +141,4 @@ const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer;
-export const { filterCartItem } = cartSlice.actions;
+export const { updateUserCartItemsArr } = cartSlice.actions;

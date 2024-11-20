@@ -1,13 +1,19 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { CartRow } from "../index";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserCartItemsArr } from "../../features/userAddToCartSlice";
 
 const AddToCart = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const { userData } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const filteredCartItems = useMemo(() => {
     return cartItems.filter((cart) => cart.userId === userData.$id);
+  }, [cartItems]);
+
+  useEffect(() => {
+    dispatch(updateUserCartItemsArr(filteredCartItems));
   }, [cartItems]);
 
   const calculateTotalPrice = useMemo(() => {

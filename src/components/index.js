@@ -15,7 +15,7 @@ import Loader from "./reuseableComponents/Loader";
 import HomePage from "./pages/HomePage";
 import LogoutBtn from "./header/LogoutBtn";
 import ProductForm from "./products/ProductForm";
-import AddProduct from "./pages/AddProduct";
+import AddProduct from "./pages/admin pages/AddProduct";
 import TextArea from "./reuseableComponents/TextArea";
 import ProductCard from "./products/ProductCard";
 import SingleProduct from "./products/SingleProduct";
@@ -25,6 +25,7 @@ import AdminStats from "./admin/AdminStats";
 import AdminStatsCard from "./admin/AdminStatsCard";
 import AddToCart from "./products/AddToCart";
 import CartRow from "./products/CartRow";
+import CartPage from "./pages/CartPage";
 
 export {
   Button,
@@ -54,4 +55,5 @@ export {
   AdminStatsCard,
   AddToCart,
   CartRow,
+  CartPage,
 };

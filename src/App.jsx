@@ -10,7 +10,7 @@ import {
   AllProducts,
   Admin,
   AdminStats,
-  AddToCart,
+  CartPage,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -64,7 +64,7 @@ function App() {
           path: "/cart",
           element: (
             <AuthProtectedLayout authentication>
-              <AddToCart />
+              <CartPage />
             </AuthProtectedLayout>
           ),
         },

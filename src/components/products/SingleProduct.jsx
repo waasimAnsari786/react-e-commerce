@@ -3,7 +3,10 @@ import { Container, MyTypoGraphy, Button, Input } from "../index";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { productFilter } from "../../features/productSlice";
-import { addToCartThunk } from "../../features/userAddToCartSlice";
+import {
+  addToCartThunk,
+  updateCartItemThunk,
+} from "../../features/userAddToCartSlice";
 
 export default function SingleProduct() {
   const dispatch = useDispatch();
@@ -26,6 +29,7 @@ export default function SingleProduct() {
   const { filteredProduct } = useSelector((state) => state.product);
   const { preview_URL_Arr } = useSelector((state) => state.file);
   const { userData } = useSelector((state) => state.auth);
+  const { userCartItems } = useSelector((state) => state.cart);
 
   const { pName, pSlug, pImage, pPrice, pSalePrice, pStockStatus, pLongDes } =
     filteredProduct;
@@ -36,6 +40,27 @@ export default function SingleProduct() {
     )?.URL;
     setImgPreview(img);
   }, [preview_URL_Arr, pImage]);
+
+  const addToCart = () => {
+    const newObj = {
+      pName,
+      pPrice,
+      pImage: imgPreview,
+      userId: userData.$id,
+      pQty: value,
+    };
+
+    const isProduct = userCartItems.find((product) => product.pName === pName);
+    if (isProduct) {
+      const productUpdated = dispatch(
+        updateCartItemThunk({ $id: isProduct.$id, ...newObj })
+      ).unwrap();
+      productUpdated ? navigate("/cart") : null;
+    }
+
+    const productAdded = dispatch(addToCartThunk(newObj)).unwrap();
+    productAdded ? navigate("/cart") : null;
+  };
 
   return (
     <Container childElemClass="grid grid-cols-2 w-2/3 gap-5 mt-20 border-[0.1rem] border-gray-300 rounded-xl p-2">
@@ -79,35 +104,24 @@ export default function SingleProduct() {
             )}
 
             <div>
-              <Button onClick={() => setValue((prev) => prev + 1)}>+</Button>
-              <Input
-                value={value}
-                type="number"
-                onChange={(e) => setValue(e.target.value)}
-              />
               <Button
-                onClick={() => setValue((prev) => (prev > 1 ? prev - 1 : 1))}
+                onClick={() => {
+                  setValue((prev) => (prev < 5 ? prev + 1 : prev));
+                }}
+              >
+                +
+              </Button>
+              <MyTypoGraphy>{value}</MyTypoGraphy>
+              <Button
+                onClick={() => {
+                  setValue((prev) => (prev > 1 ? prev - 1 : prev));
+                }}
               >
                 -
               </Button>
             </div>
 
-            <Button
-              onClick={() => {
-                const productAdded = dispatch(
-                  addToCartThunk({
-                    pName,
-                    pPrice,
-                    pImage: imgPreview,
-                    userId: userData.$id,
-                    pQty: value,
-                  })
-                ).unwrap();
-                productAdded ? navigate("/cart") : null;
-              }}
-            >
-              Add to cart
-            </Button>
+            <Button onClick={addToCart}>Add to cart</Button>
           </div>
         </>
       )}
