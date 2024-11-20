@@ -48,6 +48,7 @@ export default function SingleProduct() {
       pImage: imgPreview,
       userId: userData.$id,
       pQty: value,
+      pSlug,
     };
 
     const isProduct = userCartItems.find((product) => product.pName === pName);
@@ -56,10 +57,10 @@ export default function SingleProduct() {
         updateCartItemThunk({ $id: isProduct.$id, ...newObj })
       ).unwrap();
       productUpdated ? navigate("/cart") : null;
+    } else {
+      const productAdded = dispatch(addToCartThunk(newObj)).unwrap();
+      productAdded ? navigate("/cart") : null;
     }
-
-    const productAdded = dispatch(addToCartThunk(newObj)).unwrap();
-    productAdded ? navigate("/cart") : null;
   };
 
   return (

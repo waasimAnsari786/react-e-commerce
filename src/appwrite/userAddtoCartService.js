@@ -20,6 +20,9 @@ class AddToCArts {
         ID.unique(),
         { ...product }
       );
+      if (addedProduct) {
+        toast.success("Product has added to cart!");
+      }
       return addedProduct;
     } catch (error) {
       toast.error("Error add to cart: " + error.message, {
@@ -37,6 +40,11 @@ class AddToCArts {
         product.$id,
         { ...product }
       );
+
+      if (updatedAddtoCart) {
+        toast.success("Product has updated in cart!");
+      }
+
       return updatedAddtoCart;
     } catch (error) {
       toast.error("Error updating add to cart: " + error.message, {

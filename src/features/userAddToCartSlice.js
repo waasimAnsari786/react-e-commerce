@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import addToCartService from "../appwrite/userAddtoCartService";
-import { toast } from "react-toastify";
 
 const initialState = {
   cartItems: [],
@@ -15,9 +14,6 @@ export const addToCartThunk = createAsyncThunk(
   async (itemData, { rejectWithValue }) => {
     try {
       const addedItem = await addToCartService.createAddtoCart(itemData);
-      if (addedItem) {
-        toast.success("Product added to cart successfully!");
-      }
       return addedItem;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -41,13 +37,10 @@ export const getCartItemsThunk = createAsyncThunk(
 // Thunk to remove an item from the cart
 export const removeFromCartThunk = createAsyncThunk(
   "cart/removeFromCart",
-  async (itemId, { rejectWithValue, dispatch }) => {
+  async (itemId, { rejectWithValue }) => {
     try {
       const removedItem = await addToCartService.deleteAddToCart(itemId);
-      // if (removedItem) {
-      //   dispatch(getCartItemsThunk());
-      // }
-      return true;
+      return itemId;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -57,13 +50,10 @@ export const removeFromCartThunk = createAsyncThunk(
 // Thunk to update a cart item (e.g., quantity)
 export const updateCartItemThunk = createAsyncThunk(
   "cart/updateCartItem",
-  async (itemData, { rejectWithValue, dispatch }) => {
+  async (itemData, { rejectWithValue }) => {
     try {
       const updatedItem = await addToCartService.updateAddToCart(itemData);
-      if (updatedItem) {
-        toast.success("Product has updated!");
-        await dispatch(getCartItemsThunk());
-      }
+      return updatedItem;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -117,7 +107,7 @@ const cartSlice = createSlice({
       .addCase(removeFromCartThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.cartItems = state.cartItems.filter(
-          (item) => item.itemId !== action.payload
+          (item) => item.$id !== action.payload
         );
       })
       .addCase(removeFromCartThunk.rejected, (state, action) => {
@@ -131,7 +121,12 @@ const cartSlice = createSlice({
         state.error = null;
       })
       .addCase(updateCartItemThunk.fulfilled, (state, action) => {
+        let { cartItems } = state;
         state.loading = false;
+        const index = cartItems.findIndex(
+          (item) => item.$id === action.payload.$id
+        );
+        cartItems.splice(index, 1, action.payload);
       })
       .addCase(updateCartItemThunk.rejected, (state, action) => {
         state.loading = false;

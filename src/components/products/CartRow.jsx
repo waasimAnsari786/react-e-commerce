@@ -7,9 +7,10 @@ import {
   removeFromCartThunk,
   updateCartItemThunk,
 } from "../../features/userAddToCartSlice";
+import { NavLink } from "react-router-dom";
 
 const CartRow = ({ product }) => {
-  const { pImage, pName, pPrice, pQty, $id } = product;
+  const { pImage, pName, pPrice, pQty, $id, pSlug } = product;
   const dispatch = useDispatch();
 
   const [value, setValue] = useState(pQty);
@@ -26,11 +27,13 @@ const CartRow = ({ product }) => {
   return (
     <tr className="border border-gray-300 p-2 ">
       <td>
-        <img
-          src={pImage}
-          alt={pName}
-          className="w-16 h-16 object-cover rounded"
-        />
+        <NavLink to={`/product/${pSlug}`}>
+          <img
+            src={pImage}
+            alt={pName}
+            className="w-16 h-16 object-cover rounded"
+          />
+        </NavLink>
       </td>
       <td>{pName}</td>
       <td>Rs : {pPrice}</td>

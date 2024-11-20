@@ -10,18 +10,10 @@ const initialState = {
 
 export const createProductThunk = createAsyncThunk(
   "product/createProduct",
-  async (productData, { rejectWithValue, dispatch }) => {
+  async (productData, { rejectWithValue }) => {
     try {
       const createdProduct = await productService.createProduct(productData);
-      if (createdProduct) {
-        const fetchedProducts = await dispatch(getProductsThunk()).unwrap();
-        return createdProduct;
-        // if (fetchedProducts) {
-        //   return [createdProduct, fetchedProducts];
-        // }
-        // const fetchedProducts = await productService.getProducts();
-        // return fetchedProducts;
-      }
+      return createdProduct;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -45,7 +37,7 @@ export const deleteProductThunk = createAsyncThunk(
   async (docID, { rejectWithValue }) => {
     try {
       const deletedProduct = await productService.deleteProduct(docID);
-      return deletedProduct;
+      return docID;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -57,12 +49,7 @@ export const updateProductThunk = createAsyncThunk(
   async (productData, { rejectWithValue }) => {
     try {
       const updatedProduct = await productService.updateProduct(productData);
-      if (updatedProduct) {
-        const fetchedProducts = await productService.getProducts();
-        if (fetchedProducts) {
-          return [updatedProduct, fetchedProducts];
-        }
-      }
+      return updatedProduct;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -88,7 +75,7 @@ const productSlice = createSlice({
       })
       .addCase(createProductThunk.fulfilled, (state, action) => {
         state.loading = false;
-        // state.productsArr = action.payload.documents;
+        state.productsArr.unshift(action.payload);
       })
       .addCase(createProductThunk.rejected, (state, action) => {
         state.loading = false;
@@ -110,8 +97,12 @@ const productSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteProductThunk.fulfilled, (state) => {
+      .addCase(deleteProductThunk.fulfilled, (state, action) => {
+        let { productsArr } = state;
         state.loading = false;
+        productsArr = productsArr.filter(
+          (product) => product.$id !== action.payload
+        );
       })
       .addCase(deleteProductThunk.rejected, (state, action) => {
         state.loading = false;
@@ -122,8 +113,12 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(updateProductThunk.fulfilled, (state, action) => {
+        let { productsArr } = state;
         state.loading = false;
-        // state.productsArr = action.payload[1].documents;
+        const index = productsArr.findIndex(
+          (item) => item.$id === action.payload.$id
+        );
+        productsArr.splice(index, 1, action.payload);
       })
       .addCase(updateProductThunk.rejected, (state, action) => {
         state.loading = false;

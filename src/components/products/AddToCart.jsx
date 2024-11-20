@@ -17,9 +17,12 @@ const AddToCart = () => {
   }, [cartItems]);
 
   const calculateTotalPrice = useMemo(() => {
-    return filteredCartItems
-      .map((obj) => obj.pPrice * obj.pQty)
-      .reduce((currVal, accum) => currVal + accum);
+    return (
+      filteredCartItems.length > 0 &&
+      filteredCartItems
+        .map((obj) => obj.pPrice * obj.pQty)
+        .reduce((currVal, accum) => currVal + accum)
+    );
   }, [filteredCartItems]);
 
   return (
@@ -38,7 +41,7 @@ const AddToCart = () => {
         <tbody>
           {filteredCartItems &&
             filteredCartItems.map((product) => (
-              <CartRow key={product.$id} product={product} />
+              <CartRow product={product} key={product.$id} />
             ))}
         </tbody>
       </table>
@@ -50,19 +53,21 @@ const AddToCart = () => {
             <tr>
               <td className="border border-gray-300 p-2">Subtotal</td>
               <td className="border border-gray-300 p-2">
-                Rs: {calculateTotalPrice.toFixed(2)}
+                Rs: {calculateTotalPrice && calculateTotalPrice.toFixed(2)}
               </td>
             </tr>
             <tr>
               <td className="border border-gray-300 p-2">Tax (10%)</td>
               <td className="border border-gray-300 p-2">
-                Rs: {(calculateTotalPrice * 0.1).toFixed(2)}
+                Rs:{" "}
+                {calculateTotalPrice && (calculateTotalPrice * 0.1).toFixed(2)}
               </td>
             </tr>
             <tr>
               <td className="border border-gray-300 p-2 font-bold">Total</td>
               <td className="border border-gray-300 p-2 font-bold">
-                Rs: {(calculateTotalPrice * 1.1).toFixed(2)}
+                Rs:{" "}
+                {calculateTotalPrice && (calculateTotalPrice * 1.1).toFixed(2)}
               </td>
             </tr>
           </tbody>
