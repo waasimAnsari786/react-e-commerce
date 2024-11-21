@@ -1,7 +1,7 @@
 import React, { useEffect, useId } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { LogoutBtn } from "../index";
+import { LogoutBtn, CartIcon } from "../index";
 import auth from "../../appwrite/authService";
 import { login } from "../../features/authSlice";
 import { getProductsThunk } from "../../features/productSlice";
@@ -30,7 +30,7 @@ export default function Header() {
   };
 
   const getData = () => {
-    dispatch(getCartItemsThunk());
+    userData && dispatch(getCartItemsThunk(userData.$id));
     dispatch(getAllImagesThunk());
   };
 
@@ -43,9 +43,7 @@ export default function Header() {
     { name: "Home", slug: "/", active: true, id: useId() },
     { name: "Login", slug: "/login", active: !authStatus, id: useId() },
     { name: "Signup", slug: "/signup", active: !authStatus, id: useId() },
-
     { name: "Shop", slug: "/shop", active: authStatus, id: useId() },
-    { name: "Cart", slug: "/cart", active: authStatus, id: useId() },
   ];
 
   return (
@@ -85,7 +83,12 @@ export default function Header() {
                   </li>
                 ) : null
               )}
-              {authStatus && <LogoutBtn />}
+              {authStatus && (
+                <>
+                  <CartIcon />
+                  <LogoutBtn />
+                </>
+              )}
             </ul>
           </div>
         </div>
@@ -104,7 +107,12 @@ export default function Header() {
               </li>
             ) : null
           )}
-          {authStatus && <LogoutBtn />}
+          {authStatus && (
+            <>
+              <CartIcon />
+              <LogoutBtn />
+            </>
+          )}
         </ul>
       </div>
     </div>

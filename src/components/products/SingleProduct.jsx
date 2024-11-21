@@ -29,7 +29,7 @@ export default function SingleProduct() {
   const { filteredProduct } = useSelector((state) => state.product);
   const { preview_URL_Arr } = useSelector((state) => state.file);
   const { userData } = useSelector((state) => state.auth);
-  const { userCartItems } = useSelector((state) => state.cart);
+  const { cartItems } = useSelector((state) => state.cart);
 
   const { pName, pSlug, pImage, pPrice, pSalePrice, pStockStatus, pLongDes } =
     filteredProduct;
@@ -49,9 +49,10 @@ export default function SingleProduct() {
       userId: userData.$id,
       pQty: value,
       pSlug,
+      pSalePrice,
     };
 
-    const isProduct = userCartItems.find((product) => product.pName === pName);
+    const isProduct = cartItems.find((product) => product.pName === pName);
     if (isProduct) {
       const productUpdated = dispatch(
         updateCartItemThunk({ $id: isProduct.$id, ...newObj })

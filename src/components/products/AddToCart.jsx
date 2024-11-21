@@ -1,29 +1,20 @@
 import React, { useEffect, useMemo } from "react";
 import { CartRow } from "../index";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserCartItemsArr } from "../../features/userAddToCartSlice";
 
 const AddToCart = () => {
   const { cartItems } = useSelector((state) => state.cart);
-  const { userData } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-
-  const filteredCartItems = useMemo(() => {
-    return cartItems.filter((cart) => cart.userId === userData.$id);
-  }, [cartItems]);
-
-  useEffect(() => {
-    dispatch(updateUserCartItemsArr(filteredCartItems));
-  }, [cartItems]);
 
   const calculateTotalPrice = useMemo(() => {
     return (
-      filteredCartItems.length > 0 &&
-      filteredCartItems
-        .map((obj) => obj.pPrice * obj.pQty)
+      cartItems.length > 0 &&
+      cartItems
+        .map((obj) =>
+          obj.pSalePrice ? obj.pSalePrice * obj.pQty : obj.pPrice * obj.pQty
+        )
         .reduce((currVal, accum) => currVal + accum)
     );
-  }, [filteredCartItems]);
+  }, [cartItems]);
 
   return (
     <div className="p-6">
@@ -39,10 +30,9 @@ const AddToCart = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredCartItems &&
-            filteredCartItems.map((product) => (
-              <CartRow product={product} key={product.$id} />
-            ))}
+          {cartItems.map((product) => (
+            <CartRow product={product} key={product.$id} />
+          ))}
         </tbody>
       </table>
 

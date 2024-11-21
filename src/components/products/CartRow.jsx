@@ -10,19 +10,14 @@ import {
 import { Link } from "react-router-dom";
 
 const CartRow = ({ product }) => {
-  let { pImage, pName, pPrice, pQty, $id, pSlug } = product;
+  let { pImage, pName, pPrice, pQty, $id, pSlug, pSalePrice } = product;
   const dispatch = useDispatch();
 
   const [value, setValue] = useState(pQty);
 
-  const updateCart = (product) => {
-    let { pQty, $id, pName, pPrice, pImage } = product;
-    if (value !== pQty) {
-      dispatch(
-        updateCartItemThunk({ pQty: value, pName, pPrice, pImage, $id })
-      );
-    }
-  };
+  useEffect(() => {
+    setValue(pQty);
+  }, [pQty]);
 
   return (
     <tr className="border border-gray-300 p-2 ">
@@ -36,7 +31,16 @@ const CartRow = ({ product }) => {
         </Link>
       </td>
       <td>{pName}</td>
-      <td>Rs : {pPrice}</td>
+      <td>
+        {pSalePrice ? (
+          <div className=" flex space-x-4">
+            <MyTypoGraphy myClass="line-through">Rs: {pPrice}</MyTypoGraphy>
+            <MyTypoGraphy>Rs: {pSalePrice}</MyTypoGraphy>
+          </div>
+        ) : (
+          <MyTypoGraphy>Rs: {pPrice}</MyTypoGraphy>
+        )}
+      </td>
       <td>
         <div className="flex items-center gap-2">
           <Button
@@ -57,13 +61,26 @@ const CartRow = ({ product }) => {
         </div>
       </td>
       <td>
-        <Button onClick={() => dispatch(removeFromCartThunk($id))}>
+        <Button onClick={() => dispatch(removeFromCartThunk(product))}>
           <AiOutlineClose
             size={20}
             className="text-red-500 hover:text-red-700"
           />
         </Button>
-        <Button onClick={() => updateCart(product)}>
+        <Button
+          onClick={() =>
+            dispatch(
+              updateCartItemThunk({
+                pQty: value,
+                pName,
+                pPrice,
+                pImage,
+                $id,
+                userId: product.userId,
+              })
+            )
+          }
+        >
           <CiEdit size={20} className="text-green-500 hover:text-green-700" />
         </Button>
       </td>

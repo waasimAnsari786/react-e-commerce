@@ -71,11 +71,12 @@ class AddToCArts {
     }
   }
 
-  async getAddToCarts() {
+  async getAddToCarts(userId = "") {
     try {
       const fetchedAddToCarts = await this.database.listDocuments(
         envImport.databaseID,
-        envImport.userAddToCartsID
+        envImport.userAddToCartsID,
+        [Query.equal("userId", [userId])]
       );
       return fetchedAddToCarts;
     } catch (error) {

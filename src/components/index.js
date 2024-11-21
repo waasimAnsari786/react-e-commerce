@@ -26,6 +26,7 @@ import AdminStatsCard from "./admin/AdminStatsCard";
 import AddToCart from "./products/AddToCart";
 import CartRow from "./products/CartRow";
 import CartPage from "./pages/CartPage";
+import CartIcon from "./products/CartIcon";
 
 export {
   Button,
@@ -56,4 +57,5 @@ export {
   AddToCart,
   CartRow,
   CartPage,
+  CartIcon,
 };
