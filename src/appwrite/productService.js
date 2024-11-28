@@ -62,14 +62,12 @@ class Product {
     }
   }
 
-  async getProducts(
-    queries = [Query.notEqual("pStockStatus", ["Out of stock"])]
-  ) {
+  async getProducts(queryKey = "pStockStatus", queryVal = "In stock") {
     try {
       const fetchedProducts = await this.database.listDocuments(
         envImport.databaseID,
         envImport.collectionID,
-        queries
+        [Query.equal(queryKey, queryVal)]
       );
       return fetchedProducts;
     } catch (error) {

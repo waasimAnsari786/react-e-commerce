@@ -25,10 +25,11 @@ export default function LoginForm() {
       const getUser = await auth.getCurrentUser();
       if (getUser) {
         toast.success("Login Successfully!");
-        dispatch(login(userAccount));
         const getedUserRole = await userRole.getUserRole(data.email);
+        getUser.userRole = getedUserRole.documents[0].role;
+        dispatch(login(getUser));
         if (getedUserRole && getedUserRole.documents[0].role === "Admin") {
-          navigate("/admin/stats");
+          navigate("/admin/dashboard");
         } else if (
           getedUserRole &&
           getedUserRole.documents[0].role === "Buyer"

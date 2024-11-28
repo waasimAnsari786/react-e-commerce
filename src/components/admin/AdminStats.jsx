@@ -10,7 +10,7 @@ export default function AdminStats() {
 
   const filteredProducts = useMemo(() => {
     return productsArr.filter((product) => product.userId === userData.$id);
-  }, []);
+  }, [productsArr]);
 
   useEffect(() => {
     setGetedProducts(filteredProducts);

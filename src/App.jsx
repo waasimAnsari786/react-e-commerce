@@ -68,31 +68,31 @@ function App() {
             </AuthProtectedLayout>
           ),
         },
-      ],
-    },
-    {
-      path: "/admin",
-      element: (
-        <AuthProtectedLayout authentication>
-          <Admin />
-        </AuthProtectedLayout>
-      ),
-      children: [
         {
-          path: "stats",
+          path: "/admin",
           element: (
             <AuthProtectedLayout authentication>
-              <AdminStats />
+              <Admin />
             </AuthProtectedLayout>
           ),
-        },
-        {
-          path: "add-product",
-          element: (
-            <AuthProtectedLayout authentication>
-              <AddProduct />
-            </AuthProtectedLayout>
-          ),
+          children: [
+            {
+              path: "dashboard",
+              element: (
+                <AuthProtectedLayout authentication>
+                  <AdminStats />
+                </AuthProtectedLayout>
+              ),
+            },
+            {
+              path: "add-product",
+              element: (
+                <AuthProtectedLayout authentication>
+                  <AddProduct />
+                </AuthProtectedLayout>
+              ),
+            },
+          ],
         },
       ],
     },

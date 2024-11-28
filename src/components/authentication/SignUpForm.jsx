@@ -23,17 +23,18 @@ export default function SignUpForm() {
     if (userAccount) {
       const getUser = auth.getCurrentUser();
       if (getUser) {
-        dispatch(login(userAccount));
         const createdUserRole = await userRole.createUserRole({
           role: data.role,
           email: data.email,
         });
+        getUser.userRole = data.role;
+        dispatch(login(getUser));
         if (createdUserRole && data.role === "Admin") {
+          navigate("/admin/dashboard");
           toast.success("Signup Successfully");
-          navigate("/admin/stats");
         } else if (createdUserRole && data.role === "Buyer") {
-          toast.success("Signup Successfully");
           navigate("/");
+          toast.success("Signup Successfully");
         }
       }
     }

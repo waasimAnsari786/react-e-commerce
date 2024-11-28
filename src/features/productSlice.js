@@ -22,9 +22,12 @@ export const createProductThunk = createAsyncThunk(
 
 export const getProductsThunk = createAsyncThunk(
   "product/getProducts",
-  async (_, { rejectWithValue }) => {
+  async (queryData, { rejectWithValue }) => {
     try {
-      const fetchedProducts = await productService.getProducts();
+      const fetchedProducts = await productService.getProducts(
+        queryData && queryData.queryKey,
+        queryData && queryData.queryVal
+      );
       return fetchedProducts;
     } catch (error) {
       return rejectWithValue(error.message);
