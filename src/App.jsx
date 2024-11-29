@@ -11,6 +11,9 @@ import {
   Admin,
   AdminStats,
   CartPage,
+  AddCatogory,
+  AllCategoriesPage,
+  EditCategoryPage,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -89,6 +92,30 @@ function App() {
               element: (
                 <AuthProtectedLayout authentication>
                   <AddProduct />
+                </AuthProtectedLayout>
+              ),
+            },
+            {
+              path: "add-category",
+              element: (
+                <AuthProtectedLayout authentication>
+                  <AddCatogory />
+                </AuthProtectedLayout>
+              ),
+            },
+            {
+              path: "all-categories",
+              element: (
+                <AuthProtectedLayout authentication>
+                  <AllCategoriesPage />
+                </AuthProtectedLayout>
+              ),
+            },
+            {
+              path: "edit-category/:slug",
+              element: (
+                <AuthProtectedLayout authentication>
+                  <EditCategoryPage />
                 </AuthProtectedLayout>
               ),
             },

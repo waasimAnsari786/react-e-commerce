@@ -1,16 +1,28 @@
 import React, { forwardRef, useEffect, useId } from "react";
 import { toast } from "react-toastify";
 
-const Select = ({ options = [], label, props, error }, ref) => {
+const Select = forwardRef(({ options = [], label, error, ...props }, ref) => {
   const id = useId();
+
   useEffect(() => {
-    error && toast.error(error);
+    if (error) {
+      toast.error(error);
+    }
   }, [error]);
+
   return (
     <div className="w-full">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id} className="block mb-1 font-medium">
+        {label}
+      </label>
       <div className="flex justify-between">
-        <select id={id} ref={ref} {...props}>
+        <select
+          id={id}
+          ref={ref}
+          {...props}
+          className="border rounded px-2 py-1 w-full"
+        >
+          <option value="">Select an option</option>
           {options.map((option) => (
             <option key={option} value={option}>
               {option}
@@ -18,8 +30,9 @@ const Select = ({ options = [], label, props, error }, ref) => {
           ))}
         </select>
       </div>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
-};
+});
 
-export default forwardRef(Select);
+export default Select;

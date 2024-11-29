@@ -27,6 +27,12 @@ import AddToCart from "./products/AddToCart";
 import CartRow from "./products/CartRow";
 import CartPage from "./pages/CartPage";
 import CartIcon from "./products/CartIcon";
+import AddCatogory from "./admin/AddCatogory";
+import AddCategoryPage from "./pages/admin pages/AddCategoryPage";
+import AllCategoriesPage from "./pages/admin pages/AllCategoriesPage";
+import AllCategories from "./admin/AllCategories";
+import CategoryRow from "./admin/CategoryRow";
+import EditCategoryPage from "./pages/admin pages/EditCategoryPage";
 
 export {
   Button,
@@ -58,4 +64,10 @@ export {
   CartRow,
   CartPage,
   CartIcon,
+  AddCategoryPage,
+  AddCatogory,
+  AllCategories,
+  AllCategoriesPage,
+  CategoryRow,
+  EditCategoryPage,
 };

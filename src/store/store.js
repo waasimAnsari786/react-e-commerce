@@ -3,6 +3,7 @@ import authSliceReducers from "../features/authSlice";
 import productSliceReducers from "../features/productSlice";
 import fileSliceReducers from "../features/fileSlice";
 import cartSliceReducers from "../features/userAddToCartSlice";
+import catogReducers from "../features/catogorySlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     product: productSliceReducers,
     file: fileSliceReducers,
     cart: cartSliceReducers,
+    category: catogReducers,
   },
 });
 

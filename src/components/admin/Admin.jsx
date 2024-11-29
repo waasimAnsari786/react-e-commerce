@@ -61,6 +61,23 @@ export default function AdminDashboard() {
       ],
     },
     {
+      name: "Catogories",
+      slug: "catogories",
+      icon: <FaShoppingCart className="w-5 h-5" />,
+      subsections: [
+        {
+          name: "Add New Category",
+          slug: "add-category",
+          icon: <FaHourglassHalf className="w-4 h-4" />,
+        },
+        {
+          name: "View Categories",
+          slug: "all-categories",
+          icon: <FaCheckCircle className="w-4 h-4" />,
+        },
+      ],
+    },
+    {
       name: "Settings",
       slug: "settings",
       icon: <FaCog className="w-5 h-5" />,
