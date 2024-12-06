@@ -62,7 +62,7 @@ export default function AdminDashboard() {
     },
     {
       name: "Catogories",
-      slug: "catogories",
+      slug: "categories",
       icon: <FaShoppingCart className="w-5 h-5" />,
       subsections: [
         {
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
         },
         {
           name: "View Categories",
-          slug: "all-categories",
+          slug: "categories",
           icon: <FaCheckCircle className="w-4 h-4" />,
         },
       ],
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
     <div className="flex h-screen">
       {/* Sidebar */}
       <div
-        className={`fixed lg:static z-20 bg-gray-800 text-white transition-transform transform ${
+        className={`fixed lg:static z-50 bg-gray-800 text-white transition-transform transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 lg:w-64 w-60 h-full`}
       >
@@ -179,7 +179,7 @@ export default function AdminDashboard() {
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className={`lg:hidden ${
               isSidebarOpen ? "text-white" : "text-gray-800"
-            } p-2 z-30`}
+            } p-2 z-50`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

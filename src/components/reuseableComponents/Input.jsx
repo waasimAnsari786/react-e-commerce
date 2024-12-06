@@ -20,7 +20,14 @@ const Input = forwardRef(
     }, [error]);
 
     return (
-      <div className={type === "radio" ? "flex justify-between" : "w-full"}>
+      <div
+        className={
+          (type === "radio" && "flex justify-between") ||
+          (type === "checkbox" &&
+            "flex flex-row-reverse justify-end items-center my-2 gap-2") ||
+          "w-full"
+        }
+      >
         <label htmlFor={id}>{label}</label>
         <div className={`flex items-center justify-between ${parentDiv}`}>
           <input

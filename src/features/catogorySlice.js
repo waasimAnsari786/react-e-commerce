@@ -1,9 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import categoryService from "../appwrite/catogoriesService";
+import { toast } from "react-toastify";
 
 const initialState = {
   categoriesArr: [],
   filteredCategory: {},
+  catogNames: [],
+  updatedArrOfCatog: [],
   loading: true,
   error: null,
 };
@@ -13,11 +16,36 @@ export const addCategoryThunk = createAsyncThunk(
   "category/addCategory",
   async (categoryData, { rejectWithValue, dispatch }) => {
     try {
-      const addedCategory = await categoryService.createCategory(categoryData);
-      if (addedCategory) {
-        await dispatch(getCategoriesThunk());
+      if (!categoryData.parentCatog) {
+        const addedCategory = await categoryService.createCategory(
+          categoryData
+        );
+        if (addedCategory) {
+          await dispatch(getCategoriesThunk());
+          return addedCategory;
+        }
+      } else {
+        const categories = await dispatch(getCategoriesThunk()).unwrap();
+        let parentCategory = categories.documents.find(
+          (category) => category.catogName === categoryData.parentCatog
+        );
+
+        let updatedParentCategory = {
+          ...parentCategory,
+          subCatogs: [...parentCategory.subCatogs, categoryData.catogName],
+        };
+        const updatedCategory = await categoryService.updateCategory(
+          updatedParentCategory
+        );
+        const addedCategory = await categoryService.createCategory(
+          categoryData
+        );
+
+        if (addedCategory && updatedCategory) {
+          await dispatch(getCategoriesThunk());
+          return addedCategory;
+        }
       }
-      return addedCategory;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -40,13 +68,43 @@ export const getCategoriesThunk = createAsyncThunk(
 // Thunk to remove a category
 export const removeCategoryThunk = createAsyncThunk(
   "category/removeCategory",
-  async (categoryId, { rejectWithValue, dispatch }) => {
+  async (category, { rejectWithValue, dispatch }) => {
     try {
-      const removedCategory = await categoryService.deleteCategory(categoryId);
-      if (removedCategory) {
-        await dispatch(getCategoriesThunk());
+      if (category.subCatogs.length > 0) {
+        const categories = await dispatch(getCategoriesThunk()).unwrap();
+        let subCatog;
+        for (let index = 0; index < category.subCatogs.length; index++) {
+          subCatog = categories.documents.find(
+            (catog) => catog.catogName === category.subCatogs[index]
+          );
+          let newObj = { ...subCatog, parentCatog: "" };
+          const updatedCategory = await categoryService.updateCategory(newObj);
+        }
       }
-      return removedCategory;
+      if (category.parentCatog) {
+        const categories = await dispatch(getCategoriesThunk()).unwrap();
+        let parentCategory = categories.documents.find(
+          (catog) => catog.catogName === category.parentCatog
+        );
+        let updatedSubCatogs = parentCategory.subCatogs.filter(
+          (catog) => catog !== category.catogName
+        );
+        let updatedParentCategory = {
+          ...parentCategory,
+          subCatogs: updatedSubCatogs,
+        };
+        const updatedCategory = await categoryService.updateCategory(
+          updatedParentCategory
+        );
+      }
+
+      const deletedCategory = await categoryService.deleteCategory(
+        category.$id
+      );
+      if (deletedCategory) {
+        await dispatch(getCategoriesThunk());
+        return deletedCategory;
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -56,15 +114,49 @@ export const removeCategoryThunk = createAsyncThunk(
 // Thunk to update a category
 export const updateCategoryThunk = createAsyncThunk(
   "category/updateCategory",
-  async (categoryData, { rejectWithValue, dispatch }) => {
+  async (
+    { oldData, newData } = categoryData,
+    { rejectWithValue, dispatch }
+  ) => {
     try {
-      const updatedCategory = await categoryService.updateCategory(
-        categoryData
-      );
-      if (updatedCategory) {
-        await dispatch(getCategoriesThunk());
+      const categories = await dispatch(getCategoriesThunk()).unwrap();
+      if (oldData.parentCatog) {
+        let oldParentCategory = categories.documents.find(
+          (catog) => catog.catogName === oldData.parentCatog
+        );
+        let updatedOldParentCategory = {
+          ...oldParentCategory,
+          subCatogs: oldParentCategory.subCatogs.filter(
+            (catog) => catog !== oldData.catogName
+          ),
+        };
+        const updatedOldParentCategoryDatabase =
+          await categoryService.updateCategory(updatedOldParentCategory);
       }
-      return updatedCategory;
+      if (newData.parentCatog) {
+        let newParentCategory = categories.documents.find(
+          (catog) => catog.catogName === newData.parentCatog
+        );
+        let updatedNewParentCategory = {
+          ...newParentCategory,
+          subCatogs: [
+            ...newParentCategory.subCatogs.filter(
+              (catog) => catog !== oldData.catogName
+            ),
+            newData.catogName,
+          ],
+        };
+        const updatedNewParentCategoryDatabase =
+          await categoryService.updateCategory(updatedNewParentCategory);
+      }
+
+      const updatedCategory = categoryService.updateCategory({
+        ...oldData,
+        ...newData,
+      });
+      if (updatedCategory) {
+        return updatedCategory;
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -105,6 +197,9 @@ const categorySlice = createSlice({
       .addCase(getCategoriesThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.categoriesArr = action.payload.documents;
+        state.catogNames = state.categoriesArr.map(
+          (curObj) => curObj.catogName
+        );
       })
       .addCase(getCategoriesThunk.rejected, (state, action) => {
         state.loading = false;

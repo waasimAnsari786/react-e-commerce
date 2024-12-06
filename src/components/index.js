@@ -33,6 +33,7 @@ import AllCategoriesPage from "./pages/admin pages/AllCategoriesPage";
 import AllCategories from "./admin/AllCategories";
 import CategoryRow from "./admin/CategoryRow";
 import EditCategoryPage from "./pages/admin pages/EditCategoryPage";
+import SelectCategory from "./admin/SelectCategory";
 
 export {
   Button,
@@ -70,4 +71,5 @@ export {
   AllCategoriesPage,
   CategoryRow,
   EditCategoryPage,
+  SelectCategory,
 };

@@ -7,11 +7,11 @@ import { findCategory } from "../../../features/catogorySlice";
 export default function EditCategoryPage() {
   const { slug } = useParams();
   const dispatch = useDispatch();
+  const { filteredCategory } = useSelector((state) => state.category);
+
   useEffect(() => {
     dispatch(findCategory(slug));
   }, []);
-  const { filteredCategory } = useSelector((state) => state.category);
-  console.log(filteredCategory);
 
   return <AddCatogory catogory={filteredCategory} />;
 }

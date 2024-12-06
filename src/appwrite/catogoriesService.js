@@ -13,8 +13,6 @@ class Category {
   }
 
   async createCategory(category) {
-    console.log(category);
-
     try {
       const createdCategory = await this.database.createDocument(
         envImport.databaseID,
@@ -32,13 +30,15 @@ class Category {
   }
 
   async updateCategory(category) {
+    let { catogName, catogSlug, parentCatog, userId, subCatogs } = category;
     try {
       const updatedCategory = await this.database.updateDocument(
         envImport.databaseID,
         envImport.catogoriesID,
         category.$id,
-        { ...category.updatedObj }
+        { catogName, catogSlug, parentCatog, subCatogs, userId }
       );
+
       return updatedCategory;
     } catch (error) {
       toast.error("Error updating category: " + error.message, {
@@ -55,7 +55,8 @@ class Category {
         envImport.catogoriesID,
         docID
       );
-      return deletedCategory;
+      toast.success("Category has been deleted");
+      return true;
     } catch (error) {
       toast.error("Error deleting category: " + error.message, {
         position: "top-right",

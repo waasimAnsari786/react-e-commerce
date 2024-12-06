@@ -104,7 +104,7 @@ function App() {
               ),
             },
             {
-              path: "all-categories",
+              path: "categories",
               element: (
                 <AuthProtectedLayout authentication>
                   <AllCategoriesPage />

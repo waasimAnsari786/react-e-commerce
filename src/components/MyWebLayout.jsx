@@ -8,6 +8,7 @@ import { getProductsThunk } from "../features/productSlice";
 import { getCartItemsThunk } from "../features/userAddToCartSlice";
 import { getAllImagesThunk } from "../features/fileSlice";
 import { login } from "../features/authSlice";
+import { getCategoriesThunk } from "../features/catogorySlice";
 
 export default function MyWebLayout() {
   const authStatus = useSelector((state) => state.auth.status);
@@ -34,8 +35,11 @@ export default function MyWebLayout() {
   };
 
   const getData = () => {
-    userData && dispatch(getCartItemsThunk(userData.$id));
-    dispatch(getAllImagesThunk());
+    if (userData) {
+      dispatch(getCartItemsThunk(userData.$id));
+      dispatch(getAllImagesThunk());
+      dispatch(getCategoriesThunk());
+    }
   };
 
   useEffect(() => {

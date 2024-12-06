@@ -1,5 +1,12 @@
-import React, { useCallback, useEffect, useMemo } from "react";
-import { Button, Container, Input, MyTypoGraphy, Select } from "../index";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Button,
+  Container,
+  Input,
+  MyTypoGraphy,
+  SelectCategory,
+  Select,
+} from "../index";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -17,16 +24,16 @@ export default function AddCatogory({ catogory }) {
     watch,
     setValue,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      catogName: catogory?.catogName || "",
-      catogSlug: catogory?.catogSlug || "",
-      parentCatog: catogory?.parentCatog || "",
-    },
-  });
+  } = useForm();
 
+  useEffect(() => {
+    setValue("catogName", catogory?.catogName || "");
+    setValue("catogSlug", catogory?.catogSlug || "");
+    setValue("parentCatog", catogory?.parentCatog || "");
+  }, [catogory]);
+
+  const { catogNames } = useSelector((state) => state.category);
   const userData = useSelector((state) => state.auth.userData);
-  const { categoriesArr } = useSelector((state) => state.category);
 
   const slugTransform = useCallback(
     (value) => {
@@ -58,11 +65,14 @@ export default function AddCatogory({ catogory }) {
   const catogorySubmit = async (data) => {
     if (catogory) {
       const updatedCategory = await dispatch(
-        updateCategoryThunk({ ...catogory, updatedObj: data })
+        updateCategoryThunk({
+          oldData: catogory,
+          newData: data,
+        })
       ).unwrap();
       if (updatedCategory) {
         toast.success("Category updated successfully!");
-        navigate(`/category/${updatedCategory[0].catogSlug}`);
+        navigate("/admin/categories");
       }
     } else {
       const createdCategory = await dispatch(
@@ -70,17 +80,14 @@ export default function AddCatogory({ catogory }) {
       ).unwrap();
       if (createdCategory) {
         toast.success("Category added successfully!");
+        navigate("/admin/categories");
       }
     }
   };
 
-  const filteredNames = useMemo(() => {
-    return categoriesArr.map((curObj) => curObj.catogName);
-  }, [categoriesArr]);
-
   useEffect(() => {
     dispatch(getCategoriesThunk());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Container childElemClass="pt-20">
@@ -88,7 +95,7 @@ export default function AddCatogory({ catogory }) {
         <MyTypoGraphy myClass="text-3xl mb-5 capitalize">
           {catogory ? "Update catogory" : "Add catogory"}
         </MyTypoGraphy>
-        <div className="flex justify-between gap-5">
+        <div className="grid grid-cols-3 gap-5">
           <Input
             {...register("catogName", {
               required: "Catogory name/title is required",
@@ -107,12 +114,18 @@ export default function AddCatogory({ catogory }) {
             error={errors.catogSlug && errors.catogSlug.message}
             inpClass="w-full"
           />
-
           <Select
-            options={filteredNames}
-            label="Parent Catogory :"
+            options={catogNames}
+            label="Select Parent Category :"
             {...register("parentCatog")}
           />
+
+          {/* <SelectCategory
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            catogArr={catogory?.parentCatog || []}
+            catogNames={catogNames}
+          /> */}
         </div>
 
         <Button myClass="mt-6">{catogory ? "Update" : "Submit"}</Button>

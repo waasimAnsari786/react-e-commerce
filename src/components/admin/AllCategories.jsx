@@ -19,6 +19,7 @@ const AllCategories = () => {
             <th className="px-4 py-2 border-b text-left">Category Name</th>
             <th className="px-4 py-2 border-b text-left">Category Slug</th>
             <th className="px-4 py-2 border-b text-left">Parent Category</th>
+            <th className="px-4 py-2 border-b text-left">Subcategories</th>
             <th className="px-4 py-2 border-b text-center">Actions</th>
           </tr>
         </thead>

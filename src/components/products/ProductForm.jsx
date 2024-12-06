@@ -36,10 +36,12 @@ export default function ProductForm({ product }) {
       pImage: product?.pImage || "",
       pPrice: product?.pPrice || "",
       pSalePrice: product?.pSalePrice || "",
+      pCatog: product?.pCatog || "",
     },
   });
 
   const { preview_URL_Arr } = useSelector((state) => state.file);
+  const { catogNames } = useSelector((state) => state.category);
   const userData = useSelector((state) => state.auth.userData);
 
   const slugTransform = useCallback(
@@ -106,7 +108,7 @@ export default function ProductForm({ product }) {
   };
 
   return (
-    <Container childElemClass="pt-20">
+    <Container childElemClass="pt-10">
       <form onSubmit={handleSubmit(productSubmit)}>
         <MyTypoGraphy myClass="text-3xl mb-5">
           {product ? "Update Product" : "Add Product"}
@@ -161,6 +163,25 @@ export default function ProductForm({ product }) {
             defaultValue={getValues("longDescription")}
           /> */}
         </div>
+        <div className="flex justify-between gap-5 mt-10">
+          <Input
+            {...register("pPrice", {
+              required: "Product price is required",
+            })}
+            label="Product Price :"
+            type="number"
+            error={errors.pPrice && errors.pPrice.message}
+            inpClass="w-full"
+          />
+
+          <Input
+            {...register("pSalePrice")}
+            label="Product Sale Price :"
+            type="number"
+            error={errors.pSalePrice && errors.pSalePrice.message}
+            inpClass="w-full"
+          />
+        </div>
 
         <div className="flex justify-between gap-5 mt-10">
           <Input
@@ -181,25 +202,11 @@ export default function ProductForm({ product }) {
             })}
             error={errors.pStockStatus && errors.pStockStatus.message}
           />
-        </div>
 
-        <div className="flex justify-between gap-5 mt-10">
-          <Input
-            {...register("pPrice", {
-              required: "Product price is required",
-            })}
-            label="Product Price :"
-            type="number"
-            error={errors.pPrice && errors.pPrice.message}
-            inpClass="w-full"
-          />
-
-          <Input
-            {...register("pSalePrice")}
-            label="Product Sale Price :"
-            type="number"
-            error={errors.pSalePrice && errors.pSalePrice.message}
-            inpClass="w-full"
+          <Select
+            options={catogNames}
+            label="Catogory :"
+            {...register("pCatog")}
           />
         </div>
 
