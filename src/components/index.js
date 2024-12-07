@@ -34,6 +34,7 @@ import AllCategories from "./admin/AllCategories";
 import CategoryRow from "./admin/CategoryRow";
 import EditCategoryPage from "./pages/admin pages/EditCategoryPage";
 import SelectCategory from "./admin/SelectCategory";
+import SearchBar from "./admin/SearchBar";
 
 export {
   Button,
@@ -72,4 +73,5 @@ export {
   CategoryRow,
   EditCategoryPage,
   SelectCategory,
+  SearchBar,
 };
