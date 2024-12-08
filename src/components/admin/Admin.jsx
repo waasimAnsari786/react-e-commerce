@@ -23,56 +23,56 @@ export default function AdminDashboard() {
   const navItems = [
     {
       name: "Dashboard",
-      slug: "dashboard",
+      slug: "/admin/dashboard",
       icon: <FaTachometerAlt className="w-5 h-5" />,
     },
     {
       name: "Products",
-      slug: "products",
+      slug: "/admin/products",
       icon: <FaBox className="w-5 h-5" />,
       subsections: [
         {
           name: "Add Product",
-          slug: "add-product",
+          slug: "/admin/add-product",
           icon: <FaPlus className="w-4 h-4" />,
         },
         {
           name: "View Products",
-          slug: "view-products",
+          slug: "/admin/products",
           icon: <FaList className="w-4 h-4" />,
         },
       ],
     },
     {
       name: "Orders",
-      slug: "orders",
+      slug: "/admin/orders",
       icon: <FaShoppingCart className="w-5 h-5" />,
       subsections: [
         {
           name: "Pending Orders",
-          slug: "pending-orders",
+          slug: "/admin/pending-orders",
           icon: <FaHourglassHalf className="w-4 h-4" />,
         },
         {
           name: "Completed Orders",
-          slug: "completed-orders",
+          slug: "/admin/completed-orders",
           icon: <FaCheckCircle className="w-4 h-4" />,
         },
       ],
     },
     {
       name: "Catogories",
-      slug: "categories",
+      slug: "/admin/categories",
       icon: <FaShoppingCart className="w-5 h-5" />,
       subsections: [
         {
           name: "Add New Category",
-          slug: "add-category",
+          slug: "/admin/add-category",
           icon: <FaHourglassHalf className="w-4 h-4" />,
         },
         {
           name: "View Categories",
-          slug: "categories",
+          slug: "/admin/categories",
           icon: <FaCheckCircle className="w-4 h-4" />,
         },
       ],

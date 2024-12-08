@@ -5,19 +5,18 @@ import {
   AuthProtectedLayout,
   MyWebLayout,
   HomePage,
-  AddProduct,
   SingleProduct,
   AllProducts,
   Admin,
   AdminStats,
   CartPage,
   AddCatogory,
-  AllCategoriesPage,
-  EditCategoryPage,
+  ProductForm,
+  AllItemsPage,
+  EditItemsPage,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./store/store";
+import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -78,48 +77,85 @@ function App() {
               <Admin />
             </AuthProtectedLayout>
           ),
-          children: [
-            {
-              path: "dashboard",
-              element: (
-                <AuthProtectedLayout authentication>
-                  <AdminStats />
-                </AuthProtectedLayout>
-              ),
-            },
-            {
-              path: "add-product",
-              element: (
-                <AuthProtectedLayout authentication>
-                  <AddProduct />
-                </AuthProtectedLayout>
-              ),
-            },
-            {
-              path: "add-category",
-              element: (
-                <AuthProtectedLayout authentication>
-                  <AddCatogory />
-                </AuthProtectedLayout>
-              ),
-            },
-            {
-              path: "categories",
-              element: (
-                <AuthProtectedLayout authentication>
-                  <AllCategoriesPage />
-                </AuthProtectedLayout>
-              ),
-            },
-            {
-              path: "edit-category/:slug",
-              element: (
-                <AuthProtectedLayout authentication>
-                  <EditCategoryPage />
-                </AuthProtectedLayout>
-              ),
-            },
-          ],
+        },
+        {
+          path: "/admin/dashboard",
+          element: (
+            <AuthProtectedLayout authentication>
+              <AdminStats />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/admin/add-product",
+          element: (
+            <AuthProtectedLayout authentication>
+              <ProductForm />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/admin/add-category",
+          element: (
+            <AuthProtectedLayout authentication>
+              <AddCatogory />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/admin/categories",
+          element: (
+            <AuthProtectedLayout authentication>
+              <AllItemsPage
+                searchKeyword="catogName"
+                rowCompName="categories"
+                tHeadArr={[
+                  "Category Name",
+                  "Category Slug",
+                  "Parent Category",
+                  "Sub Categories",
+                  "Action",
+                ]}
+              />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/admin/products",
+          element: (
+            <AuthProtectedLayout authentication>
+              <AllItemsPage
+                searchKeyword="pName"
+                rowCompName="products"
+                tHeadArr={[
+                  "Product Image",
+                  "Product Name",
+                  "Product Slug",
+                  "Product Category",
+                  "Product Price",
+                  "Product Sale Price",
+                  "Product Status",
+                  "Action",
+                ]}
+              />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/admin/edit-category/:slug",
+          element: (
+            <AuthProtectedLayout authentication>
+              <EditItemsPage editItem="category" />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/admin/edit-product/:slug",
+          element: (
+            <AuthProtectedLayout authentication>
+              <EditItemsPage editItem="product" />
+            </AuthProtectedLayout>
+          ),
         },
       ],
     },
@@ -127,22 +163,20 @@ function App() {
 
   return (
     <>
-      <Provider store={store}>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-          transition:Bounce
-        />
-        <RouterProvider router={router} />
-      </Provider>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition:Bounce
+      />
+      <RouterProvider router={router} />
     </>
   );
 }

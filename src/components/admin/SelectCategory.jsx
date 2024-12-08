@@ -4,7 +4,6 @@ import { MyTypoGraphy, Input } from "../index";
 export default function SelectCategory({
   selectedCategories,
   setSelectedCategories,
-  catogArr,
   catogNames,
 }) {
   const handleCategoryChange = (category) => {

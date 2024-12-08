@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import productService from "../appwrite/productService";
+import file from "../appwrite/fileService";
 
 const initialState = {
   filteredProduct: {},
@@ -13,7 +14,7 @@ export const createProductThunk = createAsyncThunk(
   async (productData, { rejectWithValue }) => {
     try {
       const createdProduct = await productService.createProduct(productData);
-      return createdProduct;
+      return createdProduct && createdProduct;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -28,7 +29,7 @@ export const getProductsThunk = createAsyncThunk(
         queryData && queryData.queryKey,
         queryData && queryData.queryVal
       );
-      return fetchedProducts;
+      return fetchedProducts && fetchedProducts;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -37,10 +38,15 @@ export const getProductsThunk = createAsyncThunk(
 
 export const deleteProductThunk = createAsyncThunk(
   "product/deleteProduct",
-  async (docID, { rejectWithValue }) => {
+  async (productData, { rejectWithValue }) => {
     try {
-      const deletedProduct = await productService.deleteProduct(docID);
-      return docID;
+      const deletedImg = await file.deleteImage(productData.pImage);
+      if (deletedImg) {
+        const deletedProduct = await productService.deleteProduct(
+          productData.$id
+        );
+        return deletedProduct && productData.$id;
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -52,7 +58,7 @@ export const updateProductThunk = createAsyncThunk(
   async (productData, { rejectWithValue }) => {
     try {
       const updatedProduct = await productService.updateProduct(productData);
-      return updatedProduct;
+      return updatedProduct && updatedProduct;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -101,9 +107,8 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteProductThunk.fulfilled, (state, action) => {
-        let { productsArr } = state;
         state.loading = false;
-        productsArr = productsArr.filter(
+        state.productsArr = state.productsArr.filter(
           (product) => product.$id !== action.payload
         );
       })

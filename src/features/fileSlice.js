@@ -10,7 +10,7 @@ const initialState = {
 
 const fileUploadThunk = createAsyncThunk(
   "file/fileUpload",
-  async (file, { rejectWithValue }) => {
+  async (file, { rejectWithValue, dispatch }) => {
     try {
       const uploadedFile = await fileService.uploadFile(file);
       if (uploadedFile) {

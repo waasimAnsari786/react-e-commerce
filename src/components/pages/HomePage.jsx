@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
-import { Container, ProductCard } from "../index";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function HomePage() {
@@ -15,18 +14,7 @@ export default function HomePage() {
         </div>
       );
     } else {
-      return (
-        <p>
-          Products availbale
-          {/* <Container childElemClass="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-20">
-            {productsArr.map((product) => (
-              <Link to={`/product/${product.pSlug}`} key={product.$id}>
-                <ProductCard product={product} />
-              </Link>
-            ))}
-          </Container> */}
-        </p>
-      );
+      return <p>Products availbale</p>;
     }
   } else {
     return (

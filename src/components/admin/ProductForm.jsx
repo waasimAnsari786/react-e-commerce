@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Container,
   Input,
   MyTypoGraphy,
   Select,
+  SelectCategory,
   TextArea,
 } from "../index";
 import { useForm } from "react-hook-form";
@@ -18,6 +19,10 @@ import {
 } from "../../features/productSlice";
 
 export default function ProductForm({ product }) {
+  const [selectedCategories, setSelectedCategories] = useState(
+    product?.pParentCategory || []
+  );
+
   const {
     handleSubmit,
     register,
@@ -26,19 +31,15 @@ export default function ProductForm({ product }) {
     control,
     getValues,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      pName: product?.pName || "",
-      pShortDes: product?.pShortDes || "",
-      pLongDes: product?.pLongDes || "",
-      pSlug: product?.pSlug || "",
-      pStockStatus: product?.pStockStatus || "In stock",
-      pImage: product?.pImage || "",
-      pPrice: product?.pPrice || "",
-      pSalePrice: product?.pSalePrice || "",
-      pCatog: product?.pCatog || "",
-    },
-  });
+  } = useForm();
+
+  useEffect(() => {
+    const registeredInputsVal = getValues();
+    Object.keys(registeredInputsVal).forEach((key) => {
+      setValue(key, product[key]); // Update each field dynamically
+    });
+    product && setSelectedCategories(product.pParentCategory);
+  }, [product]);
 
   const { preview_URL_Arr } = useSelector((state) => state.file);
   const { catogNames } = useSelector((state) => state.category);
@@ -74,6 +75,7 @@ export default function ProductForm({ product }) {
   const productSubmit = async (data) => {
     data.pPrice = Number(data.pPrice);
     data.pSalePrice = Number(data.pSalePrice);
+    data.pParentCategory = selectedCategories;
 
     if (product) {
       if (typeof data.pImage === "object") {
@@ -85,12 +87,13 @@ export default function ProductForm({ product }) {
           dispatch(deleteUploadThunk(product.pImage));
         }
       }
+
       const updatedProduct = await dispatch(
         updateProductThunk({ docID: product.$id, updatedObj: data })
       ).unwrap();
       if (updatedProduct) {
         toast.success("Product updated successfully!");
-        navigate(`/product/${updatedProduct[0].pSlug}`);
+        navigate("/admin/products");
       }
     } else {
       const fileObj = await dispatch(fileUploadThunk(data.pImage[0])).unwrap();
@@ -101,7 +104,7 @@ export default function ProductForm({ product }) {
         ).unwrap();
         if (createdProduct) {
           toast.success("Product added successfully!");
-          navigate(`/product/${createdProduct.pSlug}`);
+          navigate("/admin/products");
         }
       }
     }
@@ -183,7 +186,7 @@ export default function ProductForm({ product }) {
           />
         </div>
 
-        <div className="flex justify-between gap-5 mt-10">
+        <div className="grid grid-cols-3 gap-5 mt-10">
           <Input
             {...register("pImage", {
               required: !product ? "Product image is required" : false,
@@ -203,10 +206,10 @@ export default function ProductForm({ product }) {
             error={errors.pStockStatus && errors.pStockStatus.message}
           />
 
-          <Select
-            options={catogNames}
-            label="Catogory :"
-            {...register("pCatog")}
+          <SelectCategory
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            catogNames={catogNames}
           />
         </div>
 

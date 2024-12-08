@@ -27,9 +27,8 @@ export default function AddCatogory({ catogory }) {
   } = useForm();
 
   useEffect(() => {
-    setValue("catogName", catogory?.catogName || "");
-    setValue("catogSlug", catogory?.catogSlug || "");
-    setValue("parentCatog", catogory?.parentCatog || "");
+    catogory &&
+      Object.keys(catogory).map((key) => setValue(key, catogory[key]));
   }, [catogory]);
 
   const { catogNames } = useSelector((state) => state.category);
@@ -85,10 +84,6 @@ export default function AddCatogory({ catogory }) {
     }
   };
 
-  useEffect(() => {
-    dispatch(getCategoriesThunk());
-  }, [dispatch]);
-
   return (
     <Container childElemClass="pt-20">
       <form onSubmit={handleSubmit(catogorySubmit)}>
@@ -119,13 +114,6 @@ export default function AddCatogory({ catogory }) {
             label="Select Parent Category :"
             {...register("parentCatog")}
           />
-
-          {/* <SelectCategory
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-            catogArr={catogory?.parentCatog || []}
-            catogNames={catogNames}
-          /> */}
         </div>
 
         <Button myClass="mt-6">{catogory ? "Update" : "Submit"}</Button>

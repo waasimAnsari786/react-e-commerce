@@ -11,9 +11,9 @@ export default function ProductCard({ myClass = "", product }) {
   const { preview_URL_Arr } = useSelector((state) => state.file);
   const { userData } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    dispatch(getAllImagesThunk());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAllImagesThunk());
+  // }, []);
 
   const calculateDiscount = (price, salePrice) => {
     if (price > 0 && salePrice > 0) {

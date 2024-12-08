@@ -53,7 +53,10 @@ class Product {
         envImport.collectionID,
         docID
       );
-      return deletedProduct;
+      if (deletedProduct) {
+        toast.success("Product has deleted successfully");
+        return true;
+      }
     } catch (error) {
       toast.error("Error deleting product: " + error.message, {
         position: "top-right",

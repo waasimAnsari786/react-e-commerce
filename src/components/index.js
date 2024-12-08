@@ -14,8 +14,7 @@ import SignUpPage from "./pages/SignUpPage";
 import Loader from "./reuseableComponents/Loader";
 import HomePage from "./pages/HomePage";
 import LogoutBtn from "./header/LogoutBtn";
-import ProductForm from "./products/ProductForm";
-import AddProduct from "./pages/admin pages/AddProduct";
+import ProductForm from "./admin/ProductForm";
 import TextArea from "./reuseableComponents/TextArea";
 import ProductCard from "./products/ProductCard";
 import SingleProduct from "./products/SingleProduct";
@@ -28,13 +27,12 @@ import CartRow from "./products/CartRow";
 import CartPage from "./pages/CartPage";
 import CartIcon from "./products/CartIcon";
 import AddCatogory from "./admin/AddCatogory";
-import AddCategoryPage from "./pages/admin pages/AddCategoryPage";
-import AllCategoriesPage from "./pages/admin pages/AllCategoriesPage";
-import AllCategories from "./admin/AllCategories";
 import CategoryRow from "./admin/CategoryRow";
-import EditCategoryPage from "./pages/admin pages/EditCategoryPage";
 import SelectCategory from "./admin/SelectCategory";
 import SearchBar from "./admin/SearchBar";
+import AdminProductRow from "./admin/AdminProductRow";
+import AllItemsPage from "./pages/admin pages/AllItemsPage";
+import EditItemsPage from "./pages/admin pages/EditItemsPage";
 
 export {
   Button,
@@ -54,7 +52,6 @@ export {
   HomePage,
   LogoutBtn,
   ProductForm,
-  AddProduct,
   TextArea,
   ProductCard,
   SingleProduct,
@@ -66,12 +63,11 @@ export {
   CartRow,
   CartPage,
   CartIcon,
-  AddCategoryPage,
   AddCatogory,
-  AllCategories,
-  AllCategoriesPage,
   CategoryRow,
-  EditCategoryPage,
   SelectCategory,
   SearchBar,
+  AdminProductRow,
+  AllItemsPage,
+  EditItemsPage,
 };

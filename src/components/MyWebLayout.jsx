@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Header, Footer } from "./index";
+import { Header, Footer, Admin } from "./index";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import auth from "../appwrite/authService";
@@ -47,26 +47,26 @@ export default function MyWebLayout() {
     getData();
   }, [authStatus]);
 
-  return (
-    <>
-      <Header />
-      <Outlet />
-      <Footer />
-    </>
-  );
+  // return (
+  //   <>
+  //     <Header />
+  //     <Outlet />
+  //     <Footer />
+  //   </>
+  // );
+  if (userData && userData.userRole === "Buyer") {
+    return (
+      <>
+        <Header />
+        <Outlet />
+        <Footer />
+      </>
+    );
+  } else if (userData && userData.userRole === "Admin") {
+    return (
+      <>
+        <Admin />
+      </>
+    );
+  }
 }
-// if (userData && userData.userRole === "Buyer") {
-//   return (
-//     <>
-//       <Header />
-//       <Outlet />
-//       <Footer />
-//     </>
-//   );
-// } else if (userData && userData.userRole === "Admin") {
-//   return (
-//     <>
-//       <Outlet />
-//     </>
-//   );
-// }

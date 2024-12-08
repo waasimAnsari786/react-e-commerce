@@ -16,7 +16,7 @@ export default function Header() {
 
   return (
     userData &&
-    userData.userRole === "Buyer" && (
+    userData.userRole !== "Admin" && (
       <div className="drawer">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
