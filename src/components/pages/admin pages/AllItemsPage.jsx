@@ -4,12 +4,14 @@ import {
   Container,
   SearchBar,
   AdminProductRow,
+  PendingOrdersRow,
 } from "../../index";
 import { useSelector } from "react-redux";
 
 export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
   const { categoriesArr } = useSelector((state) => state.category);
   const { productsArr } = useSelector((state) => state.product);
+  const { orders } = useSelector((state) => state.orders);
 
   // Initialize state
   const [searchResult, setSearchResult] = useState([]);
@@ -20,14 +22,27 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
       setSearchResult(categoriesArr);
     } else if (rowCompName === "products") {
       setSearchResult(productsArr);
+    } else if (rowCompName === "pending-orders") {
+      const pendingOrders = orders.filter(
+        (order) => order.orderStatus === "Pending..."
+      );
+      setSearchResult(pendingOrders);
+    } else if (rowCompName === "completed-orders") {
+      const completedOrders = orders.filter(
+        (order) => order.orderStatus === "Completed"
+      );
+      setSearchResult(completedOrders);
     }
-  }, [categoriesArr, productsArr, rowCompName]);
+  }, [categoriesArr, productsArr, rowCompName, orders]);
 
   // Handle search
   const handleSearch = useCallback(
     (data) => {
       const sourceArr =
-        rowCompName === "categories" ? categoriesArr : productsArr;
+        (rowCompName === "categories" && categoriesArr) ||
+        (rowCompName === "products" && productsArr) ||
+        (rowCompName === "pending-orders" && orders) ||
+        (rowCompName === "completed-orders" && orders);
 
       // Filter based on searchKeyword
       const filteredResults = sourceArr.filter(
@@ -36,7 +51,7 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
       );
       setSearchResult(filteredResults);
     },
-    [categoriesArr, productsArr, rowCompName, searchKeyword]
+    [categoriesArr, productsArr, rowCompName, searchKeyword, orders]
   );
 
   return (
@@ -53,15 +68,26 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
           </thead>
           <tbody>
             {searchResult.length > 0 ? (
-              rowCompName === "categories" ? (
+              (rowCompName === "categories" &&
                 searchResult.map((category) => (
                   <CategoryRow key={category.$id} category={category} />
-                ))
-              ) : (
+                ))) ||
+              (rowCompName === "products" &&
                 searchResult.map((product) => (
                   <AdminProductRow key={product.$id} product={product} />
-                ))
-              )
+                ))) ||
+              (rowCompName === "pending-orders" &&
+                searchResult.map((order) => (
+                  <PendingOrdersRow key={order.$id} order={order} />
+                ))) ||
+              (rowCompName === "completed-orders" &&
+                searchResult.map((order) => (
+                  <PendingOrdersRow
+                    key={order.$id}
+                    order={order}
+                    completedOrder={true}
+                  />
+                )))
             ) : (
               <tr>
                 <td

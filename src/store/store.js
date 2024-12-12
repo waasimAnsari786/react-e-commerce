@@ -4,6 +4,7 @@ import productSliceReducers from "../features/productSlice";
 import fileSliceReducers from "../features/fileSlice";
 import cartSliceReducers from "../features/userAddToCartSlice";
 import catogReducers from "../features/catogorySlice";
+import orderReducer from "../features/ordersSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     file: fileSliceReducers,
     cart: cartSliceReducers,
     category: catogReducers,
+    orders: orderReducer,
   },
 });
 

@@ -8,9 +8,24 @@ import {
   updateCartItemThunk,
 } from "../../features/userAddToCartSlice";
 import { Link } from "react-router-dom";
+import { deleteOrderThunk, updateOrderThunk } from "../../features/ordersSlice";
+import { toast } from "react-toastify";
 
 const CartRow = ({ product }) => {
-  let { pImage, pName, pPrice, pQty, $id, pSlug, pSalePrice } = product;
+  let {
+    pName,
+    pPrice,
+    pImage,
+    userId,
+    pQty,
+    pSlug,
+    pSalePrice,
+    adminId,
+    userName,
+    pParentCategory,
+    $id,
+    orderId,
+  } = product;
   const dispatch = useDispatch();
 
   const [value, setValue] = useState(pQty);
@@ -18,6 +33,55 @@ const CartRow = ({ product }) => {
   useEffect(() => {
     setValue(pQty);
   }, [pQty]);
+
+  const updateOrderAndCart = async () => {
+    const updatedOrder = await dispatch(
+      updateOrderThunk({
+        pName,
+        pPrice,
+        pImage,
+        userId,
+        pQty: value,
+        pSlug,
+        pSalePrice,
+        adminId,
+        userName,
+        $id: orderId,
+      })
+    ).unwrap();
+
+    const updatedCart = await dispatch(
+      updateCartItemThunk({
+        pName,
+        pPrice,
+        pImage,
+        userId,
+        pQty: value,
+        pSlug,
+        pSalePrice,
+        adminId,
+        userName,
+        pParentCategory,
+        $id,
+        orderId,
+      })
+    ).unwrap();
+
+    if (updatedCart && updatedOrder) {
+      toast.success("Product has updated in your cart");
+    }
+  };
+
+  const removeProductFromCart = async () => {
+    const deletedOrder = await dispatch(
+      deleteOrderThunk(product.orderId)
+    ).unwrap();
+    const deletedCart = await dispatch(removeFromCartThunk(product)).unwrap();
+
+    if (deletedOrder && deletedCart) {
+      toast.success("Product has deleted from your cart");
+    }
+  };
 
   return (
     <tr className="border border-gray-300 p-2 ">
@@ -61,26 +125,13 @@ const CartRow = ({ product }) => {
         </div>
       </td>
       <td>
-        <Button onClick={() => dispatch(removeFromCartThunk(product))}>
+        <Button onClick={removeProductFromCart}>
           <AiOutlineClose
             size={20}
             className="text-red-500 hover:text-red-700"
           />
         </Button>
-        <Button
-          onClick={() =>
-            dispatch(
-              updateCartItemThunk({
-                pQty: value,
-                pName,
-                pPrice,
-                pImage,
-                $id,
-                userId: product.userId,
-              })
-            )
-          }
-        >
+        <Button onClick={updateOrderAndCart}>
           <CiEdit size={20} className="text-green-500 hover:text-green-700" />
         </Button>
       </td>

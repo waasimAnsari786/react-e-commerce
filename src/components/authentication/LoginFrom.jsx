@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Container, Input, Button } from "../index";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Container, Input, Button, MyTypoGraphy } from "../index";
 import { useForm } from "react-hook-form";
 import auth from "../../appwrite/authService";
 import { login } from "../../features/authSlice";
@@ -41,12 +41,12 @@ export default function LoginForm() {
   };
 
   return (
-    <Container childElemClass="flex items-center justify-center h-screen">
+    <Container childElemClass="flex items-center justify-center h-screen flex-col">
       <form
         onSubmit={handleSubmit(handleLogin)}
         className="w-full max-w-md rounded-lg shadow-lg p-6 sm:p-8 bg-white"
       >
-        <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+        <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800 ">
           Login
         </h2>
 
@@ -84,6 +84,13 @@ export default function LoginForm() {
 
         <Button myClass="w-full">Login</Button>
       </form>
+
+      <MyTypoGraphy myClass="mt-10">
+        Don't Have an account?{" "}
+        <NavLink className="underline" to="/signup">
+          Sign Up
+        </NavLink>
+      </MyTypoGraphy>
     </Container>
   );
 }

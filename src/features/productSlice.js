@@ -96,7 +96,7 @@ const productSlice = createSlice({
       })
       .addCase(getProductsThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.productsArr = action.payload.documents;
+        state.productsArr = action.payload.documents || [];
       })
       .addCase(getProductsThunk.rejected, (state, action) => {
         state.loading = false;

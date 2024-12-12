@@ -7,6 +7,8 @@ import {
   addToCartThunk,
   updateCartItemThunk,
 } from "../../features/userAddToCartSlice";
+import { addOrderThunk, updateOrderThunk } from "../../features/ordersSlice";
+import { toast } from "react-toastify";
 
 export default function SingleProduct() {
   const dispatch = useDispatch();
@@ -30,9 +32,19 @@ export default function SingleProduct() {
   const { preview_URL_Arr } = useSelector((state) => state.file);
   const { userData } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
+  const { orders } = useSelector((state) => state.orders);
 
-  const { pName, pSlug, pImage, pPrice, pSalePrice, pStockStatus, pLongDes } =
-    filteredProduct;
+  const {
+    pName,
+    pSlug,
+    pImage,
+    pPrice,
+    pSalePrice,
+    pStockStatus,
+    pLongDes,
+    adminId,
+    pParentCategory,
+  } = filteredProduct;
 
   useEffect(() => {
     const img = preview_URL_Arr.find(
@@ -41,7 +53,7 @@ export default function SingleProduct() {
     setImgPreview(img);
   }, [preview_URL_Arr, pImage]);
 
-  const addToCart = () => {
+  const addToCart = async () => {
     const newObj = {
       pName,
       pPrice,
@@ -50,17 +62,43 @@ export default function SingleProduct() {
       pQty: value,
       pSlug,
       pSalePrice,
+      adminId,
+      userName: userData.name,
     };
 
     const isProduct = cartItems.find((product) => product.pName === pName);
     if (isProduct) {
-      const productUpdated = dispatch(
-        updateCartItemThunk({ $id: isProduct.$id, ...newObj })
+      const updatedOrder = await dispatch(
+        updateOrderThunk({ $id: isProduct.orderId, ...newObj })
       ).unwrap();
-      productUpdated ? navigate("/cart") : null;
+      if (updatedOrder) {
+        const productUpdated = await dispatch(
+          updateCartItemThunk({
+            $id: isProduct.$id,
+            pParentCategory,
+            ...newObj,
+          })
+        ).unwrap();
+        if (productUpdated) {
+          toast.success("Product has updated in your cart!");
+          navigate("/cart");
+        }
+      }
     } else {
-      const productAdded = dispatch(addToCartThunk(newObj)).unwrap();
-      productAdded ? navigate("/cart") : null;
+      const addedOrder = await dispatch(addOrderThunk(newObj)).unwrap();
+      if (addedOrder) {
+        const productAdded = await dispatch(
+          addToCartThunk({
+            orderId: addedOrder.$id,
+            pParentCategory,
+            ...newObj,
+          })
+        ).unwrap();
+        if (productAdded) {
+          toast.success("Product has added in your cart!");
+          navigate("/cart");
+        }
+      }
     }
   };
 
@@ -69,17 +107,6 @@ export default function SingleProduct() {
       {filteredProduct && (
         <>
           <div>
-            {/* {preview_URL_Arr.some((preview) => preview.fileId === pImage) && (
-              <img
-                src={
-                  preview_URL_Arr.find((preview) => preview.fileId === pImage)
-                    ?.URL || ""
-                }
-                alt={`${pName}'s image`}
-                className="w-full h-96 rounded-xl"
-              />
-            )} */}
-
             <img
               src={imgPreview}
               alt={`${pName}'s image`}

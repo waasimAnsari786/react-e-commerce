@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import addToCartService from "../appwrite/userAddtoCartService";
+import { toast } from "react-toastify";
 
 const initialState = {
   cartItems: [],
-  userCartItems: [],
   loading: true,
   error: null,
 };
@@ -15,7 +15,7 @@ export const addToCartThunk = createAsyncThunk(
     try {
       const addedItem = await addToCartService.createAddtoCart(itemData);
       if (addedItem) {
-        await dispatch(getCartItemsThunk(itemData.userId));
+        await dispatch(getCartItemsThunk({ queryVal: itemData.userId }));
       }
       return addedItem;
     } catch (error) {
@@ -27,9 +27,12 @@ export const addToCartThunk = createAsyncThunk(
 // Thunk to fetch all cart items
 export const getCartItemsThunk = createAsyncThunk(
   "cart/getCartItems",
-  async (userId, { rejectWithValue }) => {
+  async (productData, { rejectWithValue }) => {
     try {
-      const fetchedCartItems = await addToCartService.getAddToCarts(userId);
+      const fetchedCartItems = await addToCartService.getAddToCarts(
+        productData.queryKey,
+        productData.queryVal
+      );
       return fetchedCartItems;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -44,7 +47,7 @@ export const removeFromCartThunk = createAsyncThunk(
     try {
       const removedItem = await addToCartService.deleteAddToCart(itemData.$id);
       if (removedItem) {
-        await dispatch(getCartItemsThunk(itemData.userId));
+        await dispatch(getCartItemsThunk({ queryVal: itemData.userId }));
       }
       return removedItem;
     } catch (error) {
@@ -60,7 +63,7 @@ export const updateCartItemThunk = createAsyncThunk(
     try {
       const updatedItem = await addToCartService.updateAddToCart(itemData);
       if (updatedItem) {
-        await dispatch(getCartItemsThunk(itemData.userId));
+        await dispatch(getCartItemsThunk({ queryVal: itemData.userId }));
       }
       return updatedItem;
     } catch (error) {
@@ -95,7 +98,7 @@ const cartSlice = createSlice({
       })
       .addCase(getCartItemsThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.documents;
+        state.cartItems = action.payload.documents || [];
       })
       .addCase(getCartItemsThunk.rejected, (state, action) => {
         state.loading = false;
@@ -109,9 +112,6 @@ const cartSlice = createSlice({
       })
       .addCase(removeFromCartThunk.fulfilled, (state, action) => {
         state.loading = false;
-        // state.cartItems = state.cartItems.filter(
-        //   (item) => item.$id !== action.payload
-        // );
       })
       .addCase(removeFromCartThunk.rejected, (state, action) => {
         state.loading = false;
@@ -124,12 +124,7 @@ const cartSlice = createSlice({
         state.error = null;
       })
       .addCase(updateCartItemThunk.fulfilled, (state, action) => {
-        // let { cartItems } = state;
         state.loading = false;
-        // const index = cartItems.findIndex(
-        //   (item) => item.$id === action.payload.$id
-        // );
-        // cartItems = cartItems.splice(index, 1, action.payload);
       })
       .addCase(updateCartItemThunk.rejected, (state, action) => {
         state.loading = false;

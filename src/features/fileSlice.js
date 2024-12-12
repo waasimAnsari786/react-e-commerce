@@ -79,7 +79,7 @@ const fileSlice = createSlice({
       })
       .addCase(getAllImagesThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.preview_URL_Arr = action.payload;
+        state.preview_URL_Arr = action.payload || [];
       })
       .addCase(getAllImagesThunk.rejected, (state, action) => {
         state.loading = false;

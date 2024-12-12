@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Input, Button } from "../index";
+import { Container, Input, Button, MyTypoGraphy } from "../index";
 import { useForm } from "react-hook-form";
 import auth from "../../appwrite/authService";
 import { useDispatch } from "react-redux";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AiOutlineUser, AiOutlineMail, AiOutlineLock } from "react-icons/ai";
 import userRole from "../../appwrite/userRoleService";
+import { NavLink } from "react-router-dom";
 
 export default function SignUpForm() {
   const {
@@ -28,20 +29,23 @@ export default function SignUpForm() {
           email: data.email,
         });
         getUser.userRole = data.role;
-        dispatch(login(getUser));
-        if (createdUserRole && data.role === "Admin") {
-          navigate("/admin/dashboard");
-          toast.success("Signup Successfully");
-        } else if (createdUserRole && data.role === "Buyer") {
-          navigate("/");
-          toast.success("Signup Successfully");
+        if (createdUserRole) {
+          console.log(createdUserRole);
+          dispatch(login(getUser));
+          if (data.role === "Admin") {
+            navigate("/admin/dashboard");
+            toast.success("Signup Successfully");
+          } else if (data.role === "Buyer") {
+            navigate("/");
+            toast.success("Signup Successfully");
+          }
         }
       }
     }
   };
 
   return (
-    <Container childElemClass="flex justify-center items-center h-screen ">
+    <Container childElemClass="flex justify-center items-center h-screen flex-col">
       <div className="bg-gray-200 p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-center text-2xl font-semibold mb-6">
           Create an Account
@@ -124,6 +128,13 @@ export default function SignUpForm() {
           </Button>
         </form>
       </div>
+
+      <MyTypoGraphy myClass="mt-10">
+        If you have an account,{" "}
+        <NavLink className="underline" to="/login">
+          Login
+        </NavLink>
+      </MyTypoGraphy>
     </Container>
   );
 }

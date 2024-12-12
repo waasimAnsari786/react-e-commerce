@@ -33,6 +33,8 @@ import SearchBar from "./admin/SearchBar";
 import AdminProductRow from "./admin/AdminProductRow";
 import AllItemsPage from "./pages/admin pages/AllItemsPage";
 import EditItemsPage from "./pages/admin pages/EditItemsPage";
+import PendingOrdersRow from "./admin/PendingOrdersRow";
+import UpdateOrderStatus from "./admin/UpdateOrderStatus";
 
 export {
   Button,
@@ -70,4 +72,6 @@ export {
   AdminProductRow,
   AllItemsPage,
   EditItemsPage,
+  PendingOrdersRow,
+  UpdateOrderStatus,
 };

@@ -45,7 +45,7 @@ export default function AdminDashboard() {
     },
     {
       name: "Orders",
-      slug: "/admin/orders",
+      slug: "/admin/pending-orders",
       icon: <FaShoppingCart className="w-5 h-5" />,
       subsections: [
         {

@@ -9,6 +9,7 @@ import { getCartItemsThunk } from "../features/userAddToCartSlice";
 import { getAllImagesThunk } from "../features/fileSlice";
 import { login } from "../features/authSlice";
 import { getCategoriesThunk } from "../features/catogorySlice";
+import { getOrdersThunk } from "../features/ordersSlice";
 
 export default function MyWebLayout() {
   const authStatus = useSelector((state) => state.auth.status);
@@ -24,11 +25,16 @@ export default function MyWebLayout() {
       dispatch(login(getedUser));
       if (getedUserRole && getedUserRole.documents[0].role === "Admin") {
         dispatch(
-          getProductsThunk({ queryKey: "userId", queryVal: userData.$id })
+          getProductsThunk({ queryKey: "adminId", queryVal: userData.$id })
         );
+        dispatch(
+          getCartItemsThunk({ queryKey: "adminId", queryVal: userData.$id })
+        );
+        dispatch(getOrdersThunk(userData.$id));
         navigate("/admin/dashboard");
       } else if (getedUserRole && getedUserRole.documents[0].role === "Buyer") {
         dispatch(getProductsThunk());
+        dispatch(getCartItemsThunk({ queryVal: userData.$id }));
         navigate("/");
       }
     }
@@ -36,7 +42,6 @@ export default function MyWebLayout() {
 
   const getData = () => {
     if (userData) {
-      dispatch(getCartItemsThunk(userData.$id));
       dispatch(getAllImagesThunk());
       dispatch(getCategoriesThunk());
     }
@@ -47,25 +52,18 @@ export default function MyWebLayout() {
     getData();
   }, [authStatus]);
 
-  // return (
-  //   <>
-  //     <Header />
-  //     <Outlet />
-  //     <Footer />
-  //   </>
-  // );
-  if (userData && userData.userRole === "Buyer") {
+  if (userData && userData.userRole === "Admin") {
+    return (
+      <>
+        <Admin />
+      </>
+    );
+  } else {
     return (
       <>
         <Header />
         <Outlet />
         <Footer />
-      </>
-    );
-  } else if (userData && userData.userRole === "Admin") {
-    return (
-      <>
-        <Admin />
       </>
     );
   }

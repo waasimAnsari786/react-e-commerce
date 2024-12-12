@@ -36,7 +36,7 @@ export default function ProductForm({ product }) {
   useEffect(() => {
     const registeredInputsVal = getValues();
     Object.keys(registeredInputsVal).forEach((key) => {
-      setValue(key, product[key]); // Update each field dynamically
+      setValue(key, product?.[key]); // Update each field dynamically
     });
     product && setSelectedCategories(product.pParentCategory);
   }, [product]);
@@ -100,7 +100,7 @@ export default function ProductForm({ product }) {
       if (fileObj) {
         data.pImage = fileObj.$id;
         const createdProduct = await dispatch(
-          createProductThunk({ ...data, userId: userData.$id })
+          createProductThunk({ ...data, adminId: userData.$id })
         ).unwrap();
         if (createdProduct) {
           toast.success("Product added successfully!");

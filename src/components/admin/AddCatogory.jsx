@@ -1,19 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Button,
-  Container,
-  Input,
-  MyTypoGraphy,
-  SelectCategory,
-  Select,
-} from "../index";
+import { Button, Container, Input, MyTypoGraphy, Select } from "../index";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   addCategoryThunk,
-  getCategoriesThunk,
   updateCategoryThunk,
 } from "../../features/catogorySlice";
 

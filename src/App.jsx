@@ -142,6 +142,49 @@ function App() {
           ),
         },
         {
+          path: "/admin/pending-orders",
+          element: (
+            <AuthProtectedLayout authentication>
+              <AllItemsPage
+                searchKeyword="pName"
+                rowCompName="pending-orders"
+                tHeadArr={[
+                  "Product Image",
+                  "Product Name",
+                  "Product Slug",
+                  "Product Qty",
+                  "Product Price",
+                  "Product Sale Price",
+                  "Order Status",
+                  "Customer Name",
+                  "Action",
+                ]}
+              />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/admin/completed-orders",
+          element: (
+            <AuthProtectedLayout authentication>
+              <AllItemsPage
+                searchKeyword="pName"
+                rowCompName="completed-orders"
+                tHeadArr={[
+                  "Product Image",
+                  "Product Name",
+                  "Product Slug",
+                  "Product Qty",
+                  "Product Price",
+                  "Product Sale Price",
+                  "Order Status",
+                  "Customer Name",
+                ]}
+              />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
           path: "/admin/edit-category/:slug",
           element: (
             <AuthProtectedLayout authentication>
@@ -154,6 +197,14 @@ function App() {
           element: (
             <AuthProtectedLayout authentication>
               <EditItemsPage editItem="product" />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/admin/edit-orders/:slug",
+          element: (
+            <AuthProtectedLayout authentication>
+              <EditItemsPage editItem="order" />
             </AuthProtectedLayout>
           ),
         },

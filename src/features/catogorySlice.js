@@ -196,7 +196,7 @@ const categorySlice = createSlice({
       })
       .addCase(getCategoriesThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.categoriesArr = action.payload.documents;
+        state.categoriesArr = action.payload.documents || [];
         state.catogNames = state.categoriesArr.map(
           (curObj) => curObj.catogName
         );
