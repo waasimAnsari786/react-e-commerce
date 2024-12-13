@@ -4,6 +4,8 @@ import ordersService from "../appwrite/ordersService";
 const initialState = {
   filteredOrder: {},
   orders: [],
+  pendingOrders: [],
+  completedOrders: [],
   loading: true,
   error: null,
 };
@@ -86,6 +88,7 @@ const orderSlice = createSlice({
       .addCase(addOrderThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.orders.unshift(action.payload);
+        state.pendingOrders.unshift(action.payload);
       })
       .addCase(addOrderThunk.rejected, (state, action) => {
         state.loading = false;
@@ -100,6 +103,7 @@ const orderSlice = createSlice({
       .addCase(deleteOrderThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.orders.filter((order) => order.$id !== action.payload);
+        state.pendingOrders.filter((order) => order.$id !== action.payload);
       })
       .addCase(deleteOrderThunk.rejected, (state, action) => {
         state.loading = false;
@@ -116,6 +120,11 @@ const orderSlice = createSlice({
         state.orders.map((order) =>
           order.$id === action.payload.$id ? action.payload : order
         );
+        action.payload.orderStatus === "Completed"
+          ? state.completedOrders.unshift(action.payload)
+          : state.pendingOrders.map((order) =>
+              order.$id === action.payload.$id ? action.payload : order
+            );
       })
       .addCase(updateOrderThunk.rejected, (state, action) => {
         state.loading = false;
@@ -130,6 +139,12 @@ const orderSlice = createSlice({
       .addCase(getOrdersThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload || [];
+        state.pendingOrders = state.orders.filter(
+          (order) => order.orderStatus === "Pending..."
+        );
+        state.completedOrders = state.orders.filter(
+          (order) => order.orderStatus === "Completed"
+        );
       })
       .addCase(getOrdersThunk.rejected, (state, action) => {
         state.loading = false;

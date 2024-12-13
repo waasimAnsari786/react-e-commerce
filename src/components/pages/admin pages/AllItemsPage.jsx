@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CategoryRow,
   Container,
@@ -11,48 +11,33 @@ import { useSelector } from "react-redux";
 export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
   const { categoriesArr } = useSelector((state) => state.category);
   const { productsArr } = useSelector((state) => state.product);
-  const { orders } = useSelector((state) => state.orders);
+  const { pendingOrders } = useSelector((state) => state.orders);
+  const { completedOrders } = useSelector((state) => state.orders);
 
-  // Initialize state
-  const [searchResult, setSearchResult] = useState([]);
+  // Centralized function to derive source array
 
-  // Synchronize searchResult with the correct array
+  const getSourceArray = () => {
+    if (rowCompName === "categories") return categoriesArr;
+    if (rowCompName === "products") return productsArr;
+    if (rowCompName === "pending-orders") return pendingOrders;
+    if (rowCompName === "completed-orders") return completedOrders;
+    return [];
+  };
+
+  const [searchResult, setSearchResult] = useState(getSourceArray);
+
   useEffect(() => {
-    if (rowCompName === "categories") {
-      setSearchResult(categoriesArr);
-    } else if (rowCompName === "products") {
-      setSearchResult(productsArr);
-    } else if (rowCompName === "pending-orders") {
-      const pendingOrders = orders.filter(
-        (order) => order.orderStatus === "Pending..."
-      );
-      setSearchResult(pendingOrders);
-    } else if (rowCompName === "completed-orders") {
-      const completedOrders = orders.filter(
-        (order) => order.orderStatus === "Completed"
-      );
-      setSearchResult(completedOrders);
-    }
-  }, [categoriesArr, productsArr, rowCompName, orders]);
+    // Update search result immediately when rowCompName changes
+    setSearchResult(getSourceArray());
+  }, [rowCompName, categoriesArr, productsArr, pendingOrders, completedOrders]);
 
-  // Handle search
-  const handleSearch = useCallback(
-    (data) => {
-      const sourceArr =
-        (rowCompName === "categories" && categoriesArr) ||
-        (rowCompName === "products" && productsArr) ||
-        (rowCompName === "pending-orders" && orders) ||
-        (rowCompName === "completed-orders" && orders);
-
-      // Filter based on searchKeyword
-      const filteredResults = sourceArr.filter(
-        (item) =>
-          item[searchKeyword]?.toLowerCase() === data.searchValue.toLowerCase()
-      );
-      setSearchResult(filteredResults);
-    },
-    [categoriesArr, productsArr, rowCompName, searchKeyword, orders]
-  );
+  const handleSearch = (searchValue) => {
+    const sourceArr = getSourceArray();
+    const filteredResults = sourceArr.filter((item) =>
+      item[searchKeyword]?.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setSearchResult(filteredResults);
+  };
 
   return (
     <Container>

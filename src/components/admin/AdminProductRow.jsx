@@ -33,7 +33,7 @@ export default function AdminProductRow({ product }) {
       </td>
       <td className="px-4 py-2">{pName}</td>
       <td className="px-4 py-2">{pSlug}</td>
-      <td className="px-4 py-2">{pParentCategory.join(", ") || "None"}</td>
+      <td className="px-4 py-2">{pParentCategory?.join(", ") || "None"}</td>
       <td className="px-4 py-2">{pPrice}</td>
       <td className="px-4 py-2">{pSalePrice}</td>
       <td className="px-4 py-2">{pStockStatus}</td>
