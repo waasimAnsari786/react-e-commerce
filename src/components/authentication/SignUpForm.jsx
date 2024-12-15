@@ -22,23 +22,21 @@ export default function SignUpForm() {
   const handleSignUp = async (data) => {
     const userAccount = await auth.createAccount({ ...data });
     if (userAccount) {
-      const getUser = auth.getCurrentUser();
+      const getUser = await auth.getCurrentUser();
       if (getUser) {
         const createdUserRole = await userRole.createUserRole({
           role: data.role,
-          email: data.email,
+          userId: getUser.$id,
         });
         getUser.userRole = data.role;
         if (createdUserRole) {
-          console.log(createdUserRole);
           dispatch(login(getUser));
           if (data.role === "Admin") {
             navigate("/admin/dashboard");
-            toast.success("Signup Successfully");
           } else if (data.role === "Buyer") {
             navigate("/");
-            toast.success("Signup Successfully");
           }
+          toast.success("Signup Successfully");
         }
       }
     }

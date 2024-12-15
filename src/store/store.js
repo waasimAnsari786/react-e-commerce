@@ -5,6 +5,7 @@ import fileSliceReducers from "../features/fileSlice";
 import cartSliceReducers from "../features/userAddToCartSlice";
 import catogReducers from "../features/catogorySlice";
 import orderReducer from "../features/ordersSlice";
+import profileImageReducers from "../features/profileImagesSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     cart: cartSliceReducers,
     category: catogReducers,
     orders: orderReducer,
+    profileImage: profileImageReducers,
   },
 });
 

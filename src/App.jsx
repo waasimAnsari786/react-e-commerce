@@ -14,6 +14,7 @@ import {
   ProductForm,
   AllItemsPage,
   EditItemsPage,
+  ProfileSection,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -205,6 +206,14 @@ function App() {
           element: (
             <AuthProtectedLayout authentication>
               <EditItemsPage editItem="order" />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "/profile",
+          element: (
+            <AuthProtectedLayout authentication>
+              <ProfileSection />
             </AuthProtectedLayout>
           ),
         },

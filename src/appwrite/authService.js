@@ -64,6 +64,47 @@ class Auth {
       return false;
     }
   }
+
+  // New method: Update email
+  async updateEmail({ newEmail, password }) {
+    try {
+      const updatedEmail = await this.account.updateEmail(newEmail, password);
+      return updatedEmail;
+    } catch (error) {
+      toast.error("Update email error: " + error.message, {
+        position: "top-right",
+      });
+      return false;
+    }
+  }
+  async updateName(name) {
+    try {
+      const updatedName = await this.account.updateName(name);
+      return updatedName;
+    } catch (error) {
+      toast.error("Update name error: " + error.message, {
+        position: "top-right",
+      });
+      return false;
+    }
+  }
+
+  // New method: Update password
+  async updatePassword({ newPassword, oldPassword }) {
+    try {
+      // Appwrite does not require the old password to update the password.
+      const updatedPassword = await this.account.updatePassword(
+        newPassword,
+        oldPassword
+      );
+      return updatedPassword;
+    } catch (error) {
+      toast.error("Update password error: " + error.message, {
+        position: "top-right",
+      });
+      return false;
+    }
+  }
 }
 
 const auth = new Auth();

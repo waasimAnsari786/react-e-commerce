@@ -31,9 +31,24 @@ class UserRole {
       const userRole = await this.database.listDocuments(
         envImport.databaseID,
         envImport.userRoleCollectionID,
-        [Query.equal("email", [query])]
+        [Query.equal("userId", [query])]
       );
       return userRole;
+    } catch (error) {
+      console.log("get userRole error :: " + error.message);
+      return false;
+    }
+  }
+  async updateUserRole(userRole) {
+    const { role, userId, profileImage, userRoleId } = userRole;
+    try {
+      const updatedUserRole = await this.database.updateDocument(
+        envImport.databaseID,
+        envImport.userRoleCollectionID,
+        userRoleId,
+        { role, userId, profileImage }
+      );
+      return updatedUserRole;
     } catch (error) {
       console.log("get userRole error :: " + error.message);
       return false;

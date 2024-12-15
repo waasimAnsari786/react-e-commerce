@@ -10,6 +10,7 @@ import { getAllImagesThunk } from "../features/fileSlice";
 import { login } from "../features/authSlice";
 import { getCategoriesThunk } from "../features/catogorySlice";
 import { getOrdersThunk } from "../features/ordersSlice";
+import { getAllProfileImagesThunk } from "../features/profileImagesSlice";
 
 export default function MyWebLayout() {
   const authStatus = useSelector((state) => state.auth.status);
@@ -20,8 +21,10 @@ export default function MyWebLayout() {
   const getUser = async () => {
     const getedUser = await auth.getCurrentUser();
     if (getedUser) {
-      const getedUserRole = await userRole.getUserRole(getedUser.email);
-      getedUser.userRole = getedUserRole.documents[0].role;
+      const getedUserRole = await userRole.getUserRole(getedUser.$id);
+      getedUser.userRole = getedUserRole.documents[0]?.role;
+      getedUser.profileImage = getedUserRole.documents[0]?.profileImage;
+      getedUser.userRoleId = getedUserRole.documents[0]?.$id;
       dispatch(login(getedUser));
       if (getedUserRole && getedUserRole.documents[0].role === "Admin") {
         dispatch(
@@ -43,6 +46,7 @@ export default function MyWebLayout() {
   const getData = () => {
     if (userData) {
       dispatch(getAllImagesThunk());
+      dispatch(getAllProfileImagesThunk());
       dispatch(getCategoriesThunk());
     }
   };

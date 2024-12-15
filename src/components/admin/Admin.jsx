@@ -1,4 +1,4 @@
-import React, { useState, useId } from "react";
+import React, { useState, useId, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
 import { LogoutBtn } from "../index";
@@ -17,8 +17,20 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 export default function AdminDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openSubmenus, setOpenSubmenus] = useState({}); // Tracks open submenus
-  const authStatus = useSelector((state) => state.auth.status);
-  const { userData } = useSelector((state) => state.auth);
+  const { userData, status } = useSelector((state) => state.auth);
+  const { preview_URL_Arr } = useSelector((state) => state.profileImage);
+  const [imgPreview, setImgPreview] = useState(""); // Tracks the field being edited
+
+  const findImgPreview = useCallback(() => {
+    const imagePreview = preview_URL_Arr.find(
+      (preview) => preview.fileId === userData.profileImage
+    );
+    setImgPreview(imagePreview?.URL);
+  }, [status, userData]);
+
+  useEffect(() => {
+    findImgPreview();
+  }, [status, userData]);
 
   const navItems = [
     {
@@ -100,14 +112,16 @@ export default function AdminDashboard() {
         } lg:translate-x-0 lg:w-64 w-60 h-full`}
       >
         {/* Profile Section */}
-        <div className="p-6 text-center">
-          <img
-            src="https://via.placeholder.com/100"
-            alt="User Profile"
-            className="w-24 h-24 rounded-full mx-auto border-4 border-gray-700"
-          />
-          <h2 className="text-lg mt-4">👋 Hello, {userData.name}</h2>
-        </div>
+        <NavLink to="/profile">
+          <div className="p-6 text-center">
+            <img
+              src={imgPreview}
+              alt="User Profile"
+              className="w-24 h-24 rounded-full mx-auto border-4 border-gray-700"
+            />
+            <h2 className="text-lg mt-4">👋 Hello, {userData.name}</h2>
+          </div>
+        </NavLink>
 
         {/* Navigation Menu */}
         <nav className="mt-6">
@@ -166,7 +180,7 @@ export default function AdminDashboard() {
                 )}
               </li>
             ))}
-            {authStatus && <LogoutBtn />}
+            {status && <LogoutBtn />}
           </ul>
         </nav>
       </div>

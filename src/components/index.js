@@ -35,6 +35,7 @@ import AllItemsPage from "./pages/admin pages/AllItemsPage";
 import EditItemsPage from "./pages/admin pages/EditItemsPage";
 import PendingOrdersRow from "./admin/PendingOrdersRow";
 import UpdateOrderStatus from "./admin/UpdateOrderStatus";
+import ProfileSection from "./reuseableComponents/ProfileSection";
 
 export {
   Button,
@@ -74,4 +75,5 @@ export {
   EditItemsPage,
   PendingOrdersRow,
   UpdateOrderStatus,
+  ProfileSection,
 };

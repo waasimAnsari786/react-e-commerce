@@ -24,9 +24,10 @@ export default function LoginForm() {
     if (userAccount) {
       const getUser = await auth.getCurrentUser();
       if (getUser) {
-        toast.success("Login Successfully!");
-        const getedUserRole = await userRole.getUserRole(data.email);
+        const getedUserRole = await userRole.getUserRole(getUser.$id);
         getUser.userRole = getedUserRole.documents[0].role;
+        getUser.profileImage = getedUserRole.documents[0].profileImage;
+        getUser.userRoleId = getedUserRole.documents[0].$id;
         dispatch(login(getUser));
         if (getedUserRole && getedUserRole.documents[0].role === "Admin") {
           navigate("/admin/dashboard");
@@ -36,6 +37,7 @@ export default function LoginForm() {
         ) {
           navigate("/");
         }
+        toast.success("Login Successfully!");
       }
     }
   };
