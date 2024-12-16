@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Container, MyTypoGraphy, Button, Input } from "../index";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,30 +7,19 @@ import { toast } from "react-toastify";
 import { FaEdit } from "react-icons/fa";
 import userRoleService from "../../appwrite/userRoleService";
 import { login } from "../../features/authSlice";
-import { deleteUploadThunk, fileUploadThunk } from "../../features/fileSlice";
 import {
   deleteProfileImageThunk,
   uploadProfileImageThunk,
 } from "../../features/profileImagesSlice";
 
 export default function ProfileSection() {
-  const { userData, status } = useSelector((state) => state.auth);
-  const { preview_URL_Arr } = useSelector((state) => state.profileImage);
+  const { userData } = useSelector((state) => state.auth);
+  const { profileImageObj } = useSelector((state) => state.profileImage);
   const { name, email, profileImage, userRole, userRoleId, $id } = userData;
   const [editField, setEditField] = useState(""); // Tracks the field being edited
-  const [imgPreview, setImgPreview] = useState(""); // Tracks the field being edited
   const dispatch = useDispatch();
 
-  const findImgPreview = useCallback(() => {
-    const imagePreview = preview_URL_Arr.find(
-      (preview) => preview.fileId === profileImage
-    );
-    setImgPreview(imagePreview.URL);
-  }, [status, userData]);
-
-  useEffect(() => {
-    findImgPreview();
-  }, [status, userData]);
+  console.log("compoenent re-render");
 
   const {
     register,
@@ -86,7 +75,7 @@ export default function ProfileSection() {
       {/* User Image Section */}
       <div className="w-full lg:w-1/2 flex justify-center relative">
         <img
-          src={imgPreview}
+          src={profileImageObj.URL}
           alt="User Profile"
           className="rounded-full w-40 h-40 object-cover shadow-lg"
         />

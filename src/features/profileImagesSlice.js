@@ -14,7 +14,7 @@ const uploadProfileImageThunk = createAsyncThunk(
     try {
       const uploadedFile = await profileImageService.uploadProfileImage(file);
       if (uploadedFile) {
-        await dispatch(getAllProfileImagesThunk());
+        await dispatch(getAllProfileImagesThunk(uploadedFile.$id));
       }
       return uploadedFile;
     } catch (error) {
@@ -37,7 +37,7 @@ const deleteProfileImageThunk = createAsyncThunk(
 
 const getAllProfileImagesThunk = createAsyncThunk(
   "profileImage/getAll",
-  async (_, { rejectWithValue }) => {
+  async (fileId, { rejectWithValue }) => {
     try {
       const allProfileImages = await profileImageService.getAllProfileImages();
       if (allProfileImages) {
@@ -45,7 +45,7 @@ const getAllProfileImagesThunk = createAsyncThunk(
           URL: profileImageService.getProfileImagePreview(file.$id),
           fileId: file.$id,
         }));
-        return previewArr;
+        return [previewArr, fileId];
       }
     } catch (error) {
       return rejectWithValue(error.message);
@@ -65,7 +65,6 @@ const profileImageSlice = createSlice({
       })
       .addCase(uploadProfileImageThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.profileImageObj = action.payload;
       })
       .addCase(uploadProfileImageThunk.rejected, (state, action) => {
         state.loading = false;
@@ -77,7 +76,10 @@ const profileImageSlice = createSlice({
       })
       .addCase(getAllProfileImagesThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.preview_URL_Arr = action.payload || [];
+        state.preview_URL_Arr = action.payload[0] || [];
+        state.profileImageObj = state.preview_URL_Arr.find(
+          (preview) => preview.fileId === action.payload[1]
+        );
       })
       .addCase(getAllProfileImagesThunk.rejected, (state, action) => {
         state.loading = false;

@@ -1,4 +1,4 @@
-import React, { useState, useId, useCallback, useEffect } from "react";
+import React, { useState, useId } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
 import { LogoutBtn } from "../index";
@@ -18,19 +18,7 @@ export default function AdminDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openSubmenus, setOpenSubmenus] = useState({}); // Tracks open submenus
   const { userData, status } = useSelector((state) => state.auth);
-  const { preview_URL_Arr } = useSelector((state) => state.profileImage);
-  const [imgPreview, setImgPreview] = useState(""); // Tracks the field being edited
-
-  const findImgPreview = useCallback(() => {
-    const imagePreview = preview_URL_Arr.find(
-      (preview) => preview.fileId === userData.profileImage
-    );
-    setImgPreview(imagePreview?.URL);
-  }, [status, userData]);
-
-  useEffect(() => {
-    findImgPreview();
-  }, [status, userData]);
+  const { profileImageObj } = useSelector((state) => state.profileImage);
 
   const navItems = [
     {
@@ -115,7 +103,7 @@ export default function AdminDashboard() {
         <NavLink to="/profile">
           <div className="p-6 text-center">
             <img
-              src={imgPreview}
+              src={profileImageObj.URL}
               alt="User Profile"
               className="w-24 h-24 rounded-full mx-auto border-4 border-gray-700"
             />

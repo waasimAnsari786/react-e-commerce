@@ -46,7 +46,7 @@ export default function MyWebLayout() {
   const getData = () => {
     if (userData) {
       dispatch(getAllImagesThunk());
-      dispatch(getAllProfileImagesThunk());
+      dispatch(getAllProfileImagesThunk(userData.profileImage));
       dispatch(getCategoriesThunk());
     }
   };

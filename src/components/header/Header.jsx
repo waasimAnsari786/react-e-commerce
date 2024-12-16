@@ -1,11 +1,12 @@
 import React, { useId } from "react";
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { LogoutBtn, CartIcon } from "../index";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.status);
   const { userData } = useSelector((state) => state.auth);
+  const { profileImageObj } = useSelector((state) => state.profileImage);
 
   const navItems = [
     { name: "Home", slug: "/", active: true, id: useId() },
@@ -57,6 +58,16 @@ export default function Header() {
                   <>
                     <CartIcon />
                     <LogoutBtn />
+                    <Link to="/profile">
+                      <div className="flex justify-between items-center gap-2">
+                        <img
+                          src={profileImageObj?.URL}
+                          alt="User's image"
+                          className="h-10 w-10 rounded-full"
+                        />
+                        <p>Hello, {userData.name}</p>
+                      </div>
+                    </Link>
                   </>
                 )}
               </ul>
@@ -81,6 +92,16 @@ export default function Header() {
               <>
                 <CartIcon />
                 <LogoutBtn />
+                <Link to="/profile">
+                  <div className="flex flex-col gap-2 justify-between items-center">
+                    <img
+                      src={profileImageObj?.URL}
+                      alt="User's image"
+                      className="h-32 w-32 rounded-full"
+                    />
+                    <p>Hello {userData.name}</p>
+                  </div>
+                </Link>
               </>
             )}
           </ul>
