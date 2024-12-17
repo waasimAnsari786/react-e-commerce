@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import categoryService from "../appwrite/catogoriesService";
-import { toast } from "react-toastify";
 
 const initialState = {
   categoriesArr: [],
@@ -14,36 +13,40 @@ const initialState = {
 // Thunk to add a category
 export const addCategoryThunk = createAsyncThunk(
   "category/addCategory",
-  async (categoryData, { rejectWithValue, dispatch }) => {
+  async (categoryData, { rejectWithValue, dispatch, getState }) => {
     try {
+      const { categoriesArr } = getState().category;
+
       if (!categoryData.parentCatog) {
         const addedCategory = await categoryService.createCategory(
           categoryData
         );
         if (addedCategory) {
-          await dispatch(getCategoriesThunk());
+          dispatch(getCategoriesThunk());
           return addedCategory;
         }
       } else {
-        const categories = await dispatch(getCategoriesThunk()).unwrap();
-        let parentCategory = categories.documents.find(
+        let parentCategory = categoriesArr.find(
           (category) => category.catogName === categoryData.parentCatog
         );
 
-        let updatedParentCategory = {
-          ...parentCategory,
-          subCatogs: [...parentCategory.subCatogs, categoryData.catogName],
-        };
-        const updatedCategory = await categoryService.updateCategory(
-          updatedParentCategory
-        );
-        const addedCategory = await categoryService.createCategory(
-          categoryData
-        );
+        if (parentCategory) {
+          const updatedParentCategory = {
+            ...parentCategory,
+            subCatogs: [...parentCategory.subCatogs, categoryData.catogName],
+          };
 
-        if (addedCategory && updatedCategory) {
-          await dispatch(getCategoriesThunk());
-          return addedCategory;
+          const updatedCategory = await categoryService.updateCategory(
+            updatedParentCategory
+          );
+          const addedCategory = await categoryService.createCategory(
+            categoryData
+          );
+
+          if (addedCategory && updatedCategory) {
+            dispatch(getCategoriesThunk());
+            return addedCategory;
+          }
         }
       }
     } catch (error) {
@@ -68,41 +71,48 @@ export const getCategoriesThunk = createAsyncThunk(
 // Thunk to remove a category
 export const removeCategoryThunk = createAsyncThunk(
   "category/removeCategory",
-  async (category, { rejectWithValue, dispatch }) => {
+  async (category, { rejectWithValue, dispatch, getState }) => {
     try {
+      const { categoriesArr } = getState().category;
+
+      // Update child categories' parent
       if (category.subCatogs.length > 0) {
-        const categories = await dispatch(getCategoriesThunk()).unwrap();
-        let subCatog;
-        for (let index = 0; index < category.subCatogs.length; index++) {
-          subCatog = categories.documents.find(
-            (catog) => catog.catogName === category.subCatogs[index]
+        for (const subCatogName of category.subCatogs) {
+          const subCatog = categoriesArr.find(
+            (catog) => catog.catogName === subCatogName
           );
-          let newObj = { ...subCatog, parentCatog: "" };
-          const updatedCategory = await categoryService.updateCategory(newObj);
+
+          if (subCatog) {
+            const updatedSubCatog = { ...subCatog, parentCatog: "" };
+            await categoryService.updateCategory(updatedSubCatog);
+          }
         }
       }
+
+      // Update parent category's subCatogs
       if (category.parentCatog) {
-        const categories = await dispatch(getCategoriesThunk()).unwrap();
-        let parentCategory = categories.documents.find(
+        const parentCategory = categoriesArr.find(
           (catog) => catog.catogName === category.parentCatog
         );
-        let updatedSubCatogs = parentCategory.subCatogs.filter(
-          (catog) => catog !== category.catogName
-        );
-        let updatedParentCategory = {
-          ...parentCategory,
-          subCatogs: updatedSubCatogs,
-        };
-        const updatedCategory = await categoryService.updateCategory(
-          updatedParentCategory
-        );
+
+        if (parentCategory) {
+          const updatedParentCategory = {
+            ...parentCategory,
+            subCatogs: parentCategory.subCatogs.filter(
+              (catog) => catog !== category.catogName
+            ),
+          };
+
+          await categoryService.updateCategory(updatedParentCategory);
+        }
       }
 
       const deletedCategory = await categoryService.deleteCategory(
         category.$id
       );
+
       if (deletedCategory) {
-        await dispatch(getCategoriesThunk());
+        dispatch(getCategoriesThunk());
         return deletedCategory;
       }
     } catch (error) {
@@ -114,47 +124,54 @@ export const removeCategoryThunk = createAsyncThunk(
 // Thunk to update a category
 export const updateCategoryThunk = createAsyncThunk(
   "category/updateCategory",
-  async (
-    { oldData, newData } = categoryData,
-    { rejectWithValue, dispatch }
-  ) => {
+  async ({ oldData, newData }, { rejectWithValue, dispatch, getState }) => {
     try {
-      const categories = await dispatch(getCategoriesThunk()).unwrap();
+      const { categoriesArr } = getState().category;
+
+      // Remove category from old parent
       if (oldData.parentCatog) {
-        let oldParentCategory = categories.documents.find(
+        const oldParentCategory = categoriesArr.find(
           (catog) => catog.catogName === oldData.parentCatog
         );
-        let updatedOldParentCategory = {
-          ...oldParentCategory,
-          subCatogs: oldParentCategory.subCatogs.filter(
-            (catog) => catog !== oldData.catogName
-          ),
-        };
-        const updatedOldParentCategoryDatabase =
-          await categoryService.updateCategory(updatedOldParentCategory);
-      }
-      if (newData.parentCatog) {
-        let newParentCategory = categories.documents.find(
-          (catog) => catog.catogName === newData.parentCatog
-        );
-        let updatedNewParentCategory = {
-          ...newParentCategory,
-          subCatogs: [
-            ...newParentCategory.subCatogs.filter(
+
+        if (oldParentCategory) {
+          const updatedOldParent = {
+            ...oldParentCategory,
+            subCatogs: oldParentCategory.subCatogs.filter(
               (catog) => catog !== oldData.catogName
             ),
-            newData.catogName,
-          ],
-        };
-        const updatedNewParentCategoryDatabase =
-          await categoryService.updateCategory(updatedNewParentCategory);
+          };
+          await categoryService.updateCategory(updatedOldParent);
+        }
       }
 
-      const updatedCategory = categoryService.updateCategory({
+      // Add category to new parent
+      if (newData.parentCatog) {
+        const newParentCategory = categoriesArr.find(
+          (catog) => catog.catogName === newData.parentCatog
+        );
+
+        if (newParentCategory) {
+          const updatedNewParent = {
+            ...newParentCategory,
+            subCatogs: [
+              ...newParentCategory.subCatogs.filter(
+                (catog) => catog !== oldData.catogName
+              ),
+              newData.catogName,
+            ],
+          };
+          await categoryService.updateCategory(updatedNewParent);
+        }
+      }
+
+      const updatedCategory = await categoryService.updateCategory({
         ...oldData,
         ...newData,
       });
+
       if (updatedCategory) {
+        dispatch(getCategoriesThunk());
         return updatedCategory;
       }
     } catch (error) {
@@ -168,10 +185,10 @@ const categorySlice = createSlice({
   initialState,
   reducers: {
     findCategory: (state, action) => {
-      let catog = state.categoriesArr.find(
+      const catog = state.categoriesArr.find(
         (catog) => catog.catogSlug === action.payload
       );
-      state.filteredCategory = catog;
+      state.filteredCategory = catog || {};
     },
   },
   extraReducers: (builder) => {
@@ -197,9 +214,7 @@ const categorySlice = createSlice({
       .addCase(getCategoriesThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.categoriesArr = action.payload.documents || [];
-        state.catogNames = state.categoriesArr.map(
-          (curObj) => curObj.catogName
-        );
+        state.catogNames = state.categoriesArr.map((catog) => catog.catogName);
       })
       .addCase(getCategoriesThunk.rejected, (state, action) => {
         state.loading = false;

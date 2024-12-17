@@ -121,12 +121,15 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(updateProductThunk.fulfilled, (state, action) => {
-        let { productsArr } = state;
+        // let { productsArr } = state;
         state.loading = false;
-        const index = productsArr.findIndex(
-          (item) => item.$id === action.payload.$id
+        state.productsArr.map((product) =>
+          product.$id === action.payload.$id ? action.payload : product
         );
-        productsArr.splice(index, 1, action.payload);
+        // const index = productsArr.findIndex(
+        //   (item) => item.$id === action.payload.$id
+        // );
+        // productsArr.splice(index, 1, action.payload);
       })
       .addCase(updateProductThunk.rejected, (state, action) => {
         state.loading = false;

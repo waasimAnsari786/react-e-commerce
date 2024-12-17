@@ -19,8 +19,6 @@ export default function ProfileSection() {
   const [editField, setEditField] = useState(""); // Tracks the field being edited
   const dispatch = useDispatch();
 
-  console.log("compoenent re-render");
-
   const {
     register,
     handleSubmit,
@@ -75,7 +73,7 @@ export default function ProfileSection() {
       {/* User Image Section */}
       <div className="w-full lg:w-1/2 flex justify-center relative">
         <img
-          src={profileImageObj.URL}
+          src={profileImageObj?.URL}
           alt="User Profile"
           className="rounded-full w-40 h-40 object-cover shadow-lg"
         />

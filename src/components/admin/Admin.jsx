@@ -103,7 +103,7 @@ export default function AdminDashboard() {
         <NavLink to="/profile">
           <div className="p-6 text-center">
             <img
-              src={profileImageObj.URL}
+              src={profileImageObj?.URL}
               alt="User Profile"
               className="w-24 h-24 rounded-full mx-auto border-4 border-gray-700"
             />

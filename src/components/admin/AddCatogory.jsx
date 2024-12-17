@@ -8,6 +8,7 @@ import {
   addCategoryThunk,
   updateCategoryThunk,
 } from "../../features/catogorySlice";
+import { updateProductThunk } from "../../features/productSlice";
 
 export default function AddCatogory({ catogory }) {
   const {
@@ -24,6 +25,7 @@ export default function AddCatogory({ catogory }) {
   }, [catogory]);
 
   const { catogNames } = useSelector((state) => state.category);
+  const { productsArr } = useSelector((state) => state.product);
   const userData = useSelector((state) => state.auth.userData);
 
   const slugTransform = useCallback(
@@ -52,6 +54,18 @@ export default function AddCatogory({ catogory }) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const updateProdctsParCatog = (oldParentCategory, newParentCategory) => {
+    const filteredProducts = productsArr.map((product) => {
+      if (product.pParentCategory.includes(oldParentCategory)) {
+        const duplicatedProduct = { ...product };
+        duplicatedProduct.pParentCategory = product.pParentCategory.filter(
+          (catog) => catog !== oldParentCategory
+        );
+        dispatch(updateProductThunk());
+      }
+    });
+  };
 
   const catogorySubmit = async (data) => {
     if (catogory) {

@@ -29,6 +29,8 @@ export default function SignUpForm() {
           userId: getUser.$id,
         });
         getUser.userRole = data.role;
+        getUser.profileImage = "675d310200015bc6b652";
+        getUser.userRoleId = createdUserRole.$id;
         if (createdUserRole) {
           dispatch(login(getUser));
           if (data.role === "Admin") {
