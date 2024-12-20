@@ -12,14 +12,14 @@ import { toast } from "react-toastify";
 
 export default function SingleProduct() {
   const dispatch = useDispatch();
-  const { slug } = useParams();
+  const { slug, productId } = useParams();
   const [value, setValue] = useState(1);
   const [imgPreview, setImgPreview] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(productFilter(slug));
-  }, [slug, dispatch]);
+    dispatch(productFilter(productId));
+  }, [slug, dispatch, productId]);
 
   const calculateDiscount = (price, salePrice) => {
     if (price > 0 && salePrice > 0) {

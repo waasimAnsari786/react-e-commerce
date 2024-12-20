@@ -5,8 +5,10 @@ import {
   SearchBar,
   AdminProductRow,
   PendingOrdersRow,
+  Button,
 } from "../../index";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
   const { categoriesArr } = useSelector((state) => state.category);
@@ -14,8 +16,9 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
   const { pendingOrders } = useSelector((state) => state.orders);
   const { completedOrders } = useSelector((state) => state.orders);
 
-  // Centralized function to derive source array
+  const navigate = useNavigate();
 
+  // Centralized function to derive source array
   const getSourceArray = () => {
     if (rowCompName === "categories") return categoriesArr;
     if (rowCompName === "products") return productsArr;
@@ -85,6 +88,25 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
             )}
           </tbody>
         </table>
+        {rowCompName !== "pending-orders" && (
+          <Button
+            myClass="lg:hidden block"
+            onClick={() =>
+              rowCompName === "categories"
+                ? navigate("/admin/add-category")
+                : rowCompName === "products"
+                ? navigate("/admin/add-product")
+                : rowCompName === "completed-orders" &&
+                  navigate("/admin/pending-orders")
+            }
+          >
+            {rowCompName === "categories"
+              ? "Add New Category"
+              : rowCompName === "products"
+              ? "Add New Product"
+              : rowCompName === "completed-orders" && "Add New Order"}
+          </Button>
+        )}
       </div>
     </Container>
   );

@@ -57,20 +57,6 @@ export default function AddCatogory({ catogory }) {
   const navigate = useNavigate();
 
   const catogorySubmit = async (data) => {
-    // Extract keys from the data object
-    const keysFromData = Object.keys(data);
-
-    const isCategoryPresent = categoriesArr.some((category) =>
-      keysFromData.every((key) => data[key] === category[key])
-    );
-
-    if (isCategoryPresent) {
-      toast.error(
-        "You can't add this category because it's already exists in your data"
-      );
-      return;
-    }
-
     if (catogory) {
       const updatedCategory = await dispatch(
         updateCategoryThunk({

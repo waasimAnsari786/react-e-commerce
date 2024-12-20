@@ -7,15 +7,15 @@ import { productFilter } from "../../../features/productSlice";
 import { findOrder } from "../../../features/ordersSlice";
 
 export default function EditItemsPage({ editItem }) {
-  const { slug } = useParams();
+  const { slug, productId, categoryId } = useParams();
   const dispatch = useDispatch();
   const { filteredCategory } = useSelector((state) => state.category);
   const { filteredProduct } = useSelector((state) => state.product);
   const { filteredOrder } = useSelector((state) => state.orders);
 
   useEffect(() => {
-    editItem === "category" && dispatch(findCategory(slug));
-    editItem === "product" && dispatch(productFilter(slug));
+    editItem === "category" && dispatch(findCategory(categoryId));
+    editItem === "product" && dispatch(productFilter(productId));
     editItem === "order" && dispatch(findOrder(slug));
   }, []);
 

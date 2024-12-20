@@ -86,7 +86,7 @@ const CartRow = ({ product }) => {
   return (
     <tr className="border border-gray-300 p-2 ">
       <td>
-        <Link to={`/product/${pSlug}`}>
+        <Link to={`/product/${pSlug}/${$id}`}>
           <img
             src={pImage}
             alt={pName}

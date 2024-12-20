@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import categoryService from "../appwrite/catogoriesService";
 import { updateProductThunk } from "./productSlice";
+import { toast } from "react-toastify";
 
 const initialState = {
   categoriesArr: [],
@@ -17,6 +18,17 @@ export const addCategoryThunk = createAsyncThunk(
   async (categoryData, { rejectWithValue, dispatch, getState }) => {
     try {
       const { categoriesArr } = getState().category;
+
+      const isCategory = categoriesArr.some(
+        (category) => category.catogName === categoryData.catogName
+      );
+
+      if (isCategory) {
+        toast.info(
+          "You can't add this category because it's already exists in your data. However, you can update it."
+        );
+        return rejectWithValue("Category already exists.");
+      }
 
       if (!categoryData.parentCatog) {
         const addedCategory = await categoryService.createCategory(
@@ -146,6 +158,22 @@ export const updateCategoryThunk = createAsyncThunk(
       const { categoriesArr } = getState().category;
       const { productsArr } = getState().product;
 
+      // Extract keys from the data object
+      const keysFromNewData = Object.keys(newData);
+
+      const isCategory = categoriesArr.some((category) =>
+        keysFromNewData.every(
+          (key) => newData[key]?.toLowerCase() === category[key]?.toLowerCase()
+        )
+      );
+
+      if (isCategory) {
+        toast.error(
+          "You can't add this category because it's already exists in your data"
+        );
+        return rejectWithValue("Category already exists.");
+      }
+
       // Remove category from old parent
       if (oldData.parentCatog) {
         const oldParentCategory = categoriesArr.find(
@@ -235,7 +263,7 @@ const categorySlice = createSlice({
   reducers: {
     findCategory: (state, action) => {
       const catog = state.categoriesArr.find(
-        (catog) => catog.catogSlug === action.payload
+        (catog) => catog.$id === action.payload
       );
       state.filteredCategory = catog || {};
     },

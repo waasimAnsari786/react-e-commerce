@@ -71,7 +71,7 @@ const productSlice = createSlice({
   reducers: {
     productFilter: (state, action) => {
       let fetchedProduct = state.productsArr.find(
-        (product) => product.pSlug === action.payload
+        (product) => product.$id === action.payload
       );
       state.filteredProduct = fetchedProduct;
     },

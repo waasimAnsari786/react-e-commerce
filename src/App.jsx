@@ -17,7 +17,6 @@ import {
   ProfileSection,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -56,7 +55,7 @@ function App() {
           ),
         },
         {
-          path: "/product/:slug",
+          path: "/product/:slug/:productId",
           element: (
             <AuthProtectedLayout authentication>
               <SingleProduct />
@@ -186,7 +185,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/edit-category/:slug",
+          path: "/admin/edit-category/:slug/:categoryId",
           element: (
             <AuthProtectedLayout authentication>
               <EditItemsPage editItem="category" />
@@ -194,7 +193,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/edit-product/:slug",
+          path: "/admin/edit-product/:slug/:productId",
           element: (
             <AuthProtectedLayout authentication>
               <EditItemsPage editItem="product" />

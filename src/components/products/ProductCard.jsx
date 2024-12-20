@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MyTypoGraphy } from "../index";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllImagesThunk } from "../../features/fileSlice";
 
 export default function ProductCard({ myClass = "", product }) {
   const { pName, pShortDes, pStockStatus, pImage, pPrice, pSalePrice } =
@@ -9,11 +8,6 @@ export default function ProductCard({ myClass = "", product }) {
 
   const dispatch = useDispatch();
   const { preview_URL_Arr } = useSelector((state) => state.file);
-  const { userData } = useSelector((state) => state.auth);
-
-  // useEffect(() => {
-  //   dispatch(getAllImagesThunk());
-  // }, []);
 
   const calculateDiscount = (price, salePrice) => {
     if (price > 0 && salePrice > 0) {

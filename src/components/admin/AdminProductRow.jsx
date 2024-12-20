@@ -40,7 +40,7 @@ export default function AdminProductRow({ product }) {
       <td className="px-4 py-2 text-center">
         <Button
           myClass="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mr-2"
-          onClick={() => navigate(`/admin/edit-product/${pSlug}`)}
+          onClick={() => navigate(`/admin/edit-product/${pSlug}/${$id}`)}
         >
           Edit
         </Button>

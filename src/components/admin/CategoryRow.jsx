@@ -19,7 +19,9 @@ const CategoryRow = ({ category }) => {
           <Button
             myClass="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mr-2"
             onClick={() =>
-              navigate(`/admin/edit-category/${category.catogSlug}`)
+              navigate(
+                `/admin/edit-category/${category.catogSlug}/${category.$id}`
+              )
             }
           >
             Edit

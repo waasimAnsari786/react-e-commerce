@@ -81,6 +81,10 @@ export default function ProductForm({ product }) {
 
     const isProductPresent = productsArr.some((product) => {
       return keysFromData.every((key) => {
+        if (key === "pImage") {
+          return true;
+        }
+
         if (key === "pParentCategory") {
           // Check if arrays are equal (all elements in data.pParentCategory exist in product.pParentCategory)
           return (
@@ -91,7 +95,10 @@ export default function ProductForm({ product }) {
           );
         } else {
           // Compare scalar values
-          return product[key] === data[key];
+          return (
+            product[key]?.toString().toLowerCase() ===
+            data[key]?.toString().toLowerCase()
+          );
         }
       });
     });
