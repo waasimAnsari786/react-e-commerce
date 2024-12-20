@@ -19,9 +19,7 @@ import {
 } from "../../features/productSlice";
 
 export default function ProductForm({ product }) {
-  const [selectedCategories, setSelectedCategories] = useState(
-    product?.pParentCategory || []
-  );
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const {
     handleSubmit,
@@ -30,6 +28,7 @@ export default function ProductForm({ product }) {
     setValue,
     control,
     getValues,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -43,6 +42,7 @@ export default function ProductForm({ product }) {
 
   const { preview_URL_Arr } = useSelector((state) => state.file);
   const { catogNames } = useSelector((state) => state.category);
+  const { productsArr } = useSelector((state) => state.product);
   const userData = useSelector((state) => state.auth.userData);
 
   const slugTransform = useCallback(
@@ -77,6 +77,33 @@ export default function ProductForm({ product }) {
     data.pSalePrice = Number(data.pSalePrice);
     data.pParentCategory = selectedCategories;
 
+    const keysFromData = Object.keys(data);
+
+    const isProductPresent = productsArr.some((product) => {
+      return keysFromData.every((key) => {
+        if (key === "pParentCategory") {
+          // Check if arrays are equal (all elements in data.pParentCategory exist in product.pParentCategory)
+          return (
+            Array.isArray(data[key]) &&
+            Array.isArray(product[key]) &&
+            data[key].every((val) => product[key].includes(val)) &&
+            product[key].every((val) => data[key].includes(val))
+          );
+        } else {
+          // Compare scalar values
+          return product[key] === data[key];
+        }
+      });
+    });
+
+    if (isProductPresent) {
+      toast.error(
+        "You can't add this product because it's already exists in your data"
+      );
+      navigate("/admin/add-product");
+      return;
+    }
+
     if (product) {
       if (typeof data.pImage === "object") {
         const fileObj = await dispatch(
@@ -89,7 +116,7 @@ export default function ProductForm({ product }) {
       }
 
       const updatedProduct = await dispatch(
-        updateProductThunk({ docID: product.$id, updatedObj: data })
+        updateProductThunk({ ...product, ...data })
       ).unwrap();
       if (updatedProduct) {
         toast.success("Product updated successfully!");

@@ -8,7 +8,6 @@ import {
   addCategoryThunk,
   updateCategoryThunk,
 } from "../../features/catogorySlice";
-import { updateProductThunk } from "../../features/productSlice";
 
 export default function AddCatogory({ catogory }) {
   const {
@@ -16,16 +15,18 @@ export default function AddCatogory({ catogory }) {
     register,
     watch,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm();
 
   useEffect(() => {
-    catogory &&
-      Object.keys(catogory).map((key) => setValue(key, catogory[key]));
+    const registeredInputsVal = getValues();
+    Object.keys(registeredInputsVal).forEach((key) => {
+      setValue(key, catogory?.[key]); // Update each field dynamically
+    });
   }, [catogory]);
 
-  const { catogNames } = useSelector((state) => state.category);
-  const { productsArr } = useSelector((state) => state.product);
+  const { catogNames, categoriesArr } = useSelector((state) => state.category);
   const userData = useSelector((state) => state.auth.userData);
 
   const slugTransform = useCallback(
@@ -55,19 +56,21 @@ export default function AddCatogory({ catogory }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const updateProdctsParCatog = (oldParentCategory, newParentCategory) => {
-    const filteredProducts = productsArr.map((product) => {
-      if (product.pParentCategory.includes(oldParentCategory)) {
-        const duplicatedProduct = { ...product };
-        duplicatedProduct.pParentCategory = product.pParentCategory.filter(
-          (catog) => catog !== oldParentCategory
-        );
-        dispatch(updateProductThunk());
-      }
-    });
-  };
-
   const catogorySubmit = async (data) => {
+    // Extract keys from the data object
+    const keysFromData = Object.keys(data);
+
+    const isCategoryPresent = categoriesArr.some((category) =>
+      keysFromData.every((key) => data[key] === category[key])
+    );
+
+    if (isCategoryPresent) {
+      toast.error(
+        "You can't add this category because it's already exists in your data"
+      );
+      return;
+    }
+
     if (catogory) {
       const updatedCategory = await dispatch(
         updateCategoryThunk({
@@ -116,7 +119,7 @@ export default function AddCatogory({ catogory }) {
             inpClass="w-full"
           />
           <Select
-            options={catogNames}
+            options={catogNames.filter((name) => name !== "Uncategorise")}
             label="Select Parent Category :"
             {...register("parentCatog")}
           />

@@ -30,12 +30,39 @@ class Product {
   }
 
   async updateProduct(product) {
+    const {
+      pName,
+      pSlug,
+      pPrice,
+      pSalePrice,
+      pShortDes,
+      pLongDes,
+      pStockStatus,
+      pImage,
+      pParentCategory,
+      adminId,
+      $id,
+    } = product;
+
     try {
       const updatedProduct = await this.database.updateDocument(
         envImport.databaseID,
         envImport.collectionID,
-        product.docID,
-        { ...product.updatedObj }
+        $id,
+        // product.docID,
+        {
+          pName,
+          pSlug,
+          pPrice,
+          pSalePrice,
+          pShortDes,
+          pLongDes,
+          pStockStatus,
+          pImage,
+          pParentCategory,
+          adminId,
+        }
+        // { ...product.updatedObj }
       );
       return updatedProduct;
     } catch (error) {

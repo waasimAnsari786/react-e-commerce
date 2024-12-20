@@ -22,10 +22,7 @@ export default function SelectCategory({
         <Input
           type="checkbox"
           value={category}
-          checked={
-            selectedCategories.includes(category) ||
-            catogNames.includes("Uncategorise")
-          }
+          checked={selectedCategories.includes(category)}
           onChange={() => handleCategoryChange(category)}
           label={category}
           parentDiv=""

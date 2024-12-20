@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import categoryService from "../appwrite/catogoriesService";
+import { updateProductThunk } from "./productSlice";
 
 const initialState = {
   categoriesArr: [],
@@ -74,6 +75,7 @@ export const removeCategoryThunk = createAsyncThunk(
   async (category, { rejectWithValue, dispatch, getState }) => {
     try {
       const { categoriesArr } = getState().category;
+      const { productsArr } = getState().product;
 
       // Update child categories' parent
       if (category.subCatogs.length > 0) {
@@ -112,6 +114,21 @@ export const removeCategoryThunk = createAsyncThunk(
       );
 
       if (deletedCategory) {
+        const products = productsArr.map((product) => {
+          if (product.pParentCategory.includes(category.catogName)) {
+            const newArr = product.pParentCategory.filter(
+              (catog) => catog !== category.catogName
+            );
+
+            newArr.length === 0 ? newArr.push("Uncategorise") : newArr;
+
+            const duplicatedProduct = {
+              ...product,
+              pParentCategory: newArr,
+            };
+            dispatch(updateProductThunk(duplicatedProduct));
+          }
+        });
         dispatch(getCategoriesThunk());
         return deletedCategory;
       }
@@ -127,6 +144,7 @@ export const updateCategoryThunk = createAsyncThunk(
   async ({ oldData, newData }, { rejectWithValue, dispatch, getState }) => {
     try {
       const { categoriesArr } = getState().category;
+      const { productsArr } = getState().product;
 
       // Remove category from old parent
       if (oldData.parentCatog) {
@@ -165,12 +183,43 @@ export const updateCategoryThunk = createAsyncThunk(
         }
       }
 
+      if (oldData.subCatogs.length > 0) {
+        for (const subCatogName of oldData.subCatogs) {
+          const subCatog = categoriesArr.find(
+            (catog) => catog.catogName === subCatogName
+          );
+
+          if (subCatog) {
+            const updatedSubCatog = {
+              ...subCatog,
+              parentCatog: newData.catogName,
+            };
+            await categoryService.updateCategory(updatedSubCatog);
+          }
+        }
+      }
+
       const updatedCategory = await categoryService.updateCategory({
         ...oldData,
         ...newData,
       });
 
       if (updatedCategory) {
+        const products = productsArr.map((product) => {
+          if (product.pParentCategory.includes(oldData.catogName)) {
+            const duplicatedProduct = {
+              ...product,
+              pParentCategory: [
+                ...product.pParentCategory.filter(
+                  (catog) => catog !== oldData.catogName
+                ),
+                newData.catogName,
+              ],
+            };
+            dispatch(updateProductThunk(duplicatedProduct));
+          }
+        });
+
         dispatch(getCategoriesThunk());
         return updatedCategory;
       }
