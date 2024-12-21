@@ -14,7 +14,7 @@ export const createProductThunk = createAsyncThunk(
   async (productData, { rejectWithValue }) => {
     try {
       const createdProduct = await productService.createProduct(productData);
-      return createdProduct && createdProduct;
+      return createdProduct;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -29,7 +29,7 @@ export const getProductsThunk = createAsyncThunk(
         queryData && queryData.queryKey,
         queryData && queryData.queryVal
       );
-      return fetchedProducts && fetchedProducts;
+      return fetchedProducts;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -58,7 +58,7 @@ export const updateProductThunk = createAsyncThunk(
   async (productData, { rejectWithValue }) => {
     try {
       const updatedProduct = await productService.updateProduct(productData);
-      return updatedProduct && updatedProduct;
+      return updatedProduct;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -84,7 +84,7 @@ const productSlice = createSlice({
       })
       .addCase(createProductThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.productsArr.unshift(action.payload);
+        state.productsArr.push(action.payload);
       })
       .addCase(createProductThunk.rejected, (state, action) => {
         state.loading = false;

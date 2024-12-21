@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import addToCartService from "../appwrite/userAddtoCartService";
-import { toast } from "react-toastify";
 
 const initialState = {
   cartItems: [],
@@ -11,12 +10,9 @@ const initialState = {
 // Thunk to add an item to the cart
 export const addToCartThunk = createAsyncThunk(
   "cart/addToCart",
-  async (itemData, { rejectWithValue, dispatch }) => {
+  async (itemData, { rejectWithValue }) => {
     try {
       const addedItem = await addToCartService.createAddtoCart(itemData);
-      if (addedItem) {
-        await dispatch(getCartItemsThunk({ queryVal: itemData.userId }));
-      }
       return addedItem;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -43,13 +39,10 @@ export const getCartItemsThunk = createAsyncThunk(
 // Thunk to remove an item from the cart
 export const removeFromCartThunk = createAsyncThunk(
   "cart/removeFromCart",
-  async (itemData, { rejectWithValue, dispatch }) => {
+  async (itemData, { rejectWithValue }) => {
     try {
       const removedItem = await addToCartService.deleteAddToCart(itemData.$id);
-      if (removedItem) {
-        await dispatch(getCartItemsThunk({ queryVal: itemData.userId }));
-      }
-      return removedItem;
+      return itemData.$id;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -59,12 +52,9 @@ export const removeFromCartThunk = createAsyncThunk(
 // Thunk to update a cart item (e.g., quantity)
 export const updateCartItemThunk = createAsyncThunk(
   "cart/updateCartItem",
-  async (itemData, { rejectWithValue, dispatch }) => {
+  async (itemData, { rejectWithValue }) => {
     try {
       const updatedItem = await addToCartService.updateAddToCart(itemData);
-      if (updatedItem) {
-        await dispatch(getCartItemsThunk({ queryVal: itemData.userId }));
-      }
       return updatedItem;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -85,6 +75,7 @@ const cartSlice = createSlice({
       })
       .addCase(addToCartThunk.fulfilled, (state, action) => {
         state.loading = false;
+        state.cartItems.push(action.payload);
       })
       .addCase(addToCartThunk.rejected, (state, action) => {
         state.loading = false;
@@ -112,6 +103,9 @@ const cartSlice = createSlice({
       })
       .addCase(removeFromCartThunk.fulfilled, (state, action) => {
         state.loading = false;
+        state.cartItems = state.cartItems.filter(
+          (product) => product.$id !== action.payload
+        );
       })
       .addCase(removeFromCartThunk.rejected, (state, action) => {
         state.loading = false;
@@ -125,6 +119,9 @@ const cartSlice = createSlice({
       })
       .addCase(updateCartItemThunk.fulfilled, (state, action) => {
         state.loading = false;
+        state.cartItems = state.cartItems.map((product) =>
+          product.$id === action.payload.$id ? action.payload : product
+        );
       })
       .addCase(updateCartItemThunk.rejected, (state, action) => {
         state.loading = false;

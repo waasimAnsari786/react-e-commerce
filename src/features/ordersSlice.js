@@ -120,11 +120,12 @@ const orderSlice = createSlice({
         state.orders.map((order) =>
           order.$id === action.payload.$id ? action.payload : order
         );
-        action.payload.orderStatus === "Completed"
-          ? state.completedOrders.unshift(action.payload)
-          : state.pendingOrders.map((order) =>
-              order.$id === action.payload.$id ? action.payload : order
-            );
+        if (action.payload.orderStatus === "Completed") {
+          state.completedOrders.unshift(action.payload);
+          state.pendingOrders = state.pendingOrders.filter(
+            (order) => order.$id !== action.payload.$id
+          );
+        }
       })
       .addCase(updateOrderThunk.rejected, (state, action) => {
         state.loading = false;

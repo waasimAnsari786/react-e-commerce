@@ -78,7 +78,7 @@ const CartRow = ({ product }) => {
     ).unwrap();
     const deletedCart = await dispatch(removeFromCartThunk(product)).unwrap();
 
-    if (deletedOrder && deletedCart) {
+    if (deletedOrder) {
       toast.success("Product has deleted from your cart");
     }
   };

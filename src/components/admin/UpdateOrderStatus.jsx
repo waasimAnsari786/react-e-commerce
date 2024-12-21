@@ -20,8 +20,6 @@ export default function UpdateOrderStatus({ order }) {
     );
   });
 
-  console.log("completed cart", completedCart);
-
   const {
     pName,
     pSlug,

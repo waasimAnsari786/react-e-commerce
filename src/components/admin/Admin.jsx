@@ -169,6 +169,31 @@ export default function AdminDashboard() {
               </li>
             ))}
             {status && <LogoutBtn />}
+
+            <div className="collapse bg-indigo-800 my-2 hover:bg-indigo-950 transition-all duration-300">
+              <input type="checkbox" />
+              <div className="collapse-title text-md">
+                <div className="flex justify-between itmes-center">
+                  Products
+                  <RiArrowDropDownLine size={30} />
+                </div>
+              </div>
+              <div className="collapse-content">
+                <p>hello</p>
+              </div>
+            </div>
+            <div className="collapse bg-indigo-800 my-2 hover:bg-indigo-950 transition-all duration-300">
+              <input type="checkbox" />
+              <div className="collapse-title text-md">
+                <div className="flex justify-between itmes-center">
+                  Products
+                  <RiArrowDropDownLine size={30} />
+                </div>
+              </div>
+              <div className="collapse-content">
+                <p>hello</p>
+              </div>
+            </div>
           </ul>
         </nav>
       </div>
