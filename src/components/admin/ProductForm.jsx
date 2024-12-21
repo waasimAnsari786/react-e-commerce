@@ -77,41 +77,41 @@ export default function ProductForm({ product }) {
     data.pSalePrice = Number(data.pSalePrice);
     data.pParentCategory = selectedCategories;
 
-    const keysFromData = Object.keys(data);
-
-    const isProductPresent = productsArr.some((product) => {
-      return keysFromData.every((key) => {
-        if (key === "pImage") {
-          return true;
-        }
-
-        if (key === "pParentCategory") {
-          // Check if arrays are equal (all elements in data.pParentCategory exist in product.pParentCategory)
-          return (
-            Array.isArray(data[key]) &&
-            Array.isArray(product[key]) &&
-            data[key].every((val) => product[key].includes(val)) &&
-            product[key].every((val) => data[key].includes(val))
-          );
-        } else {
-          // Compare scalar values
-          return (
-            product[key]?.toString().toLowerCase() ===
-            data[key]?.toString().toLowerCase()
-          );
-        }
-      });
-    });
-
-    if (isProductPresent) {
-      toast.error(
-        "You can't add this product because it's already exists in your data"
-      );
-      navigate("/admin/add-product");
-      return;
-    }
-
     if (product) {
+      const keysFromData = Object.keys(data);
+
+      const isProduct = productsArr.some((product) => {
+        return keysFromData.every((key) => {
+          if (key === "pImage") {
+            return true;
+          }
+
+          if (key === "pParentCategory") {
+            // Check if arrays are equal (all elements in data.pParentCategory exist in product.pParentCategory)
+            return (
+              Array.isArray(data[key]) &&
+              Array.isArray(product[key]) &&
+              data[key].every((val) => product[key].includes(val)) &&
+              product[key].every((val) => data[key].includes(val))
+            );
+          } else {
+            // Compare scalar values
+            return (
+              product[key]?.toString().toLowerCase() ===
+              data[key]?.toString().toLowerCase()
+            );
+          }
+        });
+      });
+
+      if (isProduct) {
+        toast.error(
+          "You can't update this product because it's already exists in your data."
+        );
+        navigate("/admin/add-product");
+        return;
+      }
+
       if (typeof data.pImage === "object") {
         const fileObj = await dispatch(
           fileUploadThunk(data.pImage[0])
@@ -123,13 +123,25 @@ export default function ProductForm({ product }) {
       }
 
       const updatedProduct = await dispatch(
-        updateProductThunk({ ...product, ...data })
+        updateProductThunk({ oldData: product, newData: data })
       ).unwrap();
       if (updatedProduct) {
         toast.success("Product updated successfully!");
         navigate("/admin/products");
       }
     } else {
+      const isProduct = productsArr.some(
+        (product) => product.pName === data.pName
+      );
+
+      if (isProduct) {
+        toast.info(
+          "You can't add this product because it's already exists in your data. However, you can update it."
+        );
+        reset();
+        return;
+      }
+
       const fileObj = await dispatch(fileUploadThunk(data.pImage[0])).unwrap();
       if (fileObj) {
         data.pImage = fileObj.$id;

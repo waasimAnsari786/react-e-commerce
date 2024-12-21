@@ -169,7 +169,7 @@ export const updateCategoryThunk = createAsyncThunk(
 
       if (isCategory) {
         toast.error(
-          "You can't add this category because it's already exists in your data"
+          "You can't update this category because it's already exists in your data"
         );
         return rejectWithValue("Category already exists.");
       }
