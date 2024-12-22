@@ -8,7 +8,7 @@ import {
   updateCartItemThunk,
 } from "../../features/userAddToCartSlice";
 import { Link } from "react-router-dom";
-import { deleteOrderThunk, updateOrderThunk } from "../../features/ordersSlice";
+import { updateOrderThunk } from "../../features/ordersSlice";
 import { toast } from "react-toastify";
 
 const CartRow = ({ product }) => {
@@ -25,6 +25,7 @@ const CartRow = ({ product }) => {
     pParentCategory,
     $id,
     orderId,
+    productId,
   } = product;
   const dispatch = useDispatch();
 
@@ -73,12 +74,24 @@ const CartRow = ({ product }) => {
   };
 
   const removeProductFromCart = async () => {
-    const deletedOrder = await dispatch(
-      deleteOrderThunk(product.orderId)
+    const updatedOrder = await dispatch(
+      updateOrderThunk({
+        pName,
+        pPrice,
+        pImage,
+        userId,
+        pQty: value,
+        pSlug,
+        pSalePrice,
+        adminId,
+        userName,
+        $id: orderId,
+        orderStatus: "Canceled",
+      })
     ).unwrap();
     const deletedCart = await dispatch(removeFromCartThunk(product)).unwrap();
 
-    if (deletedOrder) {
+    if (updatedOrder && deletedCart) {
       toast.success("Product has deleted from your cart");
     }
   };
@@ -86,7 +99,7 @@ const CartRow = ({ product }) => {
   return (
     <tr className="border border-gray-300 p-2 ">
       <td>
-        <Link to={`/product/${pSlug}/${$id}`}>
+        <Link to={`/product/${pSlug}/${productId}`}>
           <img
             src={pImage}
             alt={pName}

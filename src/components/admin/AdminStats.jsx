@@ -23,27 +23,19 @@ ChartJS.register(
 );
 
 export default function AdminStats() {
-  // State and redux slice data
-  const [getedProducts, setGetedProducts] = useState([]);
   const [dailySales, setDailySales] = useState(0);
   const [weeklySales, setWeeklySales] = useState(0);
   const [monthlySales, setMonthlySales] = useState(0);
 
   const { productsArr } = useSelector((state) => state.product);
-  const { orders, pendingOrders, completedOrders } = useSelector(
-    (state) => state.orders
-  );
+  const { orders, pendingOrders, completedOrders, canceledOrders } =
+    useSelector((state) => state.orders);
   const { userData } = useSelector((state) => state.auth);
 
   // Filter products by admin ID
   const filteredProducts = useMemo(() => {
     return productsArr.filter((product) => product.adminId === userData.$id);
   }, [productsArr, userData]);
-
-  // Set filtered products on load
-  useEffect(() => {
-    setGetedProducts(filteredProducts);
-  }, [filteredProducts]);
 
   // Calculate dynamic sales
   useEffect(() => {
@@ -57,7 +49,13 @@ export default function AdminStats() {
             new Date(order.completionDate) >= startDate &&
             new Date(order.completionDate) <= now
         )
-        .reduce((total, order) => total + order.saleAmount, 0);
+        .reduce((total, order) => {
+          const orderValue = order.pSalePrice
+            ? order.pSalePrice * order.pQty
+            : order.pPrice * order.pQty;
+
+          return total + orderValue;
+        }, 0);
     };
 
     // Daily sales: Orders completed today
@@ -74,7 +72,7 @@ export default function AdminStats() {
     const monthStart = new Date();
     monthStart.setDate(monthStart.getDate() - 30);
     setMonthlySales(calculateSales(monthStart));
-  }, [completedOrders]);
+  }, [completedOrders, pendingOrders, orders]);
 
   // Data array for cards
   const cardData = [
@@ -89,8 +87,15 @@ export default function AdminStats() {
       title: "Pending Orders",
       value: pendingOrders.length,
       icon: <FaClock className="text-3xl mb-2" />,
-      bgColor: "bg-orange-100",
-      textColor: "text-orange-800",
+      bgColor: "bg-yellow-100",
+      textColor: "text-yellow-800",
+    },
+    {
+      title: "Canceled Orders",
+      value: canceledOrders.length,
+      icon: <FaClock className="text-3xl mb-2" />,
+      bgColor: "bg-red-100",
+      textColor: "text-red-800",
     },
     {
       title: "Total Orders",
@@ -101,21 +106,21 @@ export default function AdminStats() {
     },
     {
       title: "Daily Sales",
-      value: `$${dailySales}`,
+      value: `Rs.${dailySales}`,
       icon: <FaCheckCircle className="text-3xl mb-2" />,
       bgColor: "bg-green-100",
       textColor: "text-green-800",
     },
     {
       title: "Weekly Sales",
-      value: `$${weeklySales}`,
+      value: `Rs.${weeklySales}`,
       icon: <FaClock className="text-3xl mb-2" />,
       bgColor: "bg-orange-100",
       textColor: "text-orange-800",
     },
     {
       title: "Monthly Sales",
-      value: `$${monthlySales}`,
+      value: `Rs.${monthlySales}`,
       icon: <FaBox className="text-3xl mb-2" />,
       bgColor: "bg-blue-100",
       textColor: "text-blue-800",

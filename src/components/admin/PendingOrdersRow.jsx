@@ -2,7 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../index";
 
-export default function PendingOrdersRow({ order, completedOrder = false }) {
+export default function PendingOrdersRow({
+  order,
+  completedOrder = false,
+  canceledOrder = false,
+}) {
   const {
     pName,
     pSlug,
@@ -34,7 +38,7 @@ export default function PendingOrdersRow({ order, completedOrder = false }) {
       <td className="px-4 py-2">{orderStatus}</td>
       <td className="px-4 py-2">{userName}</td>
       <td className="px-4 py-2 text-center">
-        {!completedOrder && (
+        {!completedOrder && !canceledOrder && (
           <Button
             myClass="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mr-2"
             onClick={() => navigate(`/admin/edit-orders/${$id}`)}

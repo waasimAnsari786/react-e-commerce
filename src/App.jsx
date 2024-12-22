@@ -185,6 +185,27 @@ function App() {
           ),
         },
         {
+          path: "/admin/canceled-orders",
+          element: (
+            <AuthProtectedLayout authentication>
+              <AllItemsPage
+                searchKeyword="pName"
+                rowCompName="canceled-orders"
+                tHeadArr={[
+                  "Product Image",
+                  "Product Name",
+                  "Product Slug",
+                  "Product Qty",
+                  "Product Price",
+                  "Product Sale Price",
+                  "Order Status",
+                  "Customer Name",
+                ]}
+              />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
           path: "/admin/edit-category/:slug/:categoryId",
           element: (
             <AuthProtectedLayout authentication>

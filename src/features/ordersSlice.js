@@ -6,6 +6,7 @@ const initialState = {
   orders: [],
   pendingOrders: [],
   completedOrders: [],
+  canceledOrders: [],
   loading: true,
   error: null,
 };
@@ -31,7 +32,7 @@ export const deleteOrderThunk = createAsyncThunk(
     try {
       const deletedOrder = await ordersService.deleteOrder(orderData);
       if (deletedOrder) {
-        return orderData.$id;
+        return orderData;
       }
     } catch (error) {
       return rejectWithValue(error.message);
@@ -87,8 +88,8 @@ const orderSlice = createSlice({
       })
       .addCase(addOrderThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.orders.unshift(action.payload);
-        state.pendingOrders.unshift(action.payload);
+        state.orders.push(action.payload);
+        state.pendingOrders.push(action.payload);
       })
       .addCase(addOrderThunk.rejected, (state, action) => {
         state.loading = false;
@@ -102,8 +103,12 @@ const orderSlice = createSlice({
       })
       .addCase(deleteOrderThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.orders.filter((order) => order.$id !== action.payload);
-        state.pendingOrders.filter((order) => order.$id !== action.payload);
+        state.orders = state.orders.filter(
+          (order) => order.$id !== action.payload.$id
+        );
+        state.pendingOrders = state.pendingOrders.filter(
+          (order) => order.$id !== action.payload
+        );
       })
       .addCase(deleteOrderThunk.rejected, (state, action) => {
         state.loading = false;
@@ -117,13 +122,20 @@ const orderSlice = createSlice({
       })
       .addCase(updateOrderThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.orders.map((order) =>
+        state.orders = state.orders.map((order) =>
           order.$id === action.payload.$id ? action.payload : order
         );
+        state.pendingOrders = state.pendingOrders.filter(
+          (order) => order.$id !== action.payload.$id
+        );
+
         if (action.payload.orderStatus === "Completed") {
-          state.completedOrders.unshift(action.payload);
-          state.pendingOrders = state.pendingOrders.filter(
-            (order) => order.$id !== action.payload.$id
+          state.completedOrders = state.orders.filter(
+            (order) => order.orderStatus === "Completed"
+          );
+        } else if (action.payload.orderStatus === "Canceled") {
+          state.canceledOrders = state.orders.filter(
+            (order) => order.orderStatus === "Canceled"
           );
         }
       })
@@ -145,6 +157,9 @@ const orderSlice = createSlice({
         );
         state.completedOrders = state.orders.filter(
           (order) => order.orderStatus === "Completed"
+        );
+        state.canceledOrders = state.orders.filter(
+          (order) => order.orderStatus === "Canceled"
         );
       })
       .addCase(getOrdersThunk.rejected, (state, action) => {

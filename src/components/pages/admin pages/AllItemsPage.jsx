@@ -13,8 +13,9 @@ import { useNavigate } from "react-router-dom";
 export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
   const { categoriesArr } = useSelector((state) => state.category);
   const { productsArr } = useSelector((state) => state.product);
-  const { pendingOrders } = useSelector((state) => state.orders);
-  const { completedOrders } = useSelector((state) => state.orders);
+  const { pendingOrders, completedOrders, canceledOrders } = useSelector(
+    (state) => state.orders
+  );
 
   const navigate = useNavigate();
 
@@ -24,6 +25,7 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
     if (rowCompName === "products") return productsArr;
     if (rowCompName === "pending-orders") return pendingOrders;
     if (rowCompName === "completed-orders") return completedOrders;
+    if (rowCompName === "canceled-orders") return canceledOrders;
     return [];
   };
 
@@ -32,7 +34,14 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
   useEffect(() => {
     // Update search result immediately when rowCompName changes
     setSearchResult(getSourceArray());
-  }, [rowCompName, categoriesArr, productsArr, pendingOrders, completedOrders]);
+  }, [
+    rowCompName,
+    categoriesArr,
+    productsArr,
+    pendingOrders,
+    completedOrders,
+    canceledOrders,
+  ]);
 
   const handleSearch = (searchValue) => {
     const sourceArr = getSourceArray();
@@ -75,6 +84,14 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
                     order={order}
                     completedOrder={true}
                   />
+                ))) ||
+              (rowCompName === "canceled-orders" &&
+                searchResult.map((order) => (
+                  <PendingOrdersRow
+                    key={order.$id}
+                    order={order}
+                    canceledOrder={true}
+                  />
                 )))
             ) : (
               <tr>
@@ -96,7 +113,9 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
                 ? navigate("/admin/add-category")
                 : rowCompName === "products"
                 ? navigate("/admin/add-product")
-                : rowCompName === "completed-orders" &&
+                : rowCompName === "completed-orders"
+                ? navigate("/admin/pending-orders")
+                : rowCompName === "canceled-orders" &&
                   navigate("/admin/pending-orders")
             }
           >
@@ -104,7 +123,9 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
               ? "Add New Category"
               : rowCompName === "products"
               ? "Add New Product"
-              : rowCompName === "completed-orders" && "Add New Order"}
+              : rowCompName === "completed-orders"
+              ? "Add New Order"
+              : rowCompName === "canceled-orders" && "Add New Order"}
           </Button>
         )}
       </div>

@@ -51,11 +51,16 @@ export default function UpdateOrderStatus({ order }) {
         userName,
         orderStatus: data.orderStatus,
         $id,
+        completionDate: new Date(),
       })
     ).unwrap();
-    if (updatedOrder) {
+    if (updatedOrder && updatedOrder.orderStatus === "Completed") {
       toast.success("Order has completed!");
       navigate("/admin/completed-orders");
+      dispatch(removeFromCartThunk({ $id: completedCart.$id }));
+    } else if (updatedOrder && updatedOrder.orderStatus === "Canceled") {
+      toast.info("Order has canceled.");
+      navigate("/admin/canceled-orders");
       dispatch(removeFromCartThunk({ $id: completedCart.$id }));
     }
   };

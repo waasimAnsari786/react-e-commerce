@@ -32,7 +32,6 @@ export default function SingleProduct() {
   const { preview_URL_Arr } = useSelector((state) => state.file);
   const { userData } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
-  const { orders } = useSelector((state) => state.orders);
 
   const {
     pName,
@@ -44,6 +43,7 @@ export default function SingleProduct() {
     pLongDes,
     adminId,
     pParentCategory,
+    $id,
   } = filteredProduct;
 
   useEffect(() => {
@@ -75,6 +75,7 @@ export default function SingleProduct() {
         const productUpdated = await dispatch(
           updateCartItemThunk({
             $id: isProduct.$id,
+            productId: $id,
             pParentCategory,
             ...newObj,
           })
@@ -90,6 +91,7 @@ export default function SingleProduct() {
         const productAdded = await dispatch(
           addToCartThunk({
             orderId: addedOrder.$id,
+            productId: $id,
             pParentCategory,
             ...newObj,
           })

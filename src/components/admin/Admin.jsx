@@ -58,6 +58,11 @@ export default function AdminDashboard() {
           slug: "/admin/completed-orders",
           icon: <FaCheckCircle className="w-4 h-4" />,
         },
+        {
+          name: "Canceled Orders",
+          slug: "/admin/canceled-orders",
+          icon: <FaCheckCircle className="w-4 h-4" />,
+        },
       ],
     },
     {
