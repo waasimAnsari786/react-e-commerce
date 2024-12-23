@@ -26,6 +26,8 @@ export default function AdminStats() {
   const [dailySales, setDailySales] = useState(0);
   const [weeklySales, setWeeklySales] = useState(0);
   const [monthlySales, setMonthlySales] = useState(0);
+  const [happyClients, setHappyClients] = useState([]);
+  const [unHappyClients, setUnHappyClients] = useState([]);
 
   const { productsArr } = useSelector((state) => state.product);
   const { orders, pendingOrders, completedOrders, canceledOrders } =
@@ -74,6 +76,14 @@ export default function AdminStats() {
     setMonthlySales(calculateSales(monthStart));
   }, [completedOrders, pendingOrders, orders]);
 
+  useEffect(() => {
+    const happyClientsNames = completedOrders.map((order) => order.userName);
+    const unHappyClientsNames = canceledOrders.map((order) => order.userName);
+
+    setHappyClients(new Set(happyClientsNames).size);
+    setUnHappyClients(new Set(unHappyClientsNames).size);
+  }, [completedOrders, pendingOrders, orders, canceledOrders]);
+
   // Data array for cards
   const cardData = [
     {
@@ -121,6 +131,27 @@ export default function AdminStats() {
     {
       title: "Monthly Sales",
       value: `Rs.${monthlySales}`,
+      icon: <FaBox className="text-3xl mb-2" />,
+      bgColor: "bg-blue-100",
+      textColor: "text-blue-800",
+    },
+    {
+      title: "Products Added",
+      value: `${productsArr.length}`,
+      icon: <FaBox className="text-3xl mb-2" />,
+      bgColor: "bg-blue-100",
+      textColor: "text-blue-800",
+    },
+    {
+      title: "Happy Clients",
+      value: `${happyClients}`,
+      icon: <FaBox className="text-3xl mb-2" />,
+      bgColor: "bg-blue-100",
+      textColor: "text-blue-800",
+    },
+    {
+      title: "Unhappy Clients",
+      value: `${unHappyClients}`,
       icon: <FaBox className="text-3xl mb-2" />,
       bgColor: "bg-blue-100",
       textColor: "text-blue-800",
