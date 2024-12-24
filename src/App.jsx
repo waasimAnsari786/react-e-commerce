@@ -110,6 +110,7 @@ function App() {
                 searchKeyword="catogName"
                 rowCompName="categories"
                 tHeadArr={[
+                  "S.No",
                   "Category Name",
                   "Category Slug",
                   "Parent Category",
@@ -128,6 +129,7 @@ function App() {
                 searchKeyword="pName"
                 rowCompName="products"
                 tHeadArr={[
+                  "S.No",
                   "Product Image",
                   "Product Name",
                   "Product Slug",
@@ -149,6 +151,7 @@ function App() {
                 searchKeyword="pName"
                 rowCompName="pending-orders"
                 tHeadArr={[
+                  "S.No",
                   "Product Image",
                   "Product Name",
                   "Product Slug",
@@ -171,6 +174,7 @@ function App() {
                 searchKeyword="pName"
                 rowCompName="completed-orders"
                 tHeadArr={[
+                  "S.No",
                   "Product Image",
                   "Product Name",
                   "Product Slug",
@@ -192,6 +196,7 @@ function App() {
                 searchKeyword="pName"
                 rowCompName="canceled-orders"
                 tHeadArr={[
+                  "S.No",
                   "Product Image",
                   "Product Name",
                   "Product Slug",

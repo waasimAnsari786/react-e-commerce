@@ -82,7 +82,7 @@ export default function AddCatogory({ catogory }) {
   return (
     <Container childElemClass="pt-20">
       <form onSubmit={handleSubmit(catogorySubmit)}>
-        <MyTypoGraphy myClass="text-3xl mb-5 capitalize">
+        <MyTypoGraphy myClass="text-3xl mb-5 capitalize text-black">
           {catogory ? "Update catogory" : "Add catogory"}
         </MyTypoGraphy>
         <div className="grid grid-cols-3 gap-5">
@@ -111,7 +111,9 @@ export default function AddCatogory({ catogory }) {
           />
         </div>
 
-        <Button myClass="mt-6">{catogory ? "Update" : "Submit"}</Button>
+        <Button bgColor="bg-amber-800" myClass="mt-6">
+          {catogory ? "Update" : "Submit"}
+        </Button>
       </form>
     </Container>
   );

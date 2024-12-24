@@ -17,7 +17,7 @@ export default function SelectCategory({
 
   return (
     <div>
-      <MyTypoGraphy>Select Parent Category :</MyTypoGraphy>
+      <MyTypoGraphy myClass="text-black">Select Parent Category :</MyTypoGraphy>
       {catogNames?.map((category) => (
         <Input
           type="checkbox"

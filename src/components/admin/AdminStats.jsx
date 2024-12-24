@@ -10,7 +10,15 @@ import {
   BarElement,
 } from "chart.js";
 import { Doughnut, Bar } from "react-chartjs-2";
-import { FaCheckCircle, FaClock, FaBox } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaClock,
+  FaBox,
+  FaTimes,
+  FaDollarSign,
+  FaSmile,
+  FaFrown,
+} from "react-icons/fa";
 
 // Register Chart.js components
 ChartJS.register(
@@ -85,76 +93,62 @@ export default function AdminStats() {
   }, [completedOrders, pendingOrders, orders, canceledOrders]);
 
   // Data array for cards
-  const cardData = [
+  const cardData1 = [
     {
       title: "Completed Orders",
       value: completedOrders.length,
       icon: <FaCheckCircle className="text-3xl mb-2" />,
-      bgColor: "bg-green-100",
-      textColor: "text-green-800",
     },
     {
       title: "Pending Orders",
       value: pendingOrders.length,
       icon: <FaClock className="text-3xl mb-2" />,
-      bgColor: "bg-yellow-100",
-      textColor: "text-yellow-800",
     },
     {
       title: "Canceled Orders",
       value: canceledOrders.length,
-      icon: <FaClock className="text-3xl mb-2" />,
-      bgColor: "bg-red-100",
-      textColor: "text-red-800",
+      icon: <FaTimes className="text-3xl mb-2" />,
     },
     {
       title: "Total Orders",
       value: orders.length,
       icon: <FaBox className="text-3xl mb-2" />,
-      bgColor: "bg-blue-100",
-      textColor: "text-blue-800",
     },
+  ];
+
+  const cardData2 = [
     {
       title: "Daily Sales",
       value: `Rs.${dailySales}`,
-      icon: <FaCheckCircle className="text-3xl mb-2" />,
-      bgColor: "bg-green-100",
-      textColor: "text-green-800",
+      icon: <FaDollarSign className="text-3xl mb-2" />,
     },
     {
       title: "Weekly Sales",
       value: `Rs.${weeklySales}`,
-      icon: <FaClock className="text-3xl mb-2" />,
-      bgColor: "bg-orange-100",
-      textColor: "text-orange-800",
+      icon: <FaDollarSign className="text-3xl mb-2" />,
     },
     {
       title: "Monthly Sales",
       value: `Rs.${monthlySales}`,
-      icon: <FaBox className="text-3xl mb-2" />,
-      bgColor: "bg-blue-100",
-      textColor: "text-blue-800",
+      icon: <FaDollarSign className="text-3xl mb-2" />,
     },
+  ];
+
+  const cardData3 = [
     {
       title: "Products Added",
       value: `${productsArr.length}`,
       icon: <FaBox className="text-3xl mb-2" />,
-      bgColor: "bg-blue-100",
-      textColor: "text-blue-800",
     },
     {
       title: "Happy Clients",
       value: `${happyClients}`,
-      icon: <FaBox className="text-3xl mb-2" />,
-      bgColor: "bg-blue-100",
-      textColor: "text-blue-800",
+      icon: <FaSmile className="text-3xl mb-2" />,
     },
     {
       title: "Unhappy Clients",
       value: `${unHappyClients}`,
-      icon: <FaBox className="text-3xl mb-2" />,
-      bgColor: "bg-blue-100",
-      textColor: "text-blue-800",
+      icon: <FaFrown className="text-3xl mb-2" />,
     },
   ];
 
@@ -183,13 +177,13 @@ export default function AdminStats() {
   };
 
   return (
-    <div className="p-3">
+    <>
       {/* Dynamic Cards Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {cardData.map((card, index) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+        {cardData1.map((card) => (
           <div
-            key={index}
-            className={`${card.bgColor} ${card.textColor} card shadow-md p-4`}
+            key={card.title}
+            className="bg-amber-800 text-white card shadow-md p-4"
           >
             {card.icon}
             <h2 className="text-lg font-bold">{card.title}</h2>
@@ -199,9 +193,11 @@ export default function AdminStats() {
       </div>
 
       {/* Orders Chart */}
-      <div className="my-6 bg-gray-500 p-4 w-[50vw] rounded-lg shadow">
-        <h2 className="text-xl font-bold mb-4">Orders Overview</h2>
-        <div className="w-full">
+      <h2 className="text-2xl mt-10 font-bold text-black">
+        Orders <span className="text-amber-700">Overview</span>
+      </h2>
+      <div className="my-2 p-4 mx-auto w-[50vw]">
+        <div className="w-full h-72">
           <Doughnut
             data={orderChartData}
             options={{ maintainAspectRatio: false, responsive: true }}
@@ -209,16 +205,44 @@ export default function AdminStats() {
         </div>
       </div>
 
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        {cardData2.map((card) => (
+          <div
+            key={card.title}
+            className="bg-amber-800 text-white card shadow-md p-4"
+          >
+            {card.icon}
+            <h2 className="text-lg font-bold">{card.title}</h2>
+            <p className="text-2xl">{card.value}</p>
+          </div>
+        ))}
+      </div>
+
       {/* Sales Chart */}
-      <div className="my-6 bg-gray-500 p-4 w-[50vw] rounded-lg shadow">
-        <h2 className="text-xl font-bold mb-4">Sales Overview</h2>
-        <div className="w-full ">
+      <h2 className="text-2xl mt-10 font-bold text-black">
+        Sales <span className="text-amber-700">Overview</span>
+      </h2>
+      <div className="my-2 p-4 mx-auto mb-5 w-[50vw]">
+        <div className="w-full h-72">
           <Bar
             data={salesChartData}
             options={{ maintainAspectRatio: false, responsive: true }}
           />
         </div>
       </div>
-    </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        {cardData3.map((card) => (
+          <div
+            key={card.title}
+            className="bg-amber-800 text-white card shadow-md p-4"
+          >
+            {card.icon}
+            <h2 className="text-lg font-bold">{card.title}</h2>
+            <p className="text-2xl">{card.value}</p>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

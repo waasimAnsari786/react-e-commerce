@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteProductThunk } from "../../features/productSlice";
 import { Button } from "../index";
 
-export default function AdminProductRow({ product }) {
+export default function AdminProductRow({ product, index }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { preview_URL_Arr } = useSelector((state) => state.file);
@@ -20,7 +20,8 @@ export default function AdminProductRow({ product }) {
   } = product;
 
   return (
-    <tr className="border-b">
+    <tr>
+      <td className="px-4 py-2">{index + 1}</td>
       <td className="px-4 py-2">
         <img
           src={
@@ -37,9 +38,9 @@ export default function AdminProductRow({ product }) {
       <td className="px-4 py-2">{pPrice}</td>
       <td className="px-4 py-2">{pSalePrice}</td>
       <td className="px-4 py-2">{pStockStatus}</td>
-      <td className="px-4 py-2 text-center">
+      <td className="px-4 py-2 flex justify-center items-center my-10 gap-2">
         <Button
-          myClass="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mr-2"
+          myClass="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
           onClick={() => navigate(`/admin/edit-product/${pSlug}/${$id}`)}
         >
           Edit

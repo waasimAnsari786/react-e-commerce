@@ -3,7 +3,11 @@ import { Input, Select } from "../index";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
-export default function SearchBar({ onSearch, otherFields = false }) {
+export default function SearchBar({
+  onSearch,
+  otherFields = false,
+  rowCompName,
+}) {
   const { register, watch } = useForm();
   const { catogNames } = useSelector((state) => state.category);
 
@@ -23,7 +27,15 @@ export default function SearchBar({ onSearch, otherFields = false }) {
     <form className="grid grid-cols-1 md:grid-cols-2 gap-2">
       <Input
         {...register("searchValue")}
-        label="Search Products"
+        label={
+          "Search " +
+          (rowCompName.includes("-")
+            ? rowCompName
+                .split("-")
+                .map((elem) => elem.replace(elem[0], elem[0].toUpperCase()))
+                .join(" ")
+            : rowCompName.replace(rowCompName[0], rowCompName[0].toUpperCase()))
+        }
         placeholder="Search..."
       />
       {otherFields && (

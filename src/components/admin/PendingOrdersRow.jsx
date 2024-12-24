@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../index";
 
 export default function PendingOrdersRow({
+  index,
   order,
   completedOrder = false,
   canceledOrder = false,
@@ -23,6 +24,7 @@ export default function PendingOrdersRow({
 
   return (
     <tr className="border-b">
+      <td className="px-4 py-2">{index + 1}</td>
       <td className="px-4 py-2">
         <img
           src={pImage}
@@ -37,7 +39,7 @@ export default function PendingOrdersRow({
       <td className="px-4 py-2">{pSalePrice}</td>
       <td className="px-4 py-2">{orderStatus}</td>
       <td className="px-4 py-2">{userName}</td>
-      <td className="px-4 py-2 text-center">
+      <td className="px-4 py-2 flex justify-center items-center my-10 gap-2">
         {!completedOrder && !canceledOrder && (
           <Button
             myClass="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mr-2"

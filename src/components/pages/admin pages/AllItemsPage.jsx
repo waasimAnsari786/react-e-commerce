@@ -19,7 +19,6 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
 
   const navigate = useNavigate();
 
-  // Centralized function to derive source array
   const getSourceArray = () => {
     if (rowCompName === "categories") return categoriesArr;
     if (rowCompName === "products") return productsArr;
@@ -32,7 +31,6 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
   const [searchResult, setSearchResult] = useState(getSourceArray);
 
   useEffect(() => {
-    // Update search result immediately when rowCompName changes
     setSearchResult(getSourceArray());
   }, [
     rowCompName,
@@ -52,52 +50,68 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
   };
 
   return (
-    <Container>
-      <SearchBar onSearch={handleSearch} />
+    <Container childElemClass="pt-10">
+      <SearchBar onSearch={handleSearch} rowCompName={rowCompName} />
       <div className="overflow-x-auto">
-        <table className="min-w-full table-auto border-collapse border border-gray-300 bg-white">
-          <thead className="bg-gray-100">
+        <table className="table bg-amber-800 text-white w-full mt-5">
+          <thead>
             <tr>
               {tHeadArr.map((item) => (
-                <td key={item}>{item}</td>
+                <th className="text-white" key={item}>
+                  {item}
+                </th>
               ))}
             </tr>
           </thead>
           <tbody>
             {searchResult.length > 0 ? (
               (rowCompName === "categories" &&
-                searchResult.map((category) => (
-                  <CategoryRow key={category.$id} category={category} />
+                searchResult.map((category, index) => (
+                  <CategoryRow
+                    key={category.$id}
+                    category={category}
+                    index={index}
+                  />
                 ))) ||
               (rowCompName === "products" &&
-                searchResult.map((product) => (
-                  <AdminProductRow key={product.$id} product={product} />
+                searchResult.map((product, index) => (
+                  <AdminProductRow
+                    key={product.$id}
+                    product={product}
+                    index={index}
+                  />
                 ))) ||
               (rowCompName === "pending-orders" &&
-                searchResult.map((order) => (
-                  <PendingOrdersRow key={order.$id} order={order} />
+                searchResult.map((order, index) => (
+                  <PendingOrdersRow
+                    key={order.$id}
+                    order={order}
+                    index={index}
+                  />
                 ))) ||
               (rowCompName === "completed-orders" &&
-                searchResult.map((order) => (
+                searchResult.map((order, index) => (
                   <PendingOrdersRow
                     key={order.$id}
                     order={order}
                     completedOrder={true}
+                    index={index}
                   />
                 ))) ||
               (rowCompName === "canceled-orders" &&
-                searchResult.map((order) => (
+                searchResult.map((order, index) => (
                   <PendingOrdersRow
                     key={order.$id}
                     order={order}
                     canceledOrder={true}
+                    index={index}
                   />
                 )))
             ) : (
               <tr>
                 <td
                   colSpan={tHeadArr.length}
-                  className="px-4 py-2 text-center text-gray-500"
+                  className="text-center text-gray-500"
                 >
                   No {rowCompName} available.
                 </td>
@@ -105,30 +119,30 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
             )}
           </tbody>
         </table>
-        {rowCompName !== "pending-orders" && (
-          <Button
-            myClass="lg:hidden block"
-            onClick={() =>
-              rowCompName === "categories"
-                ? navigate("/admin/add-category")
-                : rowCompName === "products"
-                ? navigate("/admin/add-product")
-                : rowCompName === "completed-orders"
-                ? navigate("/admin/pending-orders")
-                : rowCompName === "canceled-orders" &&
-                  navigate("/admin/pending-orders")
-            }
-          >
-            {rowCompName === "categories"
-              ? "Add New Category"
-              : rowCompName === "products"
-              ? "Add New Product"
-              : rowCompName === "completed-orders"
-              ? "Add New Order"
-              : rowCompName === "canceled-orders" && "Add New Order"}
-          </Button>
-        )}
       </div>
+      {rowCompName !== "pending-orders" && (
+        <Button
+          myClass="lg:hidden block"
+          onClick={() =>
+            rowCompName === "categories"
+              ? navigate("/admin/add-category")
+              : rowCompName === "products"
+              ? navigate("/admin/add-product")
+              : rowCompName === "completed-orders"
+              ? navigate("/admin/pending-orders")
+              : rowCompName === "canceled-orders" &&
+                navigate("/admin/pending-orders")
+          }
+        >
+          {rowCompName === "categories"
+            ? "Add New Category"
+            : rowCompName === "products"
+            ? "Add New Product"
+            : rowCompName === "completed-orders"
+            ? "Add New Order"
+            : rowCompName === "canceled-orders" && "Add New Order"}
+        </Button>
+      )}
     </Container>
   );
 }

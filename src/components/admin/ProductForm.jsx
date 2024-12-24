@@ -159,7 +159,7 @@ export default function ProductForm({ product }) {
   return (
     <Container childElemClass="pt-10">
       <form onSubmit={handleSubmit(productSubmit)}>
-        <MyTypoGraphy myClass="text-3xl mb-5">
+        <MyTypoGraphy myClass="text-3xl mb-5 text-black">
           {product ? "Update Product" : "Add Product"}
         </MyTypoGraphy>
         <div className="flex justify-between gap-5">
