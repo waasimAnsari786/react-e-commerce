@@ -31,7 +31,7 @@ function App() {
           element: <HomePage />,
         },
         {
-          path: "/login",
+          path: "login",
           element: (
             <AuthProtectedLayout authentication={false}>
               <LoginPage />
@@ -39,7 +39,7 @@ function App() {
           ),
         },
         {
-          path: "/signup",
+          path: "signup",
           element: (
             <AuthProtectedLayout authentication={false}>
               <SignUpPage />
@@ -47,7 +47,7 @@ function App() {
           ),
         },
         {
-          path: "/shop",
+          path: "shop",
           element: (
             <AuthProtectedLayout authentication>
               <AllProducts />
@@ -55,7 +55,15 @@ function App() {
           ),
         },
         {
-          path: "/product/:slug/:productId",
+          path: "categories/:slug",
+          element: (
+            <AuthProtectedLayout authentication>
+              <AllProducts />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "product/:slug/:productId",
           element: (
             <AuthProtectedLayout authentication>
               <SingleProduct />
@@ -63,7 +71,7 @@ function App() {
           ),
         },
         {
-          path: "/cart",
+          path: "cart",
           element: (
             <AuthProtectedLayout authentication>
               <CartPage />

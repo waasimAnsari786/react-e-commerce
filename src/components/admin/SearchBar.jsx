@@ -28,13 +28,18 @@ export default function SearchBar({
       <Input
         {...register("searchValue")}
         label={
-          "Search " +
-          (rowCompName.includes("-")
-            ? rowCompName
-                .split("-")
-                .map((elem) => elem.replace(elem[0], elem[0].toUpperCase()))
-                .join(" ")
-            : rowCompName.replace(rowCompName[0], rowCompName[0].toUpperCase()))
+          rowCompName
+            ? "Search " +
+              (rowCompName.includes("-")
+                ? rowCompName
+                    .split("-")
+                    .map((elem) => elem.replace(elem[0], elem[0].toUpperCase()))
+                    .join(" ")
+                : rowCompName.replace(
+                    rowCompName[0],
+                    rowCompName[0].toUpperCase()
+                  ))
+            : "Search Products"
         }
         placeholder="Search..."
       />

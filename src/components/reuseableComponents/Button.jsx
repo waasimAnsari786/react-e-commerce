@@ -10,7 +10,7 @@ export default function Button({
 }) {
   return (
     <button
-      className={`${bgColor} ${textColor} ${myClass} rounded-lg ${padding}`}
+      className={`${bgColor} ${textColor} ${myClass} rounded-lg transition-all duration-300 ${padding}`}
       {...props}
     >
       {children}

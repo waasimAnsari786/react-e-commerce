@@ -37,7 +37,15 @@ export default function AdminProductRow({ product, index }) {
       <td className="px-4 py-2">{pParentCategory?.join(", ") || "None"}</td>
       <td className="px-4 py-2">{pPrice}</td>
       <td className="px-4 py-2">{pSalePrice}</td>
-      <td className="px-4 py-2">{pStockStatus}</td>
+      <td className="px-4 py-2">
+        <span
+          className={`p-1 rounded-md ${
+            pStockStatus === "In stock" ? "bg-green-600" : "bg-red-600"
+          }`}
+        >
+          {pStockStatus}
+        </span>
+      </td>
       <td className="px-4 py-2 flex justify-center items-center my-10 gap-2">
         <Button
           myClass="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"

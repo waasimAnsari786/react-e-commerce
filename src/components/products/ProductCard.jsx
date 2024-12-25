@@ -1,5 +1,5 @@
 import React from "react";
-import { MyTypoGraphy } from "../index";
+import { MyTypoGraphy, Button } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function ProductCard({ myClass = "", product }) {
@@ -17,41 +17,49 @@ export default function ProductCard({ myClass = "", product }) {
   };
 
   return (
-    <div
-      className={`${myClass} shadow-lg shadow-gray-500 rounded-xl relative h-[25rem] flex flex-col justify-between`}
-    >
-      {preview_URL_Arr.some((preview) => preview.fileId === pImage) && (
-        <img
-          src={
-            preview_URL_Arr.find((preview) => preview.fileId === pImage)?.URL ||
-            ""
-          }
-          alt={`${pName}'s image`}
-          className="h-1/2 w-full rounded-md"
-        />
-      )}
-
-      <div className="p-3 h-1/2 flex flex-col justify-between">
-        <MyTypoGraphy myClass="text-2xl font-bold capitalize">
-          {pName}
-        </MyTypoGraphy>
-        <MyTypoGraphy myClass="text-gray-600">{pShortDes}</MyTypoGraphy>
-        <MyTypoGraphy myClass="capitalize absolute bg-black top-2 left-2 text-white rounded-md text-[0.7rem] px-2 py-1">
-          {pStockStatus}
-        </MyTypoGraphy>
-        <MyTypoGraphy myClass={`text-gray-600 ${pSalePrice && "line-through"}`}>
-          Price :{pPrice}
-        </MyTypoGraphy>
-        {pSalePrice > 0 && (
-          <>
-            <MyTypoGraphy myClass="text-gray-600">
-              Sale Price: {pSalePrice}
-            </MyTypoGraphy>
-            <div className="absolute top-2 right-2 bg-red-500 text-white rounded-md px-2 py-1 text-[0.8rem]">
-              -{calculateDiscount(pPrice, pSalePrice)}% OFF
-            </div>
-          </>
+    <div className="w-full h-[25rem] rounded-xl hover:shadow-gray-500 hover:shadow-xl hover:translate-y-3 transition-all duration-100">
+      {/* Parent Container */}
+      <div
+        className={`${myClass} relative h-full flex flex-col justify-between `}
+      >
+        {preview_URL_Arr.some((preview) => preview.fileId === pImage) && (
+          <img
+            src={
+              preview_URL_Arr.find((preview) => preview.fileId === pImage)
+                ?.URL || ""
+            }
+            alt={`${pName}'s image`}
+            className="h-1/2 w-full rounded-md"
+          />
         )}
+
+        <div className="p-3 h-1/2 flex flex-col justify-between text-black">
+          <MyTypoGraphy myClass="text-2xl font-bold capitalize text-amber-700">
+            {pName}
+          </MyTypoGraphy>
+          <MyTypoGraphy>{pShortDes}</MyTypoGraphy>
+          <MyTypoGraphy myClass="capitalize bg-green-700 absolute top-2 left-2 text-white rounded-md text-[0.7rem] px-2 py-1">
+            {pStockStatus}
+          </MyTypoGraphy>
+          <MyTypoGraphy myClass={`${pSalePrice && "line-through"}`}>
+            Price :{pPrice}
+          </MyTypoGraphy>
+          {pSalePrice > 0 && (
+            <>
+              <MyTypoGraphy myClass="">Sale Price: {pSalePrice}</MyTypoGraphy>
+              <div className="absolute top-2 right-2 bg-red-500 text-white rounded-md px-2 py-1 text-[0.8rem]">
+                -{calculateDiscount(pPrice, pSalePrice)}% OFF
+              </div>
+            </>
+          )}
+          <Button
+            bgColor="bg-amber-800"
+            myClass="hover:bg-transparent hover:border-amber-800 border-2 font-semibold w-1/2"
+            textColor="hover:text-amber-800 text-white"
+          >
+            View Product
+          </Button>
+        </div>
       </div>
     </div>
   );
