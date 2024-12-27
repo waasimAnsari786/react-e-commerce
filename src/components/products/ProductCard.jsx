@@ -1,10 +1,19 @@
 import React from "react";
 import { MyTypoGraphy, Button } from "../index";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export default function ProductCard({ myClass = "", product }) {
-  const { pName, pShortDes, pStockStatus, pImage, pPrice, pSalePrice } =
-    product;
+  const {
+    pName,
+    pShortDes,
+    pStockStatus,
+    pImage,
+    pPrice,
+    pSalePrice,
+    pSlug,
+    $id,
+  } = product;
 
   const dispatch = useDispatch();
   const { preview_URL_Arr } = useSelector((state) => state.file);
@@ -52,13 +61,15 @@ export default function ProductCard({ myClass = "", product }) {
               </div>
             </>
           )}
-          <Button
-            bgColor="bg-amber-800"
-            myClass="hover:bg-transparent hover:border-amber-800 border-2 font-semibold w-1/2"
-            textColor="hover:text-amber-800 text-white"
-          >
-            View Product
-          </Button>
+          <Link to={`/product/${pSlug}/${$id}`}>
+            <Button
+              bgColor="bg-amber-800"
+              myClass="hover:bg-transparent hover:border-amber-800 border-2 font-semibold w-1/2"
+              textColor="hover:text-amber-800 text-white"
+            >
+              View Product
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

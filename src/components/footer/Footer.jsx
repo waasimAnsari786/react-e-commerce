@@ -28,13 +28,14 @@ export default function Footer() {
               />
             </Link>
             <p>
-              ACME Industries Ltd.
-              <br />
-              Providing reliable tech since 1992
+              At DualCart, we bring quality and convenience together. <br />
+              Your satisfaction is our priority.
             </p>
           </aside>
           <nav>
-            <h6 className="footer-title">Quick Links</h6>
+            <h6 className="font-bold text-lg uppercase text-white">
+              Quick Links
+            </h6>
             {navItems.map(
               (item) =>
                 item.active && (
@@ -49,7 +50,9 @@ export default function Footer() {
             )}
           </nav>
           <nav>
-            <h6 className="footer-title">Categories</h6>
+            <h6 className="font-bold text-lg uppercase text-white">
+              Categories
+            </h6>
             {categoriesArr.map((category) => (
               <NavLink
                 className={({ isActive }) => (isActive ? "underline" : "")}
@@ -61,7 +64,9 @@ export default function Footer() {
             ))}
           </nav>
           <nav>
-            <h6 className="footer-title">Social Media Links</h6>
+            <h6 className="font-bold text-lg uppercase text-white">
+              Social Media Links
+            </h6>
             <Link
               target="_blank"
               to="https://github.com/waasimAnsari786"
@@ -81,8 +86,12 @@ export default function Footer() {
           </nav>
         </footer>
         <MyTypoGraphy myClass="bg-amber-800 text-center text-white border-t-2 border-white py-4">
-          Copyright all rights reserved | This store is designed by{" "}
-          <Link to="https://waasim-portfolio-2.netlify.app/" target="_blank">
+          @Copyright all rights reserved | This store is designed by{" "}
+          <Link
+            to="https://waasim-portfolio-2.netlify.app/"
+            className="underline"
+            target="_blank"
+          >
             Waasim Ansari
           </Link>
         </MyTypoGraphy>

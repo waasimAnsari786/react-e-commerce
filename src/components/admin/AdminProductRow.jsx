@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteProductThunk } from "../../features/productSlice";
 import { Button } from "../index";
+import { toast } from "react-toastify";
 
 export default function AdminProductRow({ product, index }) {
   const dispatch = useDispatch();
@@ -18,6 +19,12 @@ export default function AdminProductRow({ product, index }) {
     pImage,
     $id,
   } = product;
+
+  const handleDelete = async () => {
+    await toast.promise(dispatch(deleteProductThunk(product)).unwrap(), {
+      pending: "Deleting product...",
+    });
+  };
 
   return (
     <tr>
@@ -55,7 +62,7 @@ export default function AdminProductRow({ product, index }) {
         </Button>
         <Button
           myClass="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-          onClick={() => dispatch(deleteProductThunk(product))}
+          onClick={handleDelete}
         >
           Delete
         </Button>

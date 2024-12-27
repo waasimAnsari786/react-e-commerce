@@ -46,16 +46,16 @@ export default function LoginForm() {
     <Container childElemClass="flex items-center justify-center h-screen flex-col">
       <form
         onSubmit={handleSubmit(handleLogin)}
-        className="w-full max-w-md rounded-lg shadow-lg p-6 sm:p-8 bg-white"
+        className="w-full max-w-md rounded-lg shadow-lg p-6 sm:p-8 bg-amber-800"
       >
-        <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800 ">
+        <h2 className="text-2xl font-semibold text-center mb-6 text-white ">
           Login
         </h2>
 
         <Input
           label="Email:"
           placeholder="Your email"
-          icon={<MdOutlineMailOutline className="text-black" />}
+          icon={<MdOutlineMailOutline className="text-amber-800" />}
           {...register("email", {
             required: "Email is required",
             validate: {
@@ -72,7 +72,7 @@ export default function LoginForm() {
         <Input
           label="Password:"
           placeholder="Your password"
-          icon={<CiLock className="text-black" />}
+          icon={<CiLock className="text-amber-800" />}
           {...register("password", {
             required: "Password is required",
             minLength: {
@@ -84,10 +84,18 @@ export default function LoginForm() {
           error={errors.password && errors.password.message}
         />
 
-        <Button myClass="w-full">Login</Button>
+        <div className="flex justify-center mt-5">
+          <Button
+            myClass="mx-auto border-2 border-white hover:bg-transparent hover:text-white"
+            bgColor="bg-white"
+            textColor="text-amber-800"
+          >
+            Login
+          </Button>
+        </div>
       </form>
 
-      <MyTypoGraphy myClass="mt-10">
+      <MyTypoGraphy myClass="mt-10 text-amber-800">
         Don't Have an account?{" "}
         <NavLink className="underline" to="/signup">
           Sign Up

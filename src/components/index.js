@@ -25,7 +25,6 @@ import AdminStatsCard from "./admin/AdminStatsCard";
 import AddToCart from "./products/AddToCart";
 import CartRow from "./products/CartRow";
 import CartPage from "./pages/CartPage";
-import CartIcon from "./products/CartIcon";
 import AddCatogory from "./admin/AddCatogory";
 import CategoryRow from "./admin/CategoryRow";
 import SelectCategory from "./admin/SelectCategory";
@@ -36,6 +35,7 @@ import EditItemsPage from "./pages/admin pages/EditItemsPage";
 import PendingOrdersRow from "./admin/PendingOrdersRow";
 import UpdateOrderStatus from "./admin/UpdateOrderStatus";
 import ProfileSection from "./reuseableComponents/ProfileSection";
+import AboutUs from "./pages/AboutUs";
 
 export {
   Button,
@@ -65,7 +65,6 @@ export {
   AddToCart,
   CartRow,
   CartPage,
-  CartIcon,
   AddCatogory,
   CategoryRow,
   SelectCategory,
@@ -76,4 +75,5 @@ export {
   PendingOrdersRow,
   UpdateOrderStatus,
   ProfileSection,
+  AboutUs,
 };

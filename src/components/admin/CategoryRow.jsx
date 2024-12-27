@@ -3,10 +3,23 @@ import { useDispatch } from "react-redux";
 import { removeCategoryThunk } from "../../features/catogorySlice";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../index";
+import { toast } from "react-toastify";
 
 const CategoryRow = ({ category, index }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    await toast.promise(
+      dispatch(removeCategoryThunk(category)).unwrap(),
+      {
+        pending: "Deleting category, please wait...",
+        success: "Category deleted successfully!",
+        error: "Failed to delete category. Please try again.",
+      },
+      { position: "top-right" }
+    );
+  };
 
   return (
     <tr className="border-b">
@@ -29,7 +42,7 @@ const CategoryRow = ({ category, index }) => {
           </Button>
           <Button
             myClass="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-            onClick={() => dispatch(removeCategoryThunk(category))}
+            onClick={handleDelete}
           >
             Delete
           </Button>

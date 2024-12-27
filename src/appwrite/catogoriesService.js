@@ -55,7 +55,6 @@ class Category {
         envImport.catogoriesID,
         docID
       );
-      toast.success("Category has been deleted");
       return true;
     } catch (error) {
       toast.error("Error deleting category: " + error.message, {

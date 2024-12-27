@@ -17,10 +17,10 @@ export default function EditItemsPage({ editItem }) {
     editItem === "category" && dispatch(findCategory(categoryId));
     editItem === "product" && dispatch(productFilter(productId));
     editItem === "order" && dispatch(findOrder(slug));
-  }, []);
+  }, [slug, productId, categoryId]);
 
   if (editItem === "category") {
-    return <AddCatogory catogory={filteredCategory} />;
+    return <AddCatogory category={filteredCategory} />;
   } else if (editItem === "product") {
     return <ProductForm product={filteredProduct} />;
   } else if (editItem === "order") {

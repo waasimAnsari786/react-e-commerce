@@ -49,7 +49,6 @@ class Product {
         envImport.databaseID,
         envImport.collectionID,
         $id,
-        // product.docID,
         {
           pName,
           pSlug,
@@ -62,7 +61,6 @@ class Product {
           pParentCategory,
           adminId,
         }
-        // { ...product.updatedObj }
       );
       return updatedProduct;
     } catch (error) {

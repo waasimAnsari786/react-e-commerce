@@ -45,8 +45,8 @@ export default function SignUpForm() {
   };
 
   return (
-    <Container childElemClass="flex justify-center items-center h-screen flex-col">
-      <div className="bg-gray-200 p-8 rounded-lg shadow-lg w-full max-w-md">
+    <Container childElemClass="flex justify-center items-center flex-col pt-32">
+      <div className="bg-amber-800 p-8 rounded-lg shadow-lg w-full max-w-md text-white">
         <h2 className="text-center text-2xl font-semibold mb-6">
           Create an Account
         </h2>
@@ -123,13 +123,18 @@ export default function SignUpForm() {
             />
           </div>
 
-          <Button myClass="w-full text-white bg-blue-500 hover:bg-blue-600">
-            Sign Up
-          </Button>
+          <div className="flex justify-center mt-5">
+            <Button
+              myClass="mx-auto border-2 border-white hover:bg-transparent hover:text-white"
+              bgColor="bg-white"
+              textColor="text-amber-800"
+            >
+              Signin
+            </Button>
+          </div>
         </form>
       </div>
-
-      <MyTypoGraphy myClass="mt-10">
+      <MyTypoGraphy myClass="mt-10 text-amber-800">
         If you have an account,{" "}
         <NavLink className="underline" to="/login">
           Login

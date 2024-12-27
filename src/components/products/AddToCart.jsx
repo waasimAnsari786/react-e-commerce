@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { CartRow } from "../index";
+import { CartRow, Container } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 
 const AddToCart = () => {
@@ -17,28 +17,32 @@ const AddToCart = () => {
   }, [cartItems]);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Shopping Cart</h1>
-      <table className="w-full border-collapse border border-gray-300 mb-6">
-        <thead>
-          <tr>
-            <th className="border border-gray-300 p-2">Image</th>
-            <th className="border border-gray-300 p-2">Name</th>
-            <th className="border border-gray-300 p-2">Price</th>
-            <th className="border border-gray-300 p-2">Quantity</th>
-            <th className="border border-gray-300 p-2">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cartItems.map((product) => (
-            <CartRow product={product} key={product.$id} />
-          ))}
-        </tbody>
-      </table>
+    <Container childElemClass="pt-28">
+      <h1 className="text-2xl font-semibold mb-4 text-amber-800">
+        Shopping Cart
+      </h1>
+      <div className="overflow-x-auto my-6">
+        <table className="table bg-amber-800 text-white table-xs sm:table-lg p-3">
+          <thead>
+            <tr>
+              <th className="text-white">Image</th>
+              <th className="text-white">Name</th>
+              <th className="text-white">Price</th>
+              <th className="text-white">Quantity</th>
+              <th className="text-white">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cartItems.map((product) => (
+              <CartRow product={product} key={product.$id} />
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Price Calculation Table */}
       <div className="max-w-md">
-        <table className="w-full border-collapse border border-gray-300">
+        <table className="w-full bg-amber-800 text-white border-collapse border border-gray-300">
           <tbody>
             <tr>
               <td className="border border-gray-300 p-2">Subtotal</td>
@@ -63,7 +67,7 @@ const AddToCart = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </Container>
   );
 };
 

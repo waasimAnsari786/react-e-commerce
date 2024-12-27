@@ -38,28 +38,35 @@ export default function UpdateOrderStatus({ order }) {
       toast.error('The order status must be "Completed" or "Canceled" ');
       return;
     }
-    const updatedOrder = await dispatch(
-      updateOrderThunk({
-        pName,
-        pPrice,
-        pImage,
-        userId,
-        pQty,
-        pSlug,
-        pSalePrice,
-        adminId,
-        userName,
-        orderStatus: data.orderStatus,
-        $id,
-        completionDate: new Date(),
-      })
-    ).unwrap();
+
+    const updatedOrder = await toast.promise(
+      dispatch(
+        updateOrderThunk({
+          pName,
+          pPrice,
+          pImage,
+          userId,
+          pQty,
+          pSlug,
+          pSalePrice,
+          adminId,
+          userName,
+          orderStatus: data.orderStatus,
+          $id,
+          completionDate: new Date(),
+        })
+      ).unwrap(),
+      {
+        pending: "Updating order status...",
+      }
+    );
+
     if (updatedOrder && updatedOrder.orderStatus === "Completed") {
-      toast.success("Order has completed!");
+      toast.success("Order has been completed!");
       navigate("/admin/completed-orders");
       dispatch(removeFromCartThunk({ $id: completedCart.$id }));
     } else if (updatedOrder && updatedOrder.orderStatus === "Canceled") {
-      toast.info("Order has canceled.");
+      toast.info("Order has been canceled.");
       navigate("/admin/canceled-orders");
       dispatch(removeFromCartThunk({ $id: completedCart.$id }));
     }

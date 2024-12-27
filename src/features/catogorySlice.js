@@ -265,7 +265,9 @@ const categorySlice = createSlice({
       const catog = state.categoriesArr.find(
         (catog) => catog.$id === action.payload
       );
-      state.filteredCategory = catog || {};
+      state.filteredCategory = catog;      
+
+      
     },
   },
   extraReducers: (builder) => {

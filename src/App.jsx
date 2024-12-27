@@ -15,6 +15,7 @@ import {
   AllItemsPage,
   EditItemsPage,
   ProfileSection,
+  AboutUs,
 } from "./components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -35,6 +36,14 @@ function App() {
           element: (
             <AuthProtectedLayout authentication={false}>
               <LoginPage />
+            </AuthProtectedLayout>
+          ),
+        },
+        {
+          path: "about-us",
+          element: (
+            <AuthProtectedLayout>
+              <AboutUs />
             </AuthProtectedLayout>
           ),
         },

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
 import { Button, MyTypoGraphy } from "../index";
-import { CiEdit } from "react-icons/ci";
 import { useDispatch } from "react-redux";
 import {
   removeFromCartThunk,
@@ -12,7 +10,7 @@ import { updateOrderThunk } from "../../features/ordersSlice";
 import { toast } from "react-toastify";
 
 const CartRow = ({ product }) => {
-  let {
+  const {
     pName,
     pPrice,
     pImage,
@@ -36,91 +34,109 @@ const CartRow = ({ product }) => {
   }, [pQty]);
 
   const updateOrderAndCart = async () => {
-    const updatedOrder = await dispatch(
-      updateOrderThunk({
-        pName,
-        pPrice,
-        pImage,
-        userId,
-        pQty: value,
-        pSlug,
-        pSalePrice,
-        adminId,
-        userName,
-        $id: orderId,
-      })
-    ).unwrap();
+    await toast.promise(
+      (async () => {
+        const updatedOrder = await dispatch(
+          updateOrderThunk({
+           
+            pName,
+            pPrice,
+            pImage,
+            userId,
+            pQty: value,
+            pSlug,
+            pSalePrice,
+            adminId,
+            userName,
+            $id: orderId,
+          })
+        ).unwrap();
 
-    const updatedCart = await dispatch(
-      updateCartItemThunk({
-        pName,
-        pPrice,
-        pImage,
-        userId,
-        pQty: value,
-        pSlug,
-        pSalePrice,
-        adminId,
-        userName,
-        pParentCategory,
-        $id,
-        orderId,
-      })
-    ).unwrap();
+        const updatedCart = await dispatch(
+          updateCartItemThunk({
+            pName,
+            pPrice,
+            pImage,
+            userId,
+            pQty: value,
+            pSlug,
+            pSalePrice,
+            adminId,
+            userName,
+            pParentCategory,
+            $id,
+            orderId,
+          })
+        ).unwrap();
 
-    if (updatedCart && updatedOrder) {
-      toast.success("Product has updated in your cart");
-    }
+        return { updatedOrder, updatedCart };
+      })(),
+      {
+        pending: "Updating your cart...",
+        success: "Product updated in your cart!",
+        error: "Failed to update the cart. Please try again.",
+      }
+    );
   };
 
   const removeProductFromCart = async () => {
-    const updatedOrder = await dispatch(
-      updateOrderThunk({
-        pName,
-        pPrice,
-        pImage,
-        userId,
-        pQty: value,
-        pSlug,
-        pSalePrice,
-        adminId,
-        userName,
-        $id: orderId,
-        orderStatus: "Canceled",
-      })
-    ).unwrap();
-    const deletedCart = await dispatch(removeFromCartThunk(product)).unwrap();
+    await toast.promise(
+      (async () => {
+        const updatedOrder = await dispatch(
+          updateOrderThunk({
+            pName,
+            pPrice,
+            pImage,
+            userId,
+            pQty: value,
+            pSlug,
+            pSalePrice,
+            adminId,
+            userName,
+            $id: orderId,
+            orderStatus: "Canceled",
+          })
+        ).unwrap();
 
-    if (updatedOrder && deletedCart) {
-      toast.success("Product has deleted from your cart");
-    }
+        const deletedCart = await dispatch(
+          removeFromCartThunk(product)
+        ).unwrap();
+
+        return { updatedOrder, deletedCart };
+      })(),
+      {
+        pending: "Removing product from your cart...",
+        success: "Product removed from your cart!",
+        error: "Failed to remove the product. Please try again.",
+      }
+    );
   };
 
   return (
-    <tr className="border border-gray-300 p-2 ">
+    <tr className="border-none">
       <td>
         <Link to={`/product/${pSlug}/${productId}`}>
-          <img
-            src={pImage}
-            alt={pName}
-            className="w-16 h-16 object-cover rounded"
-          />
+          <img src={pImage} alt={pName} className="h-28 rounded-md" />
         </Link>
       </td>
       <td>{pName}</td>
-      <td>
-        {pSalePrice ? (
-          <div className=" flex space-x-4">
+      {pSalePrice ? (
+        <td>
+          <div className="flex gap-2">
             <MyTypoGraphy myClass="line-through">Rs: {pPrice}</MyTypoGraphy>
             <MyTypoGraphy>Rs: {pSalePrice}</MyTypoGraphy>
           </div>
-        ) : (
+        </td>
+      ) : (
+        <td>
           <MyTypoGraphy>Rs: {pPrice}</MyTypoGraphy>
-        )}
-      </td>
+        </td>
+      )}
       <td>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 my-10">
           <Button
+            bgColor="bg-white"
+            textColor="text-black"
             onClick={() => {
               setValue((prev) => (prev < 5 ? prev + 1 : prev));
             }}
@@ -129,6 +145,8 @@ const CartRow = ({ product }) => {
           </Button>
           <MyTypoGraphy>{value}</MyTypoGraphy>
           <Button
+            bgColor="bg-white"
+            textColor="text-black"
             onClick={() => {
               setValue((prev) => (prev > 1 ? prev - 1 : prev));
             }}
@@ -138,15 +156,23 @@ const CartRow = ({ product }) => {
         </div>
       </td>
       <td>
-        <Button onClick={removeProductFromCart}>
-          <AiOutlineClose
-            size={20}
-            className="text-red-500 hover:text-red-700"
-          />
-        </Button>
-        <Button onClick={updateOrderAndCart}>
-          <CiEdit size={20} className="text-green-500 hover:text-green-700" />
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={removeProductFromCart}
+            bgColor="bg-red-500 hover:bg-red-700"
+            padding="p-1"
+          >
+            Delete
+          </Button>
+
+          <Button
+            onClick={updateOrderAndCart}
+            bgColor="bg-green-500 hover:bg-green-700"
+            padding="p-1"
+          >
+            Update
+          </Button>
+        </div>
       </td>
     </tr>
   );

@@ -12,15 +12,15 @@ const Select = forwardRef(({ options = [], label, error, ...props }, ref) => {
 
   return (
     <div className="w-full">
-      <label htmlFor={id} className="block mb-1 text-black">
+      <label htmlFor={id} className="block mb-1 text-white">
         {label}
       </label>
-      <div className="flex justify-between">
+      <div className="flex justify-between shadow-input">
         <select
           id={id}
           ref={ref}
           {...props}
-          className="border rounded px-2 py-1 w-full bg-white text-black border-gray-400"
+          className="border rounded px-2 py-1 w-full bg-white text-amber-700 border-gray-400"
         >
           <option value="">Select an option</option>
           {options.map((option) => (

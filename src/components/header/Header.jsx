@@ -1,7 +1,8 @@
 import React, { useEffect, useId, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
-import { LogoutBtn } from "../index";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import auth from "../../appwrite/authService";
+import { logout } from "../../features/authSlice";
 
 export default function Header() {
   const { categoriesArr } = useSelector((state) => state.category);
@@ -9,6 +10,16 @@ export default function Header() {
   const { profileImageObj } = useSelector((state) => state.profileImage);
   const { cartItems } = useSelector((state) => state.cart);
   const [total, setTotal] = useState(0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const logedOut = await auth.logOut();
+    if (logedOut) {
+      dispatch(logout());
+      navigate("login");
+    }
+  };
 
   const calculatedTotal = useMemo(() => {
     return cartItems.reduce((total, item) => {
@@ -16,9 +27,10 @@ export default function Header() {
         ? item.pSalePrice * item.pQty
         : item.pPrice * item.pQty;
 
-      total + price;
+      return total + price;
     }, 0);
   }, [cartItems]);
+
   useEffect(() => {
     setTotal(calculatedTotal);
   }, [cartItems]);
@@ -164,7 +176,7 @@ export default function Header() {
               <div className="indicator">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
+                  className="h-7 w-7 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -183,15 +195,17 @@ export default function Header() {
             </div>
             <div
               tabIndex={0}
-              className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow"
+              className="card card-compact dropdown-content bg-white shadow-lg shadow-gray-400 z-[1] mt-3 w-52 "
             >
               <div className="card-body">
-                <span className="text-lg font-bold">
+                <span className="text-lg font-bold text-amber-800">
                   {cartItems.length} Items
                 </span>
-                <span className="text-info">Subtotal: {total}</span>
+                <span className="text-amber-800">
+                  Subtotal: {total + total / 10}
+                </span>
                 <div className="card-actions">
-                  <Link to="/cart" className="btn btn-primary btn-block">
+                  <Link to="/cart" className="text-amber-800">
                     View cart
                   </Link>
                 </div>
@@ -215,13 +229,24 @@ export default function Header() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow space-y-2"
+              className="menu menu-sm dropdown-content rounded-box z-[1] mt-3 w-52 p-2 shadow-lg shadow-gray-400 text-amber-700 space-y-2 bg-white"
             >
-              <p>Hello {userData?.name}</p>
-              <Link to="/profile">
-                <p>Profile</p>
-              </Link>
-              <LogoutBtn />
+              <li>
+                <Link to="/profile">
+                  <p>Hello {userData.name}</p>
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/profile">
+                  <p>Profile</p>
+                </Link>
+              </li>
+              <li>
+                <p className="cursor-pointer" onClick={handleLogout}>
+                  Logout
+                </p>
+              </li>
             </ul>
           </div>
         </div>
