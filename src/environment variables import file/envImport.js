@@ -9,5 +9,6 @@ const envImport = {
   ordersCollectionID: import.meta.env.VITE_ORDERS,
   productImagesID: import.meta.env.VITE_PRODUCTS_IMAGES_BUCKET_ID,
   profileImagesID: import.meta.env.VITE_PROFILE_IMAGES_BUCKET_ID,
+  RTE_Key: import.meta.env.VITE_RTE_KEY,
 };
 export default envImport;

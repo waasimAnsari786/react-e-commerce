@@ -38,7 +38,6 @@ const CartRow = ({ product }) => {
       (async () => {
         const updatedOrder = await dispatch(
           updateOrderThunk({
-           
             pName,
             pPrice,
             pImage,
@@ -107,7 +106,6 @@ const CartRow = ({ product }) => {
       {
         pending: "Removing product from your cart...",
         success: "Product removed from your cart!",
-        error: "Failed to remove the product. Please try again.",
       }
     );
   };

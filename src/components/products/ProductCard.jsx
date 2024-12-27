@@ -2,6 +2,7 @@ import React from "react";
 import { MyTypoGraphy, Button } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import parse from "html-react-parser";
 
 export default function ProductCard({ myClass = "", product }) {
   const {
@@ -46,7 +47,7 @@ export default function ProductCard({ myClass = "", product }) {
           <MyTypoGraphy myClass="text-2xl font-bold capitalize text-amber-700">
             {pName}
           </MyTypoGraphy>
-          <MyTypoGraphy>{pShortDes}</MyTypoGraphy>
+          {parse(pShortDes)}
           <MyTypoGraphy myClass="capitalize bg-green-700 absolute top-2 left-2 text-white rounded-md text-[0.7rem] px-2 py-1">
             {pStockStatus}
           </MyTypoGraphy>

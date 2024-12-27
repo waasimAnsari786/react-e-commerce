@@ -36,6 +36,7 @@ import PendingOrdersRow from "./admin/PendingOrdersRow";
 import UpdateOrderStatus from "./admin/UpdateOrderStatus";
 import ProfileSection from "./reuseableComponents/ProfileSection";
 import AboutUs from "./pages/AboutUs";
+import RTE from "./reuseableComponents/RTE";
 
 export {
   Button,
@@ -76,4 +77,5 @@ export {
   UpdateOrderStatus,
   ProfileSection,
   AboutUs,
+  RTE,
 };

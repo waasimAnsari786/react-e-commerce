@@ -6,7 +6,7 @@ import {
   MyTypoGraphy,
   Select,
   SelectCategory,
-  TextArea,
+  RTE,
 } from "../index";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -71,90 +71,6 @@ export default function ProductForm({ product }) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // const productSubmit = async (data) => {
-  //   data.pPrice = Number(data.pPrice);
-  //   data.pSalePrice = Number(data.pSalePrice);
-  //   data.pParentCategory = selectedCategories;
-
-  //   if (product) {
-  //     const keysFromData = Object.keys(data);
-
-  //     const isProduct = productsArr.some((product) => {
-  //       return keysFromData.every((key) => {
-  //         if (key === "pImage") {
-  //           return true;
-  //         }
-
-  //         if (key === "pParentCategory") {
-  //           // Check if arrays are equal (all elements in data.pParentCategory exist in product.pParentCategory)
-  //           return (
-  //             Array.isArray(data[key]) &&
-  //             Array.isArray(product[key]) &&
-  //             data[key].every((val) => product[key].includes(val)) &&
-  //             product[key].every((val) => data[key].includes(val))
-  //           );
-  //         } else {
-  //           // Compare scalar values
-  //           return (
-  //             product[key]?.toString().toLowerCase() ===
-  //             data[key]?.toString().toLowerCase()
-  //           );
-  //         }
-  //       });
-  //     });
-
-  //     if (isProduct) {
-  //       toast.error(
-  //         "You can't update this product because it's already exists in your data."
-  //       );
-  //       navigate("/admin/add-product");
-  //       return;
-  //     }
-
-  //     if (typeof data.pImage === "object") {
-  //       const fileObj = await dispatch(
-  //         fileUploadThunk(data.pImage[0])
-  //       ).unwrap();
-  //       if (fileObj) {
-  //         data.pImage = fileObj.$id;
-  //         dispatch(deleteUploadThunk(product.pImage));
-  //       }
-  //     }
-
-  //     const updatedProduct = await dispatch(
-  //       updateProductThunk({ oldData: product, newData: data })
-  //     ).unwrap();
-  //     if (updatedProduct) {
-  //       toast.success("Product updated successfully!");
-  //       navigate("/admin/products");
-  //     }
-  //   } else {
-  //     const isProduct = productsArr.some(
-  //       (product) => product.pName === data.pName
-  //     );
-
-  //     if (isProduct) {
-  //       toast.info(
-  //         "You can't add this product because it's already exists in your data. However, you can update it."
-  //       );
-  //       reset();
-  //       return;
-  //     }
-
-  //     const fileObj = await dispatch(fileUploadThunk(data.pImage[0])).unwrap();
-  //     if (fileObj) {
-  //       data.pImage = fileObj.$id;
-  //       const createdProduct = await dispatch(
-  //         createProductThunk({ ...data, adminId: userData.$id })
-  //       ).unwrap();
-  //       if (createdProduct) {
-  //         toast.success("Product added successfully!");
-  //         navigate("/admin/products");
-  //       }
-  //     }
-  //   }
-  // };
 
   const productSubmit = async (data) => {
     data.pPrice = Number(data.pPrice);
@@ -294,36 +210,22 @@ export default function ProductForm({ product }) {
           />
         </div>
 
-        <div className="flex gap-5">
-          <TextArea
-            placeholder="Product Short Description"
+        <div className="flex gap-5 mt-5">
+          <RTE
+            name="pShortDes"
             label="Product Short Description :"
-            {...register("pShortDes", {
-              required: "Product short description is required",
-            })}
-          />
-          <TextArea
-            placeholder="Product Long Description"
-            label="Product Long Description :"
-            {...register("pLongDes", {
-              required: "Product long description is required",
-            })}
-          />
-          {/* <RTE
-            name="shortDescription"
-            label="Short Description"
             control={control}
-            defaultValue={getValues("shortDescription")}
+            defaultValue={getValues("pShortDes")}
           />
 
           <RTE
-            name="longDescription"
-            label="Long Description"
+            name="pLongDes"
+            label="Product Long Description :"
             control={control}
-            defaultValue={getValues("longDescription")}
-          /> */}
+            defaultValue={getValues("pLongDes")}
+          />
         </div>
-        <div className="flex justify-between gap-5 mt-10">
+        <div className="flex justify-between gap-5 mt-5">
           <Input
             {...register("pPrice", {
               required: "Product price is required",
@@ -343,7 +245,7 @@ export default function ProductForm({ product }) {
           />
         </div>
 
-        <div className="grid grid-cols-3 gap-5 mt-10">
+        <div className="grid grid-cols-3 gap-5 mt-5">
           <Input
             {...register("pImage", {
               required: !product ? "Product image is required" : false,
@@ -386,7 +288,7 @@ export default function ProductForm({ product }) {
           )}
 
         <Button
-          myClass="mx-auto mt-5 border-2 border-white hover:bg-transparent hover:text-white"
+          myClass="mx-auto border-2 border-white hover:bg-transparent hover:text-white mt-5"
           bgColor="bg-white"
           textColor="text-amber-800"
         >
