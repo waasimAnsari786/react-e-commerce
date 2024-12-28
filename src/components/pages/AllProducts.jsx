@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, ProductCard, SearchBar } from "../index";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function AllProducts() {
@@ -48,12 +48,7 @@ export default function AllProducts() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-20">
           {results.length > 0 ? (
             results.map((product) => (
-              <Link
-                to={`/product/${product.pSlug}/${product.$id}`}
-                key={product.$id}
-              >
-                <ProductCard product={product} />
-              </Link>
+              <ProductCard product={product} key={product.$id} />
             ))
           ) : (
             <p>No products are available to show</p>

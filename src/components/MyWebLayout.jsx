@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Header, Footer, Admin } from "./index";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import auth from "../appwrite/authService";
 import userRole from "../appwrite/userRoleService";
@@ -17,6 +17,14 @@ export default function MyWebLayout() {
   const userData = useSelector((state) => state.auth.userData);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    document.title =
+      location.pathname === "/"
+        ? "Home - DualCart"
+        : "DualCart" + location.pathname.split("/").join(" - ");
+  }, [location]);
 
   const getUser = async () => {
     const getedUser = await auth.getCurrentUser();

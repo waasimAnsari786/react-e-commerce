@@ -88,7 +88,7 @@ function App() {
           ),
         },
         {
-          path: "/admin",
+          path: "admin",
           element: (
             <AuthProtectedLayout authentication>
               <Admin />
@@ -96,7 +96,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/dashboard",
+          path: "admin/dashboard",
           element: (
             <AuthProtectedLayout authentication>
               <AdminStats />
@@ -104,7 +104,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/add-product",
+          path: "admin/add-product",
           element: (
             <AuthProtectedLayout authentication>
               <ProductForm />
@@ -112,7 +112,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/add-category",
+          path: "admin/add-category",
           element: (
             <AuthProtectedLayout authentication>
               <AddCatogory />
@@ -120,7 +120,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/categories",
+          path: "admin/categories",
           element: (
             <AuthProtectedLayout authentication>
               <AllItemsPage
@@ -139,7 +139,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/products",
+          path: "admin/products",
           element: (
             <AuthProtectedLayout authentication>
               <AllItemsPage
@@ -161,7 +161,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/pending-orders",
+          path: "admin/pending-orders",
           element: (
             <AuthProtectedLayout authentication>
               <AllItemsPage
@@ -184,7 +184,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/completed-orders",
+          path: "admin/completed-orders",
           element: (
             <AuthProtectedLayout authentication>
               <AllItemsPage
@@ -206,7 +206,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/canceled-orders",
+          path: "admin/canceled-orders",
           element: (
             <AuthProtectedLayout authentication>
               <AllItemsPage
@@ -228,7 +228,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/edit-category/:slug/:categoryId",
+          path: "admin/edit-category/:slug/:categoryId",
           element: (
             <AuthProtectedLayout authentication>
               <EditItemsPage editItem="category" />
@@ -236,7 +236,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/edit-product/:slug/:productId",
+          path: "admin/edit-product/:slug/:productId",
           element: (
             <AuthProtectedLayout authentication>
               <EditItemsPage editItem="product" />
@@ -244,7 +244,7 @@ function App() {
           ),
         },
         {
-          path: "/admin/edit-orders/:slug",
+          path: "admin/edit-orders/:slug",
           element: (
             <AuthProtectedLayout authentication>
               <EditItemsPage editItem="order" />
@@ -252,7 +252,7 @@ function App() {
           ),
         },
         {
-          path: "/profile",
+          path: "profile",
           element: (
             <AuthProtectedLayout authentication>
               <ProfileSection />

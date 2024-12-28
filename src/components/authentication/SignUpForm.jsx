@@ -46,7 +46,6 @@ export default function SignUpForm() {
 
   return (
     <Container childElemClass="flex justify-center items-center flex-col pt-32">
-      {/* <div className="bg-amber-800 p-8 rounded-lg shadow-lg w-full max-w-md text-white"> */}
       <form
         onSubmit={handleSubmit(handleSignUp)}
         className="space-y-4 bg-amber-800 p-8 rounded-lg shadow-lg w-full max-w-md text-white"
@@ -141,7 +140,6 @@ export default function SignUpForm() {
           </Button>
         </div>
       </form>
-      {/* </div> */}
       <MyTypoGraphy myClass="mt-10 text-amber-800">
         If you have an account,{" "}
         <NavLink className="underline" to="/login">

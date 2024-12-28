@@ -3,7 +3,7 @@ import React from "react";
 export default function Container({
   parentElemClass = "",
   childElemClass = "",
-  pad = "",
+  pad = "px-3",
   children,
 }) {
   return (
