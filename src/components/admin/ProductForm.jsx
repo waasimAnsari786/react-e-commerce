@@ -77,6 +77,11 @@ export default function ProductForm({ product }) {
     data.pSalePrice = Number(data.pSalePrice);
     data.pParentCategory = selectedCategories;
 
+    if (data.pSalePrice >= data.pPrice) {
+      toast.info("Product sale price must be less than product original price");
+      return;
+    }
+
     if (product) {
       const keysFromData = Object.keys(data);
 
@@ -181,7 +186,7 @@ export default function ProductForm({ product }) {
   };
 
   return (
-    <Container childElemClass="pt-10">
+    <Container>
       <form
         onSubmit={handleSubmit(productSubmit)}
         className="bg-amber-800 rounded-lg p-3"

@@ -73,9 +73,12 @@ export default function UpdateOrderStatus({ order }) {
   };
 
   return (
-    <Container childElemClass="pt-20">
-      <form onSubmit={handleSubmit(orderStatusSubmit)}>
-        <MyTypoGraphy myClass="text-3xl mb-5 capitalize text-black">
+    <Container childElemClass="mt-5">
+      <form
+        onSubmit={handleSubmit(orderStatusSubmit)}
+        className="bg-amber-800 p-3 rounded-lg md:w-1/2"
+      >
+        <MyTypoGraphy myClass="text-2xl mb-5 capitalize text-white">
           Update Order Status
         </MyTypoGraphy>
         <div>

@@ -81,7 +81,7 @@ export default function AddCategory({ category }) {
   };
 
   return (
-    <Container childElemClass="pt-20">
+    <Container>
       <form
         onSubmit={handleSubmit(categorySubmit)}
         className="bg-amber-800 rounded-lg p-3"

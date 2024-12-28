@@ -111,7 +111,7 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <div className="p-2">
-          <h2 className="text-2xl font-bold text-black mt-20">
+          <h2 className="text-2xl font-bold text-black mt-28">
             Welcome, <span className="text-amber-700"> {userData.name}</span>
           </h2>
           <MyTypoGraphy myClass="text-black mb-4">

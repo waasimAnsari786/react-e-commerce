@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Input, Select } from "../index";
+import { Input, MyTypoGraphy, Select } from "../index";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
@@ -26,6 +26,7 @@ export default function SearchBar({
   return (
     <form className="grid grid-cols-1 md:grid-cols-2 gap-2">
       <Input
+        labelClass="text-amber-700"
         {...register("searchValue")}
         label={
           rowCompName

@@ -7,7 +7,7 @@ import envImport from "../../environment variables import file/envImport";
 export default function RTE({ name, control, label, defaultValue = "" }) {
   const apiKey = envImport.RTE_Key;
   return (
-    <div className="w-full">
+    <div className="w-full space-y-2">
       <label htmlFor={name} className="text-white">
         {label}
       </label>

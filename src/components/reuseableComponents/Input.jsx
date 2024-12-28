@@ -7,6 +7,7 @@ const Input = forwardRef(
       type = "text",
       inpClass = "",
       label,
+      labelClass = "text-white",
       icon = "",
       error,
       parentDiv = "bg-white p-4 rounded-lg my-3 shadow-input",
@@ -28,7 +29,7 @@ const Input = forwardRef(
           "w-full"
         }
       >
-        <label className="text-white" htmlFor={id}>
+        <label className={`${labelClass} `} htmlFor={id}>
           {label}
         </label>
         <div className={`flex items-center justify-between ${parentDiv}`}>

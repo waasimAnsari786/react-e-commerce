@@ -46,8 +46,13 @@ export default function LoginForm() {
     <Container childElemClass="flex items-center justify-center h-screen flex-col">
       <form
         onSubmit={handleSubmit(handleLogin)}
-        className="w-full max-w-md rounded-lg shadow-lg p-6 sm:p-8 bg-amber-800"
+        className="w-full max-w-md rounded-lg shadow-lg p-6 sm:p-8 mt-32 bg-amber-800"
       >
+        <img
+          src="/logo/fulllogo_transparent_nobuffer.png"
+          className="w-1/2 mx-auto mb-5"
+          alt="logo"
+        />
         <h2 className="text-2xl font-semibold text-center mb-6 text-white ">
           Login
         </h2>

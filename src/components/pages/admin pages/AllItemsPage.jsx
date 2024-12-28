@@ -50,7 +50,7 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
   };
 
   return (
-    <Container childElemClass="pt-10">
+    <Container>
       <SearchBar onSearch={handleSearch} rowCompName={rowCompName} />
       <div className="overflow-x-auto">
         <table className="table bg-amber-800 text-white w-full mt-5">
@@ -122,7 +122,9 @@ export default function AllItemsPage({ tHeadArr, searchKeyword, rowCompName }) {
       </div>
       {rowCompName !== "pending-orders" && (
         <Button
-          myClass="lg:hidden block"
+          myClass="border-2 border-amber-800 hover:border-transparent font-semibold mt-5 lg:hidden block"
+          bgColor="hover:bg-amber-800 bg-transparent"
+          textColor="hover:text-white text-amber-800"
           onClick={() =>
             rowCompName === "categories"
               ? navigate("/admin/add-category")
