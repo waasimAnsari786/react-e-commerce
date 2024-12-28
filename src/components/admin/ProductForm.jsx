@@ -189,12 +189,12 @@ export default function ProductForm({ product }) {
     <Container>
       <form
         onSubmit={handleSubmit(productSubmit)}
-        className="bg-amber-800 rounded-lg p-3 grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1"
+        className="bg-amber-800 rounded-lg p-3"
       >
         <MyTypoGraphy myClass="text-3xl mb-5 text-white">
           {product ? "Update Product" : "Add Product"}
         </MyTypoGraphy>
-        <div className="flex justify-between gap-5">
+        <div className="flex sm:flex-row flex-col justify-between gap-5">
           <Input
             {...register("pName", {
               required: "Product name/title is required",
@@ -215,7 +215,7 @@ export default function ProductForm({ product }) {
           />
         </div>
 
-        <div className="flex gap-5 mt-5">
+        <div className="flex md:flex-row flex-col gap-5 mt-5">
           <RTE
             name="pShortDes"
             label="Product Short Description :"
@@ -230,7 +230,7 @@ export default function ProductForm({ product }) {
             defaultValue={getValues("pLongDes")}
           />
         </div>
-        <div className="flex justify-between gap-5 mt-5">
+        <div className="flex sm:flex-row flex-col justify-between gap-5 mt-5">
           <Input
             {...register("pPrice", {
               required: "Product price is required",
@@ -250,7 +250,7 @@ export default function ProductForm({ product }) {
           />
         </div>
 
-        <div className="grid grid-cols-3 gap-5 mt-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
           <Input
             {...register("pImage", {
               required: !product ? "Product image is required" : false,

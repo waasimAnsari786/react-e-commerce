@@ -84,7 +84,7 @@ export default function AddCategory({ category }) {
     <Container>
       <form
         onSubmit={handleSubmit(categorySubmit)}
-        className="bg-amber-800 rounded-lg p-3 grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1"
+        className="bg-amber-800 rounded-lg p-3 grid grid-cols-1 md:grid-cols-2"
       >
         <MyTypoGraphy myClass="text-3xl text-white mb-5 capitalize text-black">
           {category ? "Update Category" : "Add Category"}

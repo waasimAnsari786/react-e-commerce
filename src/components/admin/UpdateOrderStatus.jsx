@@ -76,7 +76,7 @@ export default function UpdateOrderStatus({ order }) {
     <Container childElemClass="mt-5">
       <form
         onSubmit={handleSubmit(orderStatusSubmit)}
-        className="bg-amber-800 p-3 rounded-lg md:w-1/2 grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1"
+        className="bg-amber-800 p-3 rounded-lg md:w-1/2 grid grid-cols-1"
       >
         <MyTypoGraphy myClass="text-2xl mb-5 capitalize text-white">
           Update Order Status
@@ -87,8 +87,13 @@ export default function UpdateOrderStatus({ order }) {
             {...register("orderStatus", { required: true })}
           />
         </div>
-
-        <Button myClass="mt-6">Update Order Status</Button>
+        <Button
+          myClass="mx-auto mt-5 border-2 border-white hover:bg-transparent hover:text-white"
+          bgColor="bg-white"
+          textColor="text-amber-800"
+        >
+          Update Order Status
+        </Button>
       </form>
     </Container>
   );

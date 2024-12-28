@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { MyTypoGraphy } from "../index";
+import { ImProfile } from "react-icons/im";
 
 export default function Footer() {
   const { userData, status } = useSelector((state) => state.auth);
@@ -82,6 +83,14 @@ export default function Footer() {
             >
               <FaLinkedin size={25} />
               <p>LinkedIn</p>
+            </Link>
+            <Link
+              target="_blank"
+              to="https://waasim-portfolio-2.netlify.app/"
+              className="flex gap-2"
+            >
+              <ImProfile size={25} />
+              <p>Portfolio</p>
             </Link>
           </nav>
         </footer>

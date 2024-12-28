@@ -283,7 +283,7 @@ export default function ProfileSection() {
   };
 
   return (
-    <Container childElemClass="max-w-xl mx-auto py-8">
+    <Container childElemClass="max-w-xl mx-auto pt-32">
       <div className="bg-amber-800 text-white rounded-lg shadow-lg p-6">
         {/* Profile Image */}
         <div className="flex flex-col items-center">
