@@ -189,7 +189,7 @@ export default function ProductForm({ product }) {
     <Container>
       <form
         onSubmit={handleSubmit(productSubmit)}
-        className="bg-amber-800 rounded-lg p-3"
+        className="bg-amber-800 rounded-lg p-3 grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1"
       >
         <MyTypoGraphy myClass="text-3xl mb-5 text-white">
           {product ? "Update Product" : "Add Product"}

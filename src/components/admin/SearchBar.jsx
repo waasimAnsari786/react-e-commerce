@@ -49,6 +49,7 @@ export default function SearchBar({
           {...register("searchCatogs")}
           label="Search By Categories"
           options={catogNames}
+          labelClass="text-amber-700"
         />
       )}
     </form>
