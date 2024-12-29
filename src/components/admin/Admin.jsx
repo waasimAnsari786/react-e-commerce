@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
 import { LogoutBtn, MyTypoGraphy } from "../index";
 import {
   FaTachometerAlt,
@@ -83,6 +84,11 @@ export default function AdminDashboard() {
         },
       ],
     },
+    {
+      name: "Profile",
+      slug: "/profile",
+      icon: <FaUserCircle className="w-5 h-5" />,
+    },
   ];
 
   return (
@@ -135,13 +141,15 @@ export default function AdminDashboard() {
           className="menu bg-amber-800 text-white min-h-full w-64
          sm:w-72 p-4"
         >
-          <div className="flex flex-col">
+          <div className="flex flex-col mb-5">
             <NavLink to="/profile" className="flex flex-col">
-              <img
-                src={profileImageObj?.URL}
-                alt="User Profile"
-                className="w-24 h-24 rounded-full mx-auto border-4 border-amber-900"
-              />
+              <div className="relative rounded-full mx-auto border-4 border-amber-900 overflow-hidden">
+                <img
+                  src={profileImageObj?.URL}
+                  alt="User Profile"
+                  className="w-24 h-24"
+                />
+              </div>
               <h2 className="text-lg text-center mt-4">
                 👋 Hello, {userData.name}
               </h2>
@@ -187,7 +195,7 @@ export default function AdminDashboard() {
                 to={item.slug}
                 key={item.slug}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 p-4 mt-5 hover:bg-amber-800 rounded-md ${
+                  `flex items-center gap-3 p-4 hover:bg-amber-800 rounded-md ${
                     isActive ? "bg-amber-900" : ""
                   }`
                 }
