@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MyTypoGraphy, Button } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -19,6 +19,17 @@ export default function ProductCard({ myClass = "", product }) {
   const dispatch = useDispatch();
   const { preview_URL_Arr } = useSelector((state) => state.file);
 
+  const [shortDescription, setShortDescription] = useState("");
+
+  useEffect(() => {
+    // Parse and truncate pShortDes if necessary
+    let parsedDescription = parse(pShortDes)?.props.children;
+    if (parsedDescription.length > 90) {
+      parsedDescription = `${parsedDescription.substring(0, 90)}...`;
+    }
+    setShortDescription(parsedDescription);
+  }, [pShortDes]);
+
   const calculateDiscount = (price, salePrice) => {
     if (price > 0 && salePrice > 0) {
       return Math.round(((price - salePrice) / price) * 100);
@@ -27,7 +38,7 @@ export default function ProductCard({ myClass = "", product }) {
   };
 
   return (
-    <div className="w-full h-[25rem] rounded-xl hover:shadow-gray-500 hover:shadow-xl hover:translate-y-3 transition-all duration-100">
+    <div className="w-full rounded-xl hover:shadow-gray-500 hover:shadow-xl -hover:translate-y-3 transition-all duration-100">
       {/* Parent Container */}
       <div
         className={`${myClass} relative h-full flex flex-col justify-between `}
@@ -47,12 +58,12 @@ export default function ProductCard({ myClass = "", product }) {
           <MyTypoGraphy myClass="text-2xl font-bold capitalize text-amber-700">
             {pName}
           </MyTypoGraphy>
-          {parse(pShortDes)}
+          {shortDescription}
           <MyTypoGraphy myClass="capitalize bg-green-700 absolute top-2 left-2 text-white rounded-md text-[0.7rem] px-2 py-1">
             {pStockStatus}
           </MyTypoGraphy>
           <MyTypoGraphy myClass={`${pSalePrice && "line-through"}`}>
-            Price :{pPrice}
+            Price : {pPrice}
           </MyTypoGraphy>
           {pSalePrice > 0 && (
             <>
