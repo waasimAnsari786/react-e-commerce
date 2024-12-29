@@ -288,7 +288,7 @@ export default function ProfileSection() {
         {/* Profile Image */}
         <div className="flex flex-col items-center">
           <img
-            src={profileImageObj?.URL || "/default-profile.png"}
+            src={profileImageObj?.URL}
             alt="User Profile"
             className="rounded-full w-32 h-32 object-cover mb-4"
           />
@@ -313,12 +313,12 @@ export default function ProfileSection() {
               textColor="text-amber-700"
               onClick={() => setEditField("name")}
             >
-              <FaEdit /> Edit
+              <FaEdit className="sm:block hidden" /> Edit
             </Button>
           </div>
 
           {/* Email */}
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-col sm:flex-row">
             <MyTypoGraphy myClass="text-lg font-medium">{email}</MyTypoGraphy>
             <Button
               myClass="flex items-center gap-2 text-sm"
@@ -326,7 +326,7 @@ export default function ProfileSection() {
               textColor="text-amber-700"
               onClick={() => setEditField("email")}
             >
-              <FaEdit /> Edit
+              <FaEdit className="sm:block hidden" /> Edit
             </Button>
           </div>
 
@@ -339,7 +339,7 @@ export default function ProfileSection() {
               textColor="text-amber-700"
               onClick={() => setEditField("password")}
             >
-              <FaEdit /> Edit
+              <FaEdit className="sm:block hidden" /> Edit
             </Button>
           </div>
         </div>
@@ -353,12 +353,16 @@ export default function ProfileSection() {
             {editField === "email" && (
               <>
                 <Input
+                  label="Email:"
+                  labelClass="text-amber-700"
                   placeholder="Enter New Email"
                   type="email"
                   {...register("newEmail", { required: "Email is required" })}
                   error={errors.newEmail?.message}
                 />
                 <Input
+                  label="Password:"
+                  labelClass="text-amber-700"
                   placeholder="Enter Current Password"
                   type="password"
                   {...register("password", {
@@ -372,6 +376,8 @@ export default function ProfileSection() {
             {editField === "password" && (
               <>
                 <Input
+                  label="Old Password:"
+                  labelClass="text-amber-700"
                   placeholder="Enter Old Password"
                   type="password"
                   {...register("oldPassword", {
@@ -380,6 +386,8 @@ export default function ProfileSection() {
                   error={errors.oldPassword?.message}
                 />
                 <Input
+                  label="New Password:"
+                  labelClass="text-amber-700"
                   placeholder="Enter New Password"
                   type="password"
                   {...register("newPassword", {
@@ -392,11 +400,9 @@ export default function ProfileSection() {
 
             {editField === "profileImage" && (
               <>
-                <MyTypoGraphy myClass="text-amber-700">
-                  Upload Your Image
-                </MyTypoGraphy>
-
                 <Input
+                  label="Upload Your Image:"
+                  labelClass="text-amber-700"
                   type="file"
                   {...register("profileImage", {
                     required: "Profile Image is required",
@@ -409,6 +415,8 @@ export default function ProfileSection() {
             {editField === "name" && (
               <>
                 <Input
+                  label="Name:"
+                  labelClass="text-amber-700"
                   placeholder="Write your new name"
                   {...register("name", {
                     required: "Name is required",

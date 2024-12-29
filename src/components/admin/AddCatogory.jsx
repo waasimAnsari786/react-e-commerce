@@ -84,12 +84,12 @@ export default function AddCategory({ category }) {
     <Container>
       <form
         onSubmit={handleSubmit(categorySubmit)}
-        className="bg-amber-800 rounded-lg p-3 grid grid-cols-1 md:grid-cols-2"
+        className="bg-amber-800 rounded-lg p-3"
       >
         <MyTypoGraphy myClass="text-3xl text-white mb-5 capitalize text-black">
           {category ? "Update Category" : "Add Category"}
         </MyTypoGraphy>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <Input
             {...register("catogName", {
               required: "Category name/title is required",
