@@ -120,14 +120,14 @@ export default function SingleProduct() {
       <div className="card lg:card-side shadow-xl p-5">
         {filteredProduct && (
           <>
-            <figure>
+            <figure className="w-full lg:w-1/2">
               <img
                 src={imgPreview}
                 alt={`${pName}'s image`}
                 className="rounded-xl w-full h-auto object-cover"
               />
             </figure>
-            <div className="card-body">
+            <div className="card-body lg:w-1/2 w-full">
               <h2 className="card-title text-amber-700 text-2xl font-bold">
                 {pName}
               </h2>

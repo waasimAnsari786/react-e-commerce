@@ -20,26 +20,33 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   const handleLogin = async (data) => {
-    const userAccount = await auth.logInAccount({ ...data });
-    if (userAccount) {
-      const getUser = await auth.getCurrentUser();
-      if (getUser) {
-        const getedUserRole = await userRole.getUserRole(getUser.$id);
-        getUser.userRole = getedUserRole.documents[0].role;
-        getUser.profileImage = getedUserRole.documents[0].profileImage;
-        getUser.userRoleId = getedUserRole.documents[0].$id;
-        dispatch(login(getUser));
-        if (getedUserRole && getedUserRole.documents[0].role === "Admin") {
-          navigate("/admin/dashboard");
-        } else if (
-          getedUserRole &&
-          getedUserRole.documents[0].role === "Buyer"
-        ) {
-          navigate("/");
+    toast.promise(
+      (async () => {
+        const userAccount = await auth.logInAccount({ ...data });
+        if (userAccount) {
+          const getUser = await auth.getCurrentUser();
+          if (getUser) {
+            const getedUserRole = await userRole.getUserRole(getUser.$id);
+            getUser.userRole = getedUserRole.documents[0].role;
+            getUser.profileImage = getedUserRole.documents[0].profileImage;
+            getUser.userRoleId = getedUserRole.documents[0].$id;
+            dispatch(login(getUser));
+            if (getedUserRole && getedUserRole.documents[0].role === "Admin") {
+              navigate("/admin/dashboard");
+            } else if (
+              getedUserRole &&
+              getedUserRole.documents[0].role === "Buyer"
+            ) {
+              navigate("/");
+            }
+          }
         }
-        toast.success("Login Successfully!");
+      })(),
+      {
+        pending: "Logging in...",
+        success: "Login Successfully! 🎉",
       }
-    }
+    );
   };
 
   return (

@@ -19,7 +19,9 @@ import {
 } from "../../features/productSlice";
 
 export default function ProductForm({ product }) {
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([
+    "Uncategorise",
+  ]);
 
   const {
     handleSubmit,

@@ -20,28 +20,35 @@ export default function SignUpForm() {
   const navigate = useNavigate();
 
   const handleSignUp = async (data) => {
-    const userAccount = await auth.createAccount({ ...data });
-    if (userAccount) {
-      const getUser = await auth.getCurrentUser();
-      if (getUser) {
-        const createdUserRole = await userRole.createUserRole({
-          role: data.role,
-          userId: getUser.$id,
-        });
-        getUser.userRole = data.role;
-        getUser.profileImage = "675d310200015bc6b652";
-        getUser.userRoleId = createdUserRole.$id;
-        if (createdUserRole) {
-          dispatch(login(getUser));
-          if (data.role === "Admin") {
-            navigate("/admin/dashboard");
-          } else if (data.role === "Buyer") {
-            navigate("/");
+    toast.promise(
+      (async () => {
+        const userAccount = await auth.createAccount({ ...data });
+        if (userAccount) {
+          const getUser = await auth.getCurrentUser();
+          if (getUser) {
+            const createdUserRole = await userRole.createUserRole({
+              role: data.role,
+              userId: getUser.$id,
+            });
+            getUser.userRole = data.role;
+            getUser.profileImage = "675d310200015bc6b652";
+            getUser.userRoleId = createdUserRole.$id;
+            if (createdUserRole) {
+              dispatch(login(getUser));
+              if (data.role === "Admin") {
+                navigate("/admin/dashboard");
+              } else if (data.role === "Buyer") {
+                navigate("/");
+              }
+            }
           }
-          toast.success("Signup Successfully");
         }
+      })(),
+      {
+        pending: "Signing up...",
+        success: "Signup Successfully! 🎉",
       }
-    }
+    );
   };
 
   return (
