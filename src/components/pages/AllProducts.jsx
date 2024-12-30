@@ -5,21 +5,18 @@ import { useSelector } from "react-redux";
 
 export default function AllProducts() {
   const { productsArr } = useSelector((state) => state.product);
+  const { categoriesArr } = useSelector((state) => state.category);
   const [results, setResults] = useState([]);
   const [categoryProducts, setCategoryProducts] = useState([]);
   const { slug } = useParams();
 
   useEffect(() => {
     if (slug) {
-      const newSlug = slug.includes("-")
-        ? slug
-            .split("-")
-            .map((str) => str.replace(str[0], str[0].toUpperCase()))
-            .join(" ")
-        : slug.replace(slug[0], slug[0].toUpperCase());
-
+      const category = categoriesArr.find(
+        (category) => category.catogSlug === slug
+      );
       const categoryProductsArr = productsArr.filter((product) =>
-        product.pParentCategory?.includes(newSlug)
+        product.pParentCategory?.includes(category.catogName)
       );
 
       setCategoryProducts(categoryProductsArr);
@@ -45,7 +42,7 @@ export default function AllProducts() {
     <>
       <Container childElemClass="pt-32">
         <SearchBar onSearch={handleSearch} otherFields={!slug && true} />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-10">
           {results.length > 0 ? (
             results.map((product) => (
               <ProductCard product={product} key={product.$id} />
